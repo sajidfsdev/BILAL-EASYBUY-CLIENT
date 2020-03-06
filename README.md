@@ -1,1 +1,1 @@
-# BILAL-EASYBUY-CLIENT
+# EasyPurchase
