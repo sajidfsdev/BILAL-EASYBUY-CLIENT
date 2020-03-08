@@ -1,0 +1,4 @@
+@font-face {
+  font-family: "pacific";
+  src: local("pacific"), url(./Assets//fonts/pacific.ttf) format("truetype");
+}

@@ -1,16 +1,16 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  container: {
+  cover: {
     width: "100%",
+    height: "auto",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-end",
-    padding: "10px"
+    justifyContent: "center"
   },
 
-  link: {
-    cursor: "pointer"
+  image: {
+    width: "90%"
   }
 }));
 
