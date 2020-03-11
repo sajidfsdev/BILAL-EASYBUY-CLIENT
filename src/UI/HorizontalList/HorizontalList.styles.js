@@ -23,8 +23,10 @@ const useStyles = makeStyles(theme => ({
 
   paper: {
     width: "215px",
-    height: "230px",
-    marginBottom: "20px"
+    height: "257px",
+    marginBottom: "20px",
+    position: "relative",
+    overflow: "hidden"
     // [theme.breakpoints.up("md")]: {
     //   width: "250px"
     // }
@@ -33,8 +35,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: "10px"
+    justifyContent: "space-between"
   },
   icon: {
     color: "red",
@@ -42,6 +43,77 @@ const useStyles = makeStyles(theme => ({
   },
   padding: {
     marginRight: "25px"
+  },
+  //Drop down styles starts...
+  root: {
+    height: 180
+  },
+  dropcontainer: {
+    display: "flex",
+    width: "100%",
+    position: "absolute"
+  },
+  droppaper: {
+    width: "215px"
+  },
+  svg: {
+    width: "215px",
+    height: 100
+  },
+  polygon: {
+    fill: theme.palette.common.white,
+    stroke: theme.palette.divider,
+    strokeWidth: 1
+  },
+  imageRow: {
+    marginTop: "40px",
+    width: "100%",
+
+    height: "220px"
+  },
+  image: {
+    width: "215px",
+    height: "auto"
+  },
+  hiddenContainer: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%"
+  },
+  hiddenPadding: {
+    marginTop: "12px"
+  },
+  pricing: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    color: "#00a152",
+    fontWeight: "bold"
+  },
+  furtherDetails: {
+    width: "100%",
+    marginTop: "10px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+
+  btnRow: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: "20px"
+  },
+
+  btn: {
+    backgroundColor: "#5cb85c",
+    color: "white",
+    padding: "10px",
+    borderRadius: "20px",
+    cursor: "pointer",
+    fontSize: "15px"
   }
 }));
 

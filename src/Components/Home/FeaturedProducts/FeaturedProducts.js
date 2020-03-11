@@ -10,28 +10,36 @@ const FeaturedProducts = props => {
   //state....
   const [productsState, setProductsState] = useState([
     {
-      title: "Fruit Juicer",
+      title: "HP=Pavilion",
       price: 2300,
       description: "Some regular description",
-      installmentPlan: "3 Months"
+      installmentPlan: "3 Months",
+      downPayment: 1000,
+      image: "products/laptops/hpPavilion.png"
     },
     {
-      title: "Fruit Juicer",
+      title: "Canon 34A",
       price: 2300,
+      downPayment: 1000,
       description: "Some regular description",
-      installmentPlan: "3 Months"
+      installmentPlan: "3 Months",
+      image: "products/camera/canon.png"
     },
     {
-      title: "Fruit Juicer",
+      title: "Men-R T-Shirt",
       price: 2300,
       description: "Some regular description",
-      installmentPlan: "3 Months"
+      installmentPlan: "3 Months",
+      downPayment: 1000,
+      image: "products/shirt/shirt.png"
     },
     {
-      title: "Fruit Juicer",
+      title: "Oxford Shoes",
       price: 2300,
       description: "Some regular description",
-      installmentPlan: "3 Months"
+      installmentPlan: "3 Months",
+      downPayment: 1000,
+      image: "products/shoes/shoes.png"
     }
   ]);
   return (
