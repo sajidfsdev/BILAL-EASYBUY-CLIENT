@@ -5,6 +5,7 @@ import Menubar from "./../../Components/Home/Menubar/Menubar";
 import Row from "./../../UI/Row/ELXRow";
 import Cover from "./../../Components/Home/Cover/Cover";
 import FeaturedProducts from "./../../Components/Home/FeaturedProducts/FeaturedProducts";
+import HowItWorks from "./../../Components/Home/HowItWorks/HowItWorks";
 
 const Home = props => {
   //styles starts....
@@ -12,21 +13,15 @@ const Home = props => {
   //return starts...
   return (
     <React.Fragment>
-      {/* AppBar Starts.... */}
       <AppBar />
-      {/* AppBar Ends...... */}
 
-      {/* Menu Bar Starts ... */}
       <Menubar />
-      {/*  Menu Bar Ends .... */}
 
-      {/* Banner Area Starts... */}
       <Cover />
-      {/* Banner Area Ends..... */}
 
-      {/* Featured Products..... */}
       <FeaturedProducts />
-      {/* Featured Products ends.. */}
+
+      <HowItWorks />
     </React.Fragment>
   );
   //return ends.....

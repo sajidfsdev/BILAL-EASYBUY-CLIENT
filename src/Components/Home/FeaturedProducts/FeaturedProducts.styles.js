@@ -6,7 +6,8 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: "50px"
+    marginTop: "80px",
+    marginBottom: "80px"
   },
   heading: {
     fontSize: "18px",
