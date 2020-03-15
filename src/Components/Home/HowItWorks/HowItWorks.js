@@ -6,6 +6,8 @@ import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import { FaRegHandshake } from "react-icons/fa";
+import ScrollAnimation from "react-animate-on-scroll";
+import { AnimatedOnScroll } from "react-animated-css-onscroll";
 import useStyles from "./HowItWorks.styles";
 
 const HowItWorks = props => {
@@ -14,18 +16,22 @@ const HowItWorks = props => {
 
   //Methods...
   const returnBox = (step, title, Icon, content, size = false) => (
-    <Row className={classes.box}>
-      <Row className={classes.boxRow}>
-        <Row className={classes.step}>{step}</Row>
-        <Row className={classes.title}>{title}</Row>
-      </Row>
-      <Row className={classes.boxRow}>
-        <Row className={classes.icon}>
-          {size === false ? <Icon fontSize={"large"} /> : <Icon size={35} />}
+    // <ScrollAnimation animateIn="fadeIn" duration={3}>
+    <AnimatedOnScroll animationIn="bounceIn" animationOut="bounceOut">
+      <Row className={classes.box}>
+        <Row className={classes.boxRow}>
+          <Row className={classes.step}>{step}</Row>
+          <Row className={classes.title}>{title}</Row>
         </Row>
-        <Row className={classes.content}>{content}</Row>
+        <Row className={classes.boxRow}>
+          <Row className={classes.icon}>
+            {size === false ? <Icon fontSize={"large"} /> : <Icon size={35} />}
+          </Row>
+          <Row className={classes.content}>{content}</Row>
+        </Row>
       </Row>
-    </Row>
+    </AnimatedOnScroll>
+    // </ScrollAnimation>
   ); //...................return box ends...
 
   //return starts....

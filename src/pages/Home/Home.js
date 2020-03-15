@@ -6,6 +6,9 @@ import Row from "./../../UI/Row/ELXRow";
 import Cover from "./../../Components/Home/Cover/Cover";
 import FeaturedProducts from "./../../Components/Home/FeaturedProducts/FeaturedProducts";
 import HowItWorks from "./../../Components/Home/HowItWorks/HowItWorks";
+import Statistics from "./../../Components/Home/Statistics/Statistics";
+import ContactUs from "./../../Components/Home/Contactus/Contactus";
+import Footer from "./../../Components/Home/Footer/Footer";
 
 const Home = props => {
   //styles starts....
@@ -22,6 +25,12 @@ const Home = props => {
       <FeaturedProducts />
 
       <HowItWorks />
+
+      <Statistics />
+
+      <ContactUs />
+
+      <Footer />
     </React.Fragment>
   );
   //return ends.....
