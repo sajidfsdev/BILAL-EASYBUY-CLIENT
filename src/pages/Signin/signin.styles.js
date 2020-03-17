@@ -1,58 +1,46 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%",
-    height: "100vh",
-    margin: 0,
-    padding: 0,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff"
-  },
-
-  box: {
-    width: "450px",
-    height: "auto",
-    paddingBottom: "30px"
-  },
-
-  avatar: {
-    display: "flex",
-    "& > *": {
-      margin: "20px auto"
-    }
-  },
-  large: {
-    width: theme.spacing(140),
-    height: theme.spacing(140)
+  title: {
+    width: "350px"
   },
 
   inputRow: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
     width: "100%",
-    padding: "10px"
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: "30px"
   },
-  errorMessage: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+  errorRow: {
     width: "100%",
-    padding: "10px",
-    color: "red"
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    color: theme.palette.secondary.main,
+    marginBottom: "0px"
+  },
+  btnRow: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: "10px"
+  },
+
+  registerRow: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end"
   },
 
   input: {
-    width: "350px"
+    width: "90%"
   },
+
   btn: {
-    width: "350px"
+    width: "300px"
   }
 }));
 

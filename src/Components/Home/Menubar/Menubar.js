@@ -3,10 +3,20 @@ import Row from "./../../../UI/Row/ELXRow";
 import logo from "./../../../Assets/images/optimalLogo.png";
 import useStyles from "./Menubar.styles";
 import "./../../../index.css";
+import * as Actions from "./../../../Store/Action/Register";
+import { useDispatch } from "react-redux";
 
 const Menubar = props => {
   //classes init...
   const classes = useStyles();
+
+  //state management...
+  const dispatch = useDispatch();
+
+  //Methods....
+  const handleLoginClick = () => {
+    dispatch(Actions.handleShowSignin());
+  };
 
   //return starts....
   return (
@@ -28,7 +38,9 @@ const Menubar = props => {
             <a href="#">CATEGORIES</a>
           </li>
           <li>
-            <a href="#">REGISTER</a>
+            <a href="#" onClick={handleLoginClick}>
+              LOGIN
+            </a>
           </li>
           <li>
             <a href="#">CONTACT</a>

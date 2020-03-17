@@ -1,84 +1,66 @@
-import React, { useState } from "react";
-import useStyles from "./signin.styles";
-import Row from "./../../UI/Row/ELXRow";
-import Paper from "./../../UI/Paper/Paper";
-import LinearProgressBar from "./../../UI/LinearProgress/LinearProgress";
-import logo from "./../../Assets/images/optimalLogo.png";
-import Avatar from "./../../UI/Avatar/Avatar";
+import React from "react";
+import Dialogue from "./../../UI/DraggableDialogue/DraggableDialogue";
 import Input from "./../../UI/Input/Input";
+import Row from "./../../UI/Row/ELXRow";
 import Button from "./../../UI/Button/ELXButton";
-import { useSelector, useDispatch } from "react-redux";
-import * as AppTypes from "./../../Store/Constants/App";
-import * as Actions from "./../../Store/Action/Auth";
+import LinearProgressBar from "./../../UI/LinearProgress/LinearProgress";
+import useStyles from "./signin.styles";
 
-const Signup = props => {
+//redux....
+import { useSelector, useDispatch } from "react-redux";
+import * as Actions from "./../../Store/Action/Register";
+
+const SignIn = props => {
   //styles init...
   const classes = useStyles();
 
-  //state management starts...
-  const errorMessage_RP = useSelector(state => state.auth.errorMessage);
+  //state management...
+  const showSignIn_RP = useSelector(state => state.register.showSignIn);
   const dispatch_RP = useDispatch();
-  const bufferring_RP = useSelector(state => state.app.bufferring);
-  const [username, setusername] = useState("");
-  const [password, setPassword] = useState("");
 
-  //Methods starts...
-  const handleFormSubmission = event => {
-    event.preventDefault();
-    dispatch_RP({ type: AppTypes.STARTAPPBUFFERRING });
-    dispatch_RP(Actions.handleLogin(username, password));
+  //Methods....
+  const handleClose = () => {
+    dispatch_RP(Actions.handleHideSignIn());
   };
 
-  const handleUsernameChange = event => {
-    setusername(event.target.value);
-  };
-
-  const handlePasswordChange = event => {
-    setPassword(event.target.value);
+  const handleRegisterAsVendor = () => {
+    dispatch_RP(Actions.handleShowRegister());
   };
 
   return (
-    <Row className={classes.root}>
-      <Paper elevation={5} className={classes.box}>
-        {bufferring_RP ? <LinearProgressBar color="secondary" /> : null}
-        <Row className={classes.logo}>
-          <Avatar src={logo} size={14} spacing={2} className={classes.avatar} />
-        </Row>
-        <form onSubmit={handleFormSubmission}>
-          <Row className={classes.inputRow}>
-            <Input
-              value={username}
-              onChange={handleUsernameChange}
-              type="text"
-              label="Username"
-              className={classes.input}
-              required
-            />
-          </Row>
-          <Row className={classes.inputRow}>
-            <Input
-              value={password}
-              onChange={handlePasswordChange}
-              type="password"
-              label="Password"
-              className={classes.input}
-              required
-            />
-          </Row>
-          <Row className={classes.errorMessage}>{errorMessage_RP}</Row>
-          <Row className={classes.inputRow}>
-            <Button
-              type="submit"
-              width={"350px"}
-              disabled={bufferring_RP ? true : false}
-            >
-              SignIn
-            </Button>
-          </Row>
-        </form>
-      </Paper>
-    </Row>
+    <Dialogue
+      open={showSignIn_RP}
+      title="Login Your Account"
+      className={classes.title}
+      handleClose={handleClose}
+    >
+      <Row className={classes.inputRow}>
+        <LinearProgressBar color="secondary" />
+      </Row>
+      <Row className={classes.inputRow}>
+        <Input label="username" required className={classes.input} />
+      </Row>
+      <Row className={classes.inputRow}>
+        <Input label="password" required className={classes.input} />
+      </Row>
+      <Row className={classes.errorRow}>
+        sorry username or password is incorrect
+      </Row>
+      <Row className={classes.btnRow}>
+        <Button color="primary" className={classes.btn}>
+          SIGNIN
+        </Button>
+      </Row>
+      <Row className={classes.registerRow}>
+        Not have account?Register as &nbsp;
+        <a href="#" onClick={handleRegisterAsVendor}>
+          Vendor
+        </a>
+        &nbsp;or&nbsp;
+        <a href="#"> Buyer</a>
+      </Row>
+    </Dialogue>
   );
-}; //.....................
+}; //......................
 
-export default Signup;
+export default SignIn;

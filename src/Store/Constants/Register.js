@@ -1,0 +1,4 @@
+export const SHOWSIGNIN = "SHOWSIGNIN";
+export const SHOWREGISTER = "SHOWREGISTER";
+export const HIDESIGNIN = "HIDESIGNIN";
+export const HIDEREGISTER = "HIDEREGISTER";
