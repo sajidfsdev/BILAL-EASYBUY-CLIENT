@@ -14,6 +14,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import useStyles from "./AppBar.styles";
 import source from "./../../../Assets/images/optimalLogo.png";
 import Avatar from "./../../../UI/Avatar/Avatar";
+import { Link } from "react-router-dom";
 
 const AppBarComp = props => {
   const classes = useStyles();

@@ -35,6 +35,7 @@ export default {
     "Haroonabad",
     "Hasilpur",
     "Haveli Lakha",
+    "Islamabad",
     "Jalalpur Jattan",
     "Jampur",
     "Jaranwala",

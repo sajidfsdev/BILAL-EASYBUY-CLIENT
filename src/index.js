@@ -11,13 +11,15 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 
 import RegisterReducer from "./Store/Reducer/Register";
+import AuthReducer from "./Store/Reducer/Auth";
 // import AppReducer from "./Store/Reducer/App";
 // import CatReducer from "./Store/Reducer/cat";
 //Redux imports ends here........
 
 //Redux management starts here.....
 const rootReducer = combineReducers({
-  register: RegisterReducer
+  register: RegisterReducer,
+  auth: AuthReducer
 });
 
 const store = createStore(rootReducer, compose(applyMiddleware(thunk)));

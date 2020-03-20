@@ -10,11 +10,14 @@ import Reducer from "./reducer";
 import InitialState from "./initialState";
 import * as Types from "./Types";
 import Validations from "./../../Utils/Methods/validation";
+import LinearProgressBar from "./../../UI/LinearProgress/LinearProgress";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import useStyles from "./Register.styles";
 
 //redux ...
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../Store/Action/Register";
+import * as ReduxTypes from "./../../Store/Constants/Register";
 
 const Register = props => {
   //classes init...
@@ -24,6 +27,9 @@ const Register = props => {
 
   //redux state...
   const showRegister_RP = useSelector(state => state.register.showRegister);
+  const buffer_RP = useSelector(state => state.register.buffer);
+  const errorMessage_RP = useSelector(state => state.register.errorMessage);
+  const registered_RP = useSelector(state => state.register.registered);
   const dispatch_RP = useDispatch();
   const [state, dispatch] = React.useReducer(Reducer, InitialState);
 
@@ -34,20 +40,19 @@ const Register = props => {
 
   const handleFormSubmission = event => {
     event.preventDefault();
-    const name = state.name;
-    const email = state.email;
-    const title = state.title;
-    const city = state.city;
-    const address = state.address;
-    const contact = state.contact;
-    const password = state.password;
-    window.alert(name);
-    window.alert(email);
-    window.alert(title);
-    window.alert(city);
-    window.alert(address);
-    window.alert(contact);
-    window.alert(password);
+    dispatch_RP({
+      type: ReduxTypes.START_BUFFERRING
+    });
+    const vendor = {};
+    vendor.name = state.name;
+    vendor.email = state.email;
+    vendor.title = state.title;
+    vendor.city = state.city;
+    vendor.address = state.address;
+    vendor.contact = state.contact;
+    vendor.password = state.password;
+
+    dispatch_RP(Actions.handleRegistration(vendor));
   };
 
   const handleNameChange = event => {
@@ -237,130 +242,176 @@ const Register = props => {
   //return...
   return (
     <FullScreenDialogue open={showRegister_RP} handleClose={handleClose}>
-      <form onSubmit={handleFormSubmission}>
-        <Container subContainerClass={classes.title}>
-          Create Account (Vendor)
-        </Container>
-        <Container subContainerClass={classes.inputRow}>
-          <Row className={classes.sections}>
-            <Input
-              type="text"
-              value={state.name}
-              error={state.isNameError}
-              helperText={state.nameErrorMessage}
-              label="Name"
-              required
-              className={classes.input}
-              onChange={handleNameChange}
-            />
-          </Row>
-          <Row className={classes.sections}>
-            <Input
-              type="text"
-              value={state.email}
-              error={state.isEmailError}
-              helperText={state.emailErrorMessage}
-              label="Email"
-              required
-              className={classes.input}
-              onChange={handleEmailChange}
-            />
-          </Row>
-        </Container>
-        <Container subContainerClass={classes.inputRow}>
-          <Row className={classes.sections}>
-            <Input
-              type="text"
-              label="Shop Title"
-              value={state.title}
-              error={state.isTitleError}
-              helperText={state.titleErrorMessage}
-              onChange={handleTitleChange}
-              required
-              className={classes.input}
-            />
-          </Row>
-          <Row className={classes.sections}>
-            <Autocomplete
-              id="combo-box-demo"
-              options={[...Cities.cities]}
-              getOptionLabel={option => option}
-              value={state.city}
-              onChange={(event, value) => {
-                handleCityChange(value);
-              }}
-              className={classes.input}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  label="Combo box"
-                  error={state.isCityError}
-                  helperText={state.cityErrorMessage}
-                  defaultValue={state.city}
-                  required
-                  variant="outlined"
+      {registered_RP === false ? (
+        <form onSubmit={handleFormSubmission}>
+          <Container subContainerClass={classes.title}>
+            Create Account (Vendor)
+          </Container>
+          <Container subContainerClass={classes.inputRow}>
+            <Row className={classes.linearBar}>
+              {buffer_RP ? (
+                <LinearProgressBar
+                  color="secondary"
+                  className={classes.linear}
                 />
-              )}
-            />
+              ) : null}
+              {errorMessage_RP ? (
+                <Row className={classes.errorMessage}>{errorMessage_RP}</Row>
+              ) : null}
+            </Row>
+            <Row className={classes.sections}>
+              <Input
+                type="text"
+                value={state.name}
+                error={state.isNameError}
+                helperText={state.nameErrorMessage}
+                label="Name"
+                required
+                className={classes.input}
+                onChange={handleNameChange}
+              />
+            </Row>
+            <Row className={classes.sections}>
+              <Input
+                type="text"
+                value={state.email}
+                error={state.isEmailError}
+                helperText={state.emailErrorMessage}
+                label="Email"
+                required
+                className={classes.input}
+                onChange={handleEmailChange}
+              />
+            </Row>
+          </Container>
+          <Container subContainerClass={classes.inputRow}>
+            <Row className={classes.sections}>
+              <Input
+                type="text"
+                label="Shop Title"
+                value={state.title}
+                error={state.isTitleError}
+                helperText={state.titleErrorMessage}
+                onChange={handleTitleChange}
+                required
+                className={classes.input}
+              />
+            </Row>
+            <Row className={classes.sections}>
+              <Autocomplete
+                id="combo-box-demo"
+                options={[...Cities.cities]}
+                getOptionLabel={option => option}
+                value={state.city}
+                onChange={(event, value) => {
+                  handleCityChange(value);
+                }}
+                className={classes.input}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Combo box"
+                    error={state.isCityError}
+                    helperText={state.cityErrorMessage}
+                    defaultValue={state.city}
+                    required
+                    variant="outlined"
+                  />
+                )}
+              />
+            </Row>
+          </Container>
+          <Container subContainerClass={classes.inputRow}>
+            <Row className={classes.sections}>
+              <Input
+                label="Address"
+                value={state.address}
+                error={state.isAddressError}
+                helperText={state.addressErrorMessage}
+                onChange={handleAddressChange}
+                required
+                className={classes.input}
+              />
+            </Row>
+            <Row className={classes.sections}>
+              <Input
+                type="number"
+                label="Contact"
+                value={state.contact}
+                error={state.isContactError}
+                helperText={state.contactErrorMessage}
+                onChange={handleContactChange}
+                required
+                className={classes.input}
+              />
+            </Row>
+          </Container>
+          <Container subContainerClass={classes.inputRow}>
+            <Row className={classes.sections}>
+              <Input
+                label="Password"
+                type="password"
+                value={state.password}
+                error={state.isPasswordError}
+                helperText={state.passwordErrorMessage}
+                onChange={handlePasswordChange}
+                required
+                className={classes.input}
+              />
+            </Row>
+            <Row className={classes.sections}>
+              <Input
+                label="Confirm Password"
+                type="password"
+                value={state.confirmPassword}
+                error={state.confirmPasswordError}
+                helperText={state.confirmPasswordErrorMessage}
+                onChange={handleConfirmPasswordChange}
+                required
+                className={classes.input}
+              />
+            </Row>
+          </Container>
+          <Container subContainerClass={classes.btnRow}>
+            <button
+              style={{
+                cursor: buffer_RP ? "not-allowed" : "pointer"
+              }}
+              disabled={buffer_RP ? true : false}
+              type="submit"
+              className={classes.btn}
+            >
+              REGISTER
+            </button>
+          </Container>
+        </form>
+      ) : (
+        <Row className={classes.successContainer}>
+          <Row className={classes.rowOne}>
+            <Row className={classes.successIconDiv}>
+              <CheckCircleIcon className={classes.successIcon} />
+            </Row>
+            <Row className={classes.message}>
+              You have been registered successfully
+            </Row>
           </Row>
-        </Container>
-        <Container subContainerClass={classes.inputRow}>
-          <Row className={classes.sections}>
-            <Input
-              label="Address"
-              value={state.address}
-              error={state.isAddressError}
-              helperText={state.addressErrorMessage}
-              onChange={handleAddressChange}
-              required
-              className={classes.input}
-            />
+          <Row className={classes.rowTwo}>
+            <button
+              onClick={() => {
+                dispatch_RP({
+                  type: ReduxTypes.HIDEREGISTER
+                });
+                dispatch_RP({
+                  type: ReduxTypes.SHOWSIGNIN
+                });
+              }}
+              className={classes.successBtn}
+            >
+              Lets Login
+            </button>
           </Row>
-          <Row className={classes.sections}>
-            <Input
-              type="number"
-              label="Contact"
-              value={state.contact}
-              error={state.isContactError}
-              helperText={state.contactErrorMessage}
-              onChange={handleContactChange}
-              required
-              className={classes.input}
-            />
-          </Row>
-        </Container>
-        <Container subContainerClass={classes.inputRow}>
-          <Row className={classes.sections}>
-            <Input
-              label="Password"
-              type="password"
-              value={state.password}
-              error={state.isPasswordError}
-              helperText={state.passwordErrorMessage}
-              onChange={handlePasswordChange}
-              required
-              className={classes.input}
-            />
-          </Row>
-          <Row className={classes.sections}>
-            <Input
-              label="Confirm Password"
-              type="password"
-              value={state.confirmPassword}
-              error={state.confirmPasswordError}
-              helperText={state.confirmPasswordErrorMessage}
-              onChange={handleConfirmPasswordChange}
-              required
-              className={classes.input}
-            />
-          </Row>
-        </Container>
-        <Container subContainerClass={classes.btnRow}>
-          <button type="submit" className={classes.btn}>
-            REGISTER
-          </button>
-        </Container>
-      </form>
+        </Row>
+      )}
     </FullScreenDialogue>
   );
 }; //.......................

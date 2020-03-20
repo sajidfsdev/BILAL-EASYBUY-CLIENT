@@ -4,7 +4,8 @@ import logo from "./../../../Assets/images/optimalLogo.png";
 import useStyles from "./Menubar.styles";
 import "./../../../index.css";
 import * as Actions from "./../../../Store/Action/Register";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Menubar = props => {
   //classes init...
@@ -12,6 +13,7 @@ const Menubar = props => {
 
   //state management...
   const dispatch = useDispatch();
+  const auth_RP = useSelector(state => state.auth.auth);
 
   //Methods....
   const handleLoginClick = () => {
@@ -29,7 +31,7 @@ const Menubar = props => {
       <Row className={classes.rightSection}>
         <ul>
           <li>
-            <a href="#">HOME</a>
+            <Link to="/">HOME</Link>
           </li>
           <li>
             <a href="#">PRODUCTS</a>
@@ -38,9 +40,13 @@ const Menubar = props => {
             <a href="#">CATEGORIES</a>
           </li>
           <li>
-            <a href="#" onClick={handleLoginClick}>
-              LOGIN
-            </a>
+            {auth_RP ? (
+              <Link to="/dashboard">DASHBOARD</Link>
+            ) : (
+              <a href="#" onClick={handleLoginClick}>
+                LOGIN
+              </a>
+            )}
           </li>
           <li>
             <a href="#">CONTACT</a>
