@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
     width: "80%",
     height: "inherit",
     display: "flex",
+    flexDirection: "column",
     [theme.breakpoints.down("sm")]: {
       width: "100%"
     }
@@ -65,6 +66,11 @@ const useStyles = makeStyles(theme => ({
   icon: {
     cursor: "pointer",
     color: "white"
+  },
+
+  displayArea: {
+    width: "100%",
+    height: "calc(100% - 60px)"
   }
 }));
 export default useStyles;

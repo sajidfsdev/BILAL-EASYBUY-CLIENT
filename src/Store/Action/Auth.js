@@ -81,11 +81,11 @@ export const handleAuthChecking = () => {
     const token = sessionStorage.getItem(AppConsts.sessionStorage);
     const name = sessionStorage.getItem("name");
     const email = sessionStorage.getItem("email");
-    window.alert(token);
-    window.alert(name);
-    window.alert(email);
+    //window.alert(token);
+    //window.alert(name);
+    //window.alert(email);
     if (token) {
-      window.alert("App Auth Pass");
+      //window.alert("App Auth Pass");
       return dispatch({
         type: Types.AUTH_PASS,
         payload: {
@@ -95,7 +95,7 @@ export const handleAuthChecking = () => {
         }
       });
     } else {
-      window.alert("App Auth Failed");
+      //window.alert("App Auth Failed");
       return dispatch({
         type: Types.AUTH_FAIL
       });

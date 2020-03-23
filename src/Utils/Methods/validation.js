@@ -22,5 +22,11 @@ export default {
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
     );
     return patt.test(value);
+  },
+
+  isNumeric: value => {
+    // var patt = new RegExp(/^[0-9]*$/);
+    var patt = new RegExp(/^-?[0-9]\d*(\.\d+)?$/);
+    return patt.test(value);
   }
 };

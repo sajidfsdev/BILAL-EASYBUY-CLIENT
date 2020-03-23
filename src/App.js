@@ -33,7 +33,7 @@ const App = props => {
             <Switch>
               <Route exact path="/" component={HomePage} />
               {auth_RP ? (
-                <Route exact path="/dashboard" component={Dashboard} />
+                <Route path="/dashboard" component={Dashboard} />
               ) : null}
 
               <Route component={HomePage} />

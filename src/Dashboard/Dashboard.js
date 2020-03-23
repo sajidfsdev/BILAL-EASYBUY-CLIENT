@@ -8,6 +8,9 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Tooltip from "./../UI/Tooltip/Tooltip";
 import { useDispatch } from "react-redux";
 import * as Types from "./../Store/Constants/Auth";
+import { Switch, Route } from "react-router-dom";
+import Statistics from "./../pages/Statistics/Statistics";
+import AddProducts from "./../pages/AddProducts/AddProducts";
 import useStyles from "./Dashboard.styles";
 
 const Dashboard = props => {
@@ -44,6 +47,20 @@ const Dashboard = props => {
                 />
               </Tooltip>
             </Row>
+          </Row>
+          <Row className={classes.displayArea}>
+            <Switch>
+              <Route
+                exact
+                path="/dashboard/addproducts"
+                component={AddProducts}
+              />
+              <Route
+                exact
+                path="/dashboard/statistics"
+                component={Statistics}
+              />
+            </Switch>
           </Row>
         </Row>
       </Row>

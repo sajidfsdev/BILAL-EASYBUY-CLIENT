@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     cursor: "pointer",
     fontSize: "15px",
     backgroundColor: theme.palette.primary.main,
-    color: "gold",
+    // color: "white",
     "&:hover": {
       backgroundColor: "#467b92"
     }

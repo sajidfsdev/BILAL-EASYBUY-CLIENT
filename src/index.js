@@ -12,6 +12,7 @@ import thunk from "redux-thunk";
 
 import RegisterReducer from "./Store/Reducer/Register";
 import AuthReducer from "./Store/Reducer/Auth";
+import ProductsReducer from "./Store/Reducer/products";
 // import AppReducer from "./Store/Reducer/App";
 // import CatReducer from "./Store/Reducer/cat";
 //Redux imports ends here........
@@ -19,7 +20,8 @@ import AuthReducer from "./Store/Reducer/Auth";
 //Redux management starts here.....
 const rootReducer = combineReducers({
   register: RegisterReducer,
-  auth: AuthReducer
+  auth: AuthReducer,
+  products: ProductsReducer
 });
 
 const store = createStore(rootReducer, compose(applyMiddleware(thunk)));
