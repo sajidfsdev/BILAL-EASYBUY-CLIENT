@@ -10,6 +10,9 @@ import Stepper from "./../../UI/Stepper/Stepper";
 import StepOne from "./../../Components/AddProduct/StepOne/StepOne";
 import StepTwo from "./../../Components/AddProduct/StepTwo/StepTwo";
 import StepThree from "./../../Components/AddProduct/StepThree/StepThree";
+import SuccessScreen from "./../../Components/AddProduct/SuccessScreen/SuccessScreen";
+import * as Types from "./types";
+import * as RefType from "./../../Store/Constants/products";
 import useStyles from "./AddProducts.styles";
 
 const AddProducts = props => {
@@ -22,9 +25,14 @@ const AddProducts = props => {
   const isError_RP = useSelector(state => state.products.isError);
   const errorMessage_RP = useSelector(state => state.products.errorMessage);
   const token_RP = useSelector(state => state.auth.token);
+  const isSaveError_RP = useSelector(state => state.products.isSaveError);
+  const failureMessage_RP = useSelector(state => state.products.failureMessage);
+  const showSaveMessage_RP = useSelector(
+    state => state.products.showSaveMessage
+  );
   const dispatch_RP = useDispatch();
 
-  const [activeState, setActiveState] = useState(1);
+  const [activeState, setActiveState] = useState(0);
 
   //Handle SetActiveState....
 
@@ -34,6 +42,17 @@ const AddProducts = props => {
       dispatch_RP(Actions.handleLoadAllCats(token_RP));
     }
   }, []);
+
+  //Handle refresh...
+  const handleRefresh = () => {
+    dispatch_RP({
+      type: RefType.REFRESH
+    });
+    dispatch({
+      type: Types.REFRESH_STATE
+    });
+    setActiveState(0);
+  };
 
   //return starts...
   return (
@@ -63,7 +82,15 @@ const AddProducts = props => {
             <CircularProgressBar color="secondary" size={60} />
           </Row>
         ) : isError_RP ? (
-          <Row>{errorMessage_RP}</Row>
+          <Row className={classes.errorMessage}>{errorMessage_RP}</Row>
+        ) : isSaveError_RP ? (
+          <Row>{failureMessage_RP}</Row>
+        ) : showSaveMessage_RP ? (
+          <SuccessScreen
+            state={state}
+            refresh={handleRefresh}
+            dispatch={dispatch}
+          />
         ) : (
           <Row>
             <Stepper activeStep={activeState} />

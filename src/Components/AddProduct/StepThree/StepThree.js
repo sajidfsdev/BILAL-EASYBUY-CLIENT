@@ -9,11 +9,18 @@ import Validators from "./../../../Utils/Methods/validation";
 import * as Types from "./../../../pages/AddProducts/types";
 import Button from "@material-ui/core/Button";
 import InstallmentTable from "./../../../UI/InstallmentTable/InstallmentTable";
+import BodyBuilder from "./../../../pages/AddProducts/BodyBuilder";
+import { useSelector, useDispatch } from "react-redux";
+import * as Actions from "./../../../Store/Action/products";
 import useStyles from "./StepThree.styles";
 
 const StepThree = props => {
   //classes...
   const classes = useStyles();
+
+  //state management...
+  const token_RP = useSelector(state => state.auth.token);
+  const dispatch_RP = useDispatch();
 
   //Use effect....
   useEffect(() => {
@@ -74,7 +81,11 @@ const StepThree = props => {
     } else if (props.state.remaining !== 0) {
       return window.alert("You have remaining Amount. Please adjust it");
     } else {
-      window.alert("Ready to submit");
+      //window.alert("Ready to submit");
+      const body = JSON.stringify(BodyBuilder(props.state));
+      //console.log("Please check the body");
+      //console.log(body);
+      dispatch_RP(Actions.handleAddProduct(token_RP, body));
     }
   }; //...............................Handle Form Submission
 

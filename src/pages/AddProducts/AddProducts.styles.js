@@ -27,6 +27,15 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center"
+  },
+  errorMessage: {
+    width: "100%",
+    height: "300px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "red"
   }
 }));
 export default useStyles;

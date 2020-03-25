@@ -148,6 +148,26 @@ const StepOne = props => {
         }
       });
     } else {
+      //checking if pre-selected subCat and subSubCat exists starts....
+      if (props.state.subCat != "") {
+        props.dispatch({
+          type: Types.SET_SUBCAT_FAIL,
+          payload: {
+            subCat: "",
+            errorMessage: "Please select subCat accordingly"
+          }
+        });
+      }
+      if (props.state.subSubCat != "") {
+        props.dispatch({
+          type: Types.SET_SUBSUBCAT_FAIL,
+          payload: {
+            subSubCat: "",
+            errorMessage: "Please select sub-sub-Cat accordingly"
+          }
+        });
+      }
+      //checking pre-selected subScat and SubSubCat ends...............
       //Altering subCat and subSubCat accordingly.....
       const copiedSubCat = [];
       const copiedSubSubCat = [];
@@ -224,6 +244,17 @@ const StepOne = props => {
         }
       });
     } else {
+      //seeing if sub sub cat is pre-selected starts....
+      if (props.state.subSubCat != "") {
+        props.dispatch({
+          type: Types.SET_SUBSUBCAT_FAIL,
+          payload: {
+            subSubCat: "",
+            errorMessage: "Please select sub-sub-Cat accordingly"
+          }
+        });
+      }
+      //seeing if sub sub cat is preselected ends.......
       //Setting sub sub cat accordingly starts....
       const copiedSubSubCat = [];
       subSubCat_RP.forEach(elem => {

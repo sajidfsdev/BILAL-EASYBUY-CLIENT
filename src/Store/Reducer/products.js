@@ -6,7 +6,11 @@ const initialState = {
   subSubCat: [],
   loaded: false,
   isError: false,
-  errorMessage: ""
+  errorMessage: "",
+  isSaveError: false,
+  showSaveMessage: false,
+  successMessage: "",
+  failureMessage: ""
 };
 
 const ProductsReducer = (state = initialState, action) => {
@@ -32,6 +36,42 @@ const ProductsReducer = (state = initialState, action) => {
         loaded: true,
         isError: true,
         errorMessage: action.payload.errorMessage
+      };
+      break;
+    case Types.START_BUFFERRING:
+      return {
+        ...state,
+        loaded: false
+      };
+      break;
+    case Types.END_BUFFERRING_WITH_ERROR:
+      return {
+        ...state,
+        isSaveError: true,
+        successMessage: "",
+        failureMessage: action.payload.errorMessage,
+        showSaveMessage: false,
+        loaded: true
+      };
+      break;
+    case Types.END_BUFFERRING_WITH_SUCCESS:
+      return {
+        ...state,
+        isSaveError: false,
+        successMessage: action.payload.successMessage,
+        failureMessage: "",
+        showSaveMessage: true,
+        loaded: true
+      };
+      break;
+
+    case Types.REFRESH:
+      return {
+        ...state,
+        isSaveError: false,
+        showSaveMessage: false,
+        successMessage: "",
+        failureMessage: ""
       };
       break;
 
