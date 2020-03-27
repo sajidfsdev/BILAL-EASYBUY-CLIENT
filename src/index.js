@@ -13,6 +13,7 @@ import thunk from "redux-thunk";
 import RegisterReducer from "./Store/Reducer/Register";
 import AuthReducer from "./Store/Reducer/Auth";
 import ProductsReducer from "./Store/Reducer/products";
+import BulkReducer from "./Store/Reducer/bulk";
 // import AppReducer from "./Store/Reducer/App";
 // import CatReducer from "./Store/Reducer/cat";
 //Redux imports ends here........
@@ -21,7 +22,8 @@ import ProductsReducer from "./Store/Reducer/products";
 const rootReducer = combineReducers({
   register: RegisterReducer,
   auth: AuthReducer,
-  products: ProductsReducer
+  products: ProductsReducer,
+  bulk: BulkReducer
 });
 
 const store = createStore(rootReducer, compose(applyMiddleware(thunk)));

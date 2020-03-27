@@ -34,7 +34,8 @@ const Menubar = props => {
             <Link to="/">HOME</Link>
           </li>
           <li>
-            <a href="#">PRODUCTS</a>
+            {/* <a href="#">PRODUCTS</a> */}
+            <Link to="/products">PRODUCTS</Link>
           </li>
           <li>
             <a href="#">CATEGORIES</a>

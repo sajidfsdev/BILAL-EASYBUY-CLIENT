@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./Store/Action/Auth";
 import LoadingScreen from "./pages/LoadingScreen/LoadingScreen";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Page404 from "./pages/404/404";
+import ProductsPage from "./pages/HomeSubPages/Products/Products";
 
 const App = props => {
   //state management...
@@ -35,6 +35,8 @@ const App = props => {
               {auth_RP ? (
                 <Route path="/dashboard" component={Dashboard} />
               ) : null}
+
+              <Route exact path="/products" component={ProductsPage} />
 
               <Route component={HomePage} />
             </Switch>

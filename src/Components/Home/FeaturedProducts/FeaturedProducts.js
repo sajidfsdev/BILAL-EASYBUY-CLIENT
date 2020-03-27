@@ -49,7 +49,7 @@ const FeaturedProducts = props => {
       </Row>
 
       <Row className={classes.gridRow}>
-        <GridList products={productsState} />
+        {/* <GridList products={productsState} /> */}
       </Row>
     </React.Fragment>
   );

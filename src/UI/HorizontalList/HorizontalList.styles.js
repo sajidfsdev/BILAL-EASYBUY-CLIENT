@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "row",
     justifyContent: "center",
     [theme.breakpoints.up("sm")]: {
-      justifyContent: "space-between"
+      justifyContent: "flex-start"
     }
   },
 
@@ -26,7 +26,8 @@ const useStyles = makeStyles(theme => ({
     height: "257px",
     marginBottom: "20px",
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
+    marginRight: "20px"
     // [theme.breakpoints.up("md")]: {
     //   width: "250px"
     // }
@@ -35,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "center"
   },
   icon: {
     color: "red",
@@ -63,7 +64,8 @@ const useStyles = makeStyles(theme => ({
   polygon: {
     fill: theme.palette.common.white,
     stroke: theme.palette.divider,
-    strokeWidth: 1
+    strokeWidth: 1,
+    marginBottom: "10px"
   },
   imageRow: {
     marginTop: "40px",
@@ -81,7 +83,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
   hiddenPadding: {
-    marginTop: "12px"
+    marginTop: "20px"
   },
   pricing: {
     width: "100%",

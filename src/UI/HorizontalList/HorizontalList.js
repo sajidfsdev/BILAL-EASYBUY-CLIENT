@@ -4,9 +4,8 @@ import Row from "./../Row/ELXRow";
 import Paper from "./../Paper/Paper";
 import Collapse from "@material-ui/core/Collapse";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import Button from "@material-ui/core/Button";
-import ScrollAnimation from "react-animate-on-scroll";
 import { AnimatedOnScroll } from "react-animated-css-onscroll";
+import AppConsts from "./../../Constants/Strings";
 
 const HorizonatalList = props => {
   const [checked, setChecked] = useState(false);
@@ -50,20 +49,29 @@ const HorizonatalList = props => {
                 <Collapse in={hoverState[index]} collapsedHeight={40}>
                   <Paper elevation={4} className={classes.droppaper}>
                     <Row className={classes.cardHeadingRow}>
-                      <FavoriteIcon className={classes.icon} />
-                      <Row>{elem.title}</Row>
-                      <Row className={classes.padding}></Row>
+                      {/* <FavoriteIcon className={classes.icon} /> */}
+                      <Row>{elem.name}</Row>
+                      {/* <Row className={classes.padding}></Row> */}
                     </Row>
                     <Row className={classes.hiddenContainer}>
                       <Row className={classes.hiddenPadding}></Row>
                       <Row className={classes.pricing}>
-                        {"For Rs: " + elem.price + "/-"}
+                        {"Total Rs: " + elem.price + "/-"}
+                      </Row>
+
+                      <Row className={classes.furtherDetails}>
+                        {"City: " + elem.vendorId.city.toLowerCase()}
                       </Row>
                       <Row className={classes.furtherDetails}>
-                        {"DownPayment: Rs" + elem.downPayment + "/-"}
+                        {"DownPayment: Rs" +
+                          elem.installmentPlan.downPayment +
+                          "/-"}
                       </Row>
                       <Row className={classes.furtherDetails}>
-                        {"Installment Plan: " + elem.installmentPlan}
+                        {"Installment Plan: " +
+                          (elem.installmentPlan.installmentPlan.length + 1) +
+                          " " +
+                          elem.installmentPlan.duration}
                       </Row>
                       <Row className={classes.btnRow}>
                         <buton className={classes.btn}>See Details</buton>
@@ -80,7 +88,7 @@ const HorizonatalList = props => {
               </Row>
               <Row className={classes.imageRow}>
                 <img
-                  src={require(`./../../Assets/images/${elem.image}`)}
+                  src={`${AppConsts.server}/${elem.images[0]}`}
                   className={classes.image}
                 />
               </Row>
