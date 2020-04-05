@@ -10,6 +10,9 @@ import * as Actions from "./Store/Action/Auth";
 import LoadingScreen from "./pages/LoadingScreen/LoadingScreen";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ProductsPage from "./pages/HomeSubPages/Products/Products";
+import ProductDetailsPage from "./pages/HomeSubPages/ProductDetails/ProductDetails";
+import RegisterBuyerPage from "./pages/RegisterBuyer/RegisterBuyer";
+import BuyerDashboard from "./BuyerDashboard/BuyerDashboard";
 
 const App = props => {
   //state management...
@@ -29,6 +32,7 @@ const App = props => {
         <React.Fragment>
           <SignIn />
           <Register />
+          <RegisterBuyerPage />
           <BrowserRouter>
             <Switch>
               <Route exact path="/" component={HomePage} />
@@ -37,6 +41,10 @@ const App = props => {
               ) : null}
 
               <Route exact path="/products" component={ProductsPage} />
+              <Route exact path="/details/:id" component={ProductDetailsPage} />
+              {auth_RP ? (
+                <Route path="/manage" component={BuyerDashboard} />
+              ) : null}
 
               <Route component={HomePage} />
             </Switch>
@@ -45,8 +53,6 @@ const App = props => {
       ) : (
         <LoadingScreen />
       )}
-
-      {/* <Dashboard /> */}
     </ThemeProvider>
   );
   //return ends.....

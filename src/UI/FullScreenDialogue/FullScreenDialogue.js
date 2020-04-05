@@ -39,7 +39,7 @@ const FullScreenDialog = props => {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Create Vendor Account
+              {props.title}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -52,6 +52,7 @@ const FullScreenDialog = props => {
 FullScreenDialog.defaultProps = {
   open: false,
   handleClose: () => {},
+  title: "Create Vendor Account",
   children: <div>Some Content</div>
 };
 

@@ -6,6 +6,7 @@ import Collapse from "@material-ui/core/Collapse";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { AnimatedOnScroll } from "react-animated-css-onscroll";
 import AppConsts from "./../../Constants/Strings";
+import { withRouter } from "react-router-dom";
 
 const HorizonatalList = props => {
   const [checked, setChecked] = useState(false);
@@ -19,6 +20,10 @@ const HorizonatalList = props => {
     });
     setHoverState(hoverArray);
   }, [props.products]);
+
+  const handleImageClick = id => {
+    props.history.push(`/details/${id}`);
+  }; //.........................
 
   const handleHovering = (index, state) => {
     const hoverArray = [...hoverState];
@@ -74,7 +79,14 @@ const HorizonatalList = props => {
                           elem.installmentPlan.duration}
                       </Row>
                       <Row className={classes.btnRow}>
-                        <buton className={classes.btn}>See Details</buton>
+                        <buton
+                          onClick={() => {
+                            handleImageClick(elem._id);
+                          }}
+                          className={classes.btn}
+                        >
+                          See Details
+                        </buton>
                       </Row>
                     </Row>
                     <svg className={classes.svg}>
@@ -100,4 +112,4 @@ const HorizonatalList = props => {
   );
 }; //..............................
 
-export default HorizonatalList;
+export default withRouter(HorizonatalList);

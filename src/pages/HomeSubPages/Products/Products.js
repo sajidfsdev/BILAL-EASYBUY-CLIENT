@@ -25,6 +25,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Cities from "./cities";
 import sort from "fast-sort";
 import * as LocalTypes from "./types";
+import { withRouter } from "react-router-dom";
 
 const Products = props => {
   //classes init...
@@ -342,10 +343,16 @@ const Products = props => {
   }; //.....................................Handle Sub Sub Cat....
 
   const handleCityChange = city => {
+    let val = "";
+    if (city == null) {
+      val = "";
+    } else {
+      val = city;
+    }
     dispatch({
       type: LocalTypes.SET_CITY_SUCCESS,
       payload: {
-        city: city
+        city: val
       }
     });
   }; //...............................
@@ -544,4 +551,4 @@ const Products = props => {
   //return ends.....
 }; //......................
 
-export default Products;
+export default withRouter(Products);

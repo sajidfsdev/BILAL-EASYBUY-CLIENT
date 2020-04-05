@@ -14,6 +14,7 @@ const Menubar = props => {
   //state management...
   const dispatch = useDispatch();
   const auth_RP = useSelector(state => state.auth.auth);
+  const type_RP = useSelector(state => state.auth.type);
 
   //Methods....
   const handleLoginClick = () => {
@@ -42,7 +43,11 @@ const Menubar = props => {
           </li>
           <li>
             {auth_RP ? (
-              <Link to="/dashboard">DASHBOARD</Link>
+              type_RP === "Vendor" ? (
+                <Link to="/dashboard">DASHBOARD</Link>
+              ) : (
+                <Link to="/manage">DASHBOARD</Link>
+              )
             ) : (
               <a href="#" onClick={handleLoginClick}>
                 LOGIN

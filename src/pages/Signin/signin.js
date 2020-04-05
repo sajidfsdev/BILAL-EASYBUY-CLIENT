@@ -4,11 +4,14 @@ import Input from "./../../UI/Input/Input";
 import Row from "./../../UI/Row/ELXRow";
 import Button from "./../../UI/Button/ELXButton";
 import LinearProgressBar from "./../../UI/LinearProgress/LinearProgress";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 import useStyles from "./signin.styles";
 
 //redux....
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../Store/Action/Register";
+import * as BuyerActions from "./../../Store/Action/RegisterBuyer";
 import * as SignInActions from "./../../Store/Action/Auth";
 import * as Types from "./../../Store/Constants/Register";
 
@@ -25,14 +28,22 @@ const SignIn = props => {
   );
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [typeState, setTypesState] = useState("Buyer"); //Buyer....Vendor
   const dispatch_RP = useDispatch();
 
   //Methods....
 
   const handleFormSubmission = event => {
     event.preventDefault();
-    dispatch_RP({ type: Types.START_SIGNIN_BUFFERRING });
-    dispatch_RP(SignInActions.handleLogin(username, password));
+    if (typeState === "Vendor") {
+      window.alert("Vendor");
+      dispatch_RP({ type: Types.START_SIGNIN_BUFFERRING });
+      dispatch_RP(SignInActions.handleLogin(username, password, "Vendor"));
+    } else {
+      window.alert("Buyer detected");
+      dispatch_RP({ type: Types.START_SIGNIN_BUFFERRING });
+      dispatch_RP(SignInActions.handleLogin(username, password, "Buyer"));
+    }
   }; //..................................
 
   const handleUsernameChange = event => {
@@ -49,6 +60,10 @@ const SignIn = props => {
 
   const handleRegisterAsVendor = () => {
     dispatch_RP(Actions.handleShowRegister());
+  };
+
+  const handleRegisterAsBuyer = () => {
+    dispatch_RP(BuyerActions.handleShowRegister());
   };
 
   return (
@@ -84,6 +99,22 @@ const SignIn = props => {
             className={classes.input}
           />
         </Row>
+        <Row className={classes.inputRow}>
+          <Select
+            labelId="demo-simple-select-outlined-label"
+            variant="outlined"
+            id="demo-simple-select-outlined"
+            className={classes.input}
+            value={typeState}
+            onChange={event => {
+              setTypesState(event.target.value);
+            }}
+            label="Type"
+          >
+            <MenuItem value={"Buyer"}>Buyer</MenuItem>
+            <MenuItem value={"Vendor"}>Vendor</MenuItem>
+          </Select>
+        </Row>
         <Row className={classes.errorRow}>
           {isError_RP ? errorMessage_RP : null}
         </Row>
@@ -107,7 +138,10 @@ const SignIn = props => {
           Vendor
         </a>
         &nbsp;or&nbsp;
-        <a href="#"> Buyer</a>
+        <a href="#" onClick={handleRegisterAsBuyer}>
+          {" "}
+          Buyer
+        </a>
       </Row>
     </Dialogue>
   );

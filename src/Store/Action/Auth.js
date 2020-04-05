@@ -4,7 +4,7 @@ import * as SignInTypes from "./../Constants/Register";
 import axios from "axios";
 import AppConsts from "./../../Constants/Strings";
 
-export const handleLogin = (username, password) => {
+export const handleLogin = (username, password, type) => {
   const body = JSON.stringify({
     email: username,
     password: password
@@ -19,11 +19,22 @@ export const handleLogin = (username, password) => {
   //return starts....
   return async dispatch => {
     try {
-      const res = await axios.post(
-        AppConsts.server + "/vendor/auth/login",
-        body,
-        config
-      );
+      let res;
+      if (type === "Vendor") {
+        window.alert("Inner Vendor detected");
+        res = await axios.post(
+          AppConsts.server + "/vendor/auth/login",
+          body,
+          config
+        );
+      } else {
+        window.alert("Inner Buyer detected");
+        res = await axios.post(
+          AppConsts.server + "/buyer/auth/login",
+          body,
+          config
+        );
+      }
 
       if (res) {
         console.log(res.data);
@@ -35,7 +46,8 @@ export const handleLogin = (username, password) => {
           payload: {
             token: res.data.token,
             name: res.data.name,
-            email: res.data.email
+            email: res.data.email,
+            type: res.data.type
           }
         });
       } else {
@@ -81,6 +93,7 @@ export const handleAuthChecking = () => {
     const token = sessionStorage.getItem(AppConsts.sessionStorage);
     const name = sessionStorage.getItem("name");
     const email = sessionStorage.getItem("email");
+    const type = sessionStorage.getItem("type");
     //window.alert(token);
     //window.alert(name);
     //window.alert(email);
@@ -91,7 +104,8 @@ export const handleAuthChecking = () => {
         payload: {
           token: token,
           name: name,
-          email: email
+          email: email,
+          type: type
         }
       });
     } else {

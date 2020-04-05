@@ -14,6 +14,7 @@ import RegisterReducer from "./Store/Reducer/Register";
 import AuthReducer from "./Store/Reducer/Auth";
 import ProductsReducer from "./Store/Reducer/products";
 import BulkReducer from "./Store/Reducer/bulk";
+import RegisterBuyerReducer from "./Store/Reducer/RegisterBuyer";
 // import AppReducer from "./Store/Reducer/App";
 // import CatReducer from "./Store/Reducer/cat";
 //Redux imports ends here........
@@ -21,6 +22,7 @@ import BulkReducer from "./Store/Reducer/bulk";
 //Redux management starts here.....
 const rootReducer = combineReducers({
   register: RegisterReducer,
+  registerBuyer: RegisterBuyerReducer,
   auth: AuthReducer,
   products: ProductsReducer,
   bulk: BulkReducer
