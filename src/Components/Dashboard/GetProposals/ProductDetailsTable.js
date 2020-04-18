@@ -7,7 +7,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import BackspaceIcon from "@material-ui/icons/Backspace";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -63,7 +62,7 @@ const CustomizedTables = (props) => {
               }}
               align="center"
             >
-              City
+              Category
             </StyledTableCell>
             <StyledTableCell
               style={{
@@ -71,7 +70,7 @@ const CustomizedTables = (props) => {
               }}
               align="center"
             >
-              Vendor
+              Sub Cat
             </StyledTableCell>
             <StyledTableCell
               style={{
@@ -79,7 +78,7 @@ const CustomizedTables = (props) => {
               }}
               align="center"
             >
-              Contact
+              Sub Sub Cat
             </StyledTableCell>
 
             <StyledTableCell
@@ -101,13 +100,13 @@ const CustomizedTables = (props) => {
               {props.state.price}
             </StyledTableCell>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.vendorId.city}
+              {props.state.cat}
             </StyledTableCell>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.vendorId.name}
+              {props.state.subCat}
             </StyledTableCell>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.vendorId.contact}
+              {props.state.subSubCat}
             </StyledTableCell>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
               {props.state.desc}

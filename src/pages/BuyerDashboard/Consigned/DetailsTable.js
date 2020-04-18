@@ -63,7 +63,7 @@ const CustomizedTables = (props) => {
               }}
               align="center"
             >
-              City
+              Category
             </StyledTableCell>
             <StyledTableCell
               style={{
@@ -95,13 +95,13 @@ const CustomizedTables = (props) => {
         <TableBody>
           <StyledTableRow>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.name}
+              {props.state.product.name}
             </StyledTableCell>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.price}
+              {props.state.product.price}
             </StyledTableCell>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.vendorId.city}
+              {props.state.product.cat}
             </StyledTableCell>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
               {props.state.vendorId.name}
@@ -110,7 +110,7 @@ const CustomizedTables = (props) => {
               {props.state.vendorId.contact}
             </StyledTableCell>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.desc}
+              {props.state.product.desc}
             </StyledTableCell>
           </StyledTableRow>
         </TableBody>

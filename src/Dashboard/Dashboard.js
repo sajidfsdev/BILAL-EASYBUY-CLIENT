@@ -12,8 +12,10 @@ import { Switch, Route } from "react-router-dom";
 import Statistics from "./../pages/Statistics/Statistics";
 import AddProducts from "./../pages/AddProducts/AddProducts";
 import useStyles from "./Dashboard.styles";
+import GetProposalScreen from "./../pages/VendorDashboard/GetProposals/GetProposals";
+import ConsignedPage from "./../pages/VendorDashboard/GetProposals/Consigned/Cosigned";
 
-const Dashboard = props => {
+const Dashboard = (props) => {
   //classes init...
   const classes = useStyles();
 
@@ -23,7 +25,7 @@ const Dashboard = props => {
   //Methods....
   const handleLogout = () => {
     return dispatch_RP({
-      type: Types.AUTH_FAIL
+      type: Types.AUTH_FAIL,
     });
   }; //........................
 
@@ -59,6 +61,16 @@ const Dashboard = props => {
                 exact
                 path="/dashboard/statistics"
                 component={Statistics}
+              />
+              <Route
+                exact
+                path="/dashboard/getProposals"
+                component={GetProposalScreen}
+              />
+              <Route
+                exact
+                path="/dashboard/requests"
+                component={ConsignedPage}
               />
             </Switch>
           </Row>

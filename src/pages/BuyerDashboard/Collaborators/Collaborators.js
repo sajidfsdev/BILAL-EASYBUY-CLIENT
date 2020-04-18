@@ -103,7 +103,7 @@ const Collaborators = (props) => {
       if (res) {
         setLoaded(true);
         setCollaborators([...res.data.data]);
-        console.log("Please check data*************");
+        console.log("Please check data of collaborators*************");
         console.log(res.data.data);
       } else {
         setLoaded(true);

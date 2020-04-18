@@ -11,7 +11,7 @@ import BackspaceIcon from "@material-ui/icons/Backspace";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
   },
   body: {
@@ -47,7 +47,7 @@ const CustomizedTables = (props) => {
               }}
               align="center"
             >
-              Name
+              SR
             </StyledTableCell>
             <StyledTableCell
               style={{
@@ -55,7 +55,7 @@ const CustomizedTables = (props) => {
               }}
               align="center"
             >
-              Price
+              Duration
             </StyledTableCell>
             <StyledTableCell
               style={{
@@ -63,56 +63,26 @@ const CustomizedTables = (props) => {
               }}
               align="center"
             >
-              City
-            </StyledTableCell>
-            <StyledTableCell
-              style={{
-                padding: "5px",
-              }}
-              align="center"
-            >
-              Vendor
-            </StyledTableCell>
-            <StyledTableCell
-              style={{
-                padding: "5px",
-              }}
-              align="center"
-            >
-              Contact
-            </StyledTableCell>
-
-            <StyledTableCell
-              style={{
-                padding: "5px",
-              }}
-              align="center"
-            >
-              Description
+              Installment
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          <StyledTableRow>
-            <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.name}
-            </StyledTableCell>
-            <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.price}
-            </StyledTableCell>
-            <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.vendorId.city}
-            </StyledTableCell>
-            <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.vendorId.name}
-            </StyledTableCell>
-            <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.vendorId.contact}
-            </StyledTableCell>
-            <StyledTableCell style={{ fontSize: "15px" }} align="center">
-              {props.state.desc}
-            </StyledTableCell>
-          </StyledTableRow>
+          {props.installmentPlan.map((elem, index) => {
+            return (
+              <StyledTableRow key={index}>
+                <StyledTableCell style={{ fontSize: "15px" }} align="center">
+                  {index + 1}
+                </StyledTableCell>
+                <StyledTableCell style={{ fontSize: "15px" }} align="center">
+                  {elem.duration + "#" + (index + 1)}
+                </StyledTableCell>
+                <StyledTableCell style={{ fontSize: "15px" }} align="center">
+                  {elem.installment}
+                </StyledTableCell>
+              </StyledTableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
@@ -120,14 +90,12 @@ const CustomizedTables = (props) => {
 };
 
 CustomizedTables.defaultProps = {
-  state: {
-    name: "HP Laptop",
-    price: 50000,
-    cat: "Laptop",
-    subCat: "HP",
-    subSubCat: "Not Available",
-    desc: "Some description",
-  },
+  installmentPlan: [
+    {
+      duration: "Month",
+      installment: 25000,
+    },
+  ],
 };
 
 export default CustomizedTables;

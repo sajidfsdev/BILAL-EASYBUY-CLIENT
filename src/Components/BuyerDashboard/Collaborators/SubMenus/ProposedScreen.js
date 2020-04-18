@@ -9,6 +9,10 @@ import { Button } from "@material-ui/core";
 import CachedIcon from "@material-ui/icons/Cached";
 import InstallmentTable from "./../../../AddProduct/SuccessScreen/InstallmentTable";
 import BackspaceIcon from "@material-ui/icons/Backspace";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from "@material-ui/icons/Cancel";
+import EventNoteIcon from "@material-ui/icons/EventNote";
+import { compareAsc, format } from "date-fns";
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -93,6 +97,45 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "20px",
     cursor: "pointer",
   },
+  acceptBar: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "green",
+    color: "white",
+    height: "30px",
+    marginBottom: "20px",
+    alignItems: "center",
+    borderRadius: "20px",
+    cursor: "pointer",
+  },
+  rejectBar: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: theme.palette.secondary.main,
+    color: "white",
+    height: "30px",
+    marginBottom: "20px",
+    alignItems: "center",
+    borderRadius: "20px",
+    cursor: "pointer",
+  },
+  suggestedBar: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#d6ba26",
+    color: "white",
+    height: "30px",
+    marginBottom: "20px",
+    alignItems: "center",
+    borderRadius: "20px",
+    cursor: "pointer",
+  },
 
   sr: {
     marginLeft: "20px",
@@ -113,6 +156,106 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     cursor: "pointer",
   },
+  acceptTitle: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    fontSize: "15px",
+    alignItems: "center",
+  },
+  rejectTitle: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    fontSize: "15px",
+    alignItems: "center",
+    color: "red",
+  },
+  tick: {
+    color: "green",
+    fontSize: "30px",
+  },
+  acceptBtn: {
+    backgroundColor: "green",
+    color: "#fff",
+    "&:hover": {
+      backgroundColor: "green",
+      color: "#fff",
+    },
+  },
+  rejectBtn: {
+    backgroundColor: "red",
+    color: "#fff",
+    "&:hover": {
+      backgroundColor: "red",
+      color: "#fff",
+    },
+  },
+
+  acceptBtnRow: {
+    width: "100%",
+    marginTop: "10px",
+    marginBottom: "20px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  cross: {
+    color: "red",
+    fontSize: "30px",
+  },
+  rejectContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  rejectTitle: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: "10px",
+    marginBottom: "10px",
+    fontWeight: "bold",
+    fontSize: "15px",
+    color: "red",
+  },
+
+  rejectComment: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: "10px",
+    marginBottom: "10px",
+    fontSize: "15px",
+  },
+  suggestedContainer: {
+    width: "100%",
+    marginTop: "5px",
+    marginBottom: "5px",
+    height: "30px",
+    backgroundColor: theme.palette.primary.main,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    color: "white",
+  },
+  suggestedOptions: {
+    marginLeft: "30px",
+    cursor: "pointer",
+  },
+  activeOption: {
+    color: "gold",
+    marginLeft: "30px",
+    cursor: "pointer",
+  },
 }));
 
 const LOADING_SCREEN = "LOADINGSCREEN";
@@ -130,14 +273,72 @@ const ProposedScreen = (props) => {
   const [screen, setScreen] = useState(LOADING_SCREEN);
   const [data, setData] = useState([]);
   const [installmentPlan, setInstallmentPlan] = useState(null);
+  const [currentData, setCurrentData] = useState();
   const [errorMessage, setErrorMessage] = useState(
     "Some error occurred due to network erro"
   );
+  const [suggestedScreen, setSuggestedScreen] = useState("ME"); //Me and Vendor
 
   //use effect starts....
   useEffect(() => {
     handleRetrieveProposals();
   }, []);
+
+  const handleRequestConsignment = async () => {
+    let installmentPlan = null;
+    if (currentData.status == "SUGGESTED") {
+      installmentPlan = currentData.suggestedPlan.installmentPlan;
+    } else {
+      installmentPlan = currentData.installmentPlan;
+    }
+    const productId = currentData.productId;
+    const product = props.data.productId;
+    const vendorId = currentData.vendorId;
+    const status = "PENDING";
+    let d = new Date();
+    const date = format(
+      new Date(d.getFullYear(), d.getMonth() + 1, d.getDate()),
+      "yyyy-MM-dd"
+    );
+    const body = JSON.stringify({
+      buyerId: currentData.buyerId,
+      vendorId: vendorId,
+      status: status,
+      installmentPlan: installmentPlan,
+      product: product,
+      productId: productId,
+      date: date,
+    });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-eptoken-buyer": token_RP,
+      },
+    };
+
+    //try catch starts....
+    try {
+      const res = await axios.post(
+        AppConsts.server + "/buyer/consigned/request",
+        body,
+        config
+      );
+      if (res) {
+        window.alert("RESPONSE HAS COME");
+      } else {
+        window.alert("NO RESPONSE");
+      }
+    } catch (err) {
+      if (err.response) {
+        window.alert("err.response");
+        window.alert(err.response.data.errorMessage);
+      } else {
+        window.alert("err.message");
+        window.alert(err.message);
+      }
+    }
+    //try catch ends......
+  }; //..................................
 
   const handleCloseBar = () => {
     setScreen(DEFAULT_SCREEN);
@@ -145,6 +346,7 @@ const ProposedScreen = (props) => {
 
   const handleShowPlanDetails = (index) => {
     setInstallmentPlan(data[index].installmentPlan);
+    setCurrentData(data[index]);
     setScreen(DETAILS_SCREEN);
   }; //.......................Handle show details
 
@@ -235,7 +437,16 @@ const ProposedScreen = (props) => {
         <Row className={classes.container}>
           {data.map((elem, index) => (
             <Row
-              className={classes.barContainer}
+              // className={classes.barContainer}
+              className={
+                elem.status == "PENDING"
+                  ? classes.barContainer
+                  : elem.status == "ACCEPT"
+                  ? classes.acceptBar
+                  : elem.status == "REJECT"
+                  ? classes.rejectBar
+                  : classes.suggestedBar
+              }
               key={index}
               onClick={() => {
                 handleShowPlanDetails(index);
@@ -252,25 +463,160 @@ const ProposedScreen = (props) => {
       </React.Fragment>
     );
   } else if (screen == DETAILS_SCREEN) {
-    mainGUI = (
-      <React.Fragment>
-        <Row className={classes.closeBar}>
-          <BackspaceIcon
-            className={classes.closeIcon}
-            onClick={handleCloseBar}
-          />
-        </Row>
-        {/* DownPayment starts... */}
-        <Row className={classes.downContainer}>
-          <Row className={classes.downLeft}>Down Payment</Row>
-          <Row className={classes.downRight}>
-            Rs: {installmentPlan.downPayment}
+    if (currentData.status == "SUGGESTED") {
+      mainGUI = (
+        <React.Fragment>
+          <Row className={classes.closeBar}>
+            <BackspaceIcon
+              className={classes.closeIcon}
+              onClick={handleCloseBar}
+            />
           </Row>
-        </Row>
-        {/* DownPayment Ends..... */}
-        <InstallmentTable installmentPlan={installmentPlan.installmentPlan} />
-      </React.Fragment>
-    );
+          <Row className={classes.acceptTitle}>
+            <Row>
+              <EventNoteIcon className={classes.tick} />
+            </Row>
+            <div
+              style={{
+                width: "20px",
+              }}
+            ></div>
+            <Row>Vendor Suggested His Plan Against Your Plan</Row>
+          </Row>
+          <Row className={classes.suggestedContainer}>
+            <Row
+              className={
+                suggestedScreen == "ME"
+                  ? classes.activeOption
+                  : classes.suggestedOptions
+              }
+              onClick={() => {
+                setSuggestedScreen("ME");
+              }}
+            >
+              Your Plan
+            </Row>
+            <Row
+              className={
+                suggestedScreen == "VENDOR"
+                  ? classes.activeOption
+                  : classes.suggestedOptions
+              }
+              onClick={() => {
+                setSuggestedScreen("VENDOR");
+              }}
+            >
+              Siggested Plan
+            </Row>
+          </Row>
+          <Row className={classes.suggestedScreen}>
+            {suggestedScreen == "ME" ? (
+              <React.Fragment>
+                <Row className={classes.downContainer}>
+                  <Row className={classes.downLeft}>Down Payment</Row>
+                  <Row className={classes.downRight}>
+                    Rs: {installmentPlan.downPayment}
+                  </Row>
+                </Row>
+                <InstallmentTable
+                  installmentPlan={installmentPlan.installmentPlan}
+                />
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Row className={classes.downContainer}>
+                  <Row className={classes.downLeft}>Down Payment</Row>
+                  <Row className={classes.downRight}>
+                    Rs: {currentData.suggestedPlan.installmentPlan.downPayment}
+                  </Row>
+                </Row>
+                <InstallmentTable
+                  installmentPlan={
+                    currentData.suggestedPlan.installmentPlan.installmentPlan
+                  }
+                />
+                <Row className={classes.acceptBtnRow}>
+                  <Button
+                    onClick={handleRequestConsignment}
+                    className={classes.acceptBtn}
+                  >
+                    Request Consignment
+                  </Button>
+                </Row>
+              </React.Fragment>
+            )}
+          </Row>
+        </React.Fragment>
+      );
+    } else {
+      mainGUI = (
+        <React.Fragment>
+          <Row className={classes.closeBar}>
+            <BackspaceIcon
+              className={classes.closeIcon}
+              onClick={handleCloseBar}
+            />
+          </Row>
+
+          {currentData.status == "ACCEPT" ? (
+            <Row className={classes.acceptTitle}>
+              <Row>
+                <CheckCircleIcon className={classes.tick} />
+              </Row>
+              <div
+                style={{
+                  width: "20px",
+                }}
+              ></div>
+              <Row>Your Plan Has Been Accepted Successfully</Row>
+            </Row>
+          ) : currentData.status == "REJECT" ? (
+            <Row className={classes.rejectTitle}>
+              <Row>
+                <CancelIcon className={classes.cross} />
+              </Row>
+              <div
+                style={{
+                  width: "20px",
+                }}
+              ></div>
+              <Row>Your Plan Has Been Rejected By Vendor</Row>
+            </Row>
+          ) : null}
+
+          {/* DownPayment starts... */}
+          <Row className={classes.downContainer}>
+            <Row className={classes.downLeft}>Down Payment</Row>
+            <Row className={classes.downRight}>
+              Rs: {installmentPlan.downPayment}
+            </Row>
+          </Row>
+          {/* DownPayment Ends..... */}
+          <InstallmentTable installmentPlan={installmentPlan.installmentPlan} />
+          {currentData.status == "REJECT" ? (
+            <Row className={classes.rejectContainer}>
+              <Row className={classes.rejectTitle}>Reason Of Rejection</Row>
+              <Row className={classes.rejectComment}>{currentData.comment}</Row>
+            </Row>
+          ) : null}
+          {currentData.status == "ACCEPT" ? (
+            <Row className={classes.acceptBtnRow}>
+              <Button
+                onClick={handleRequestConsignment}
+                className={classes.acceptBtn}
+              >
+                Request Consignment
+              </Button>
+            </Row>
+          ) : null}
+          {currentData.status == "REJECT" ? (
+            <Row className={classes.acceptBtnRow}>
+              <Button className={classes.rejectBtn}>DELETE</Button>
+            </Row>
+          ) : null}
+        </React.Fragment>
+      );
+    }
   }
   //main GUI ends here.....
 

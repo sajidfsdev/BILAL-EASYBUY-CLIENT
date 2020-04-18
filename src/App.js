@@ -14,10 +14,10 @@ import ProductDetailsPage from "./pages/HomeSubPages/ProductDetails/ProductDetai
 import RegisterBuyerPage from "./pages/RegisterBuyer/RegisterBuyer";
 import BuyerDashboard from "./BuyerDashboard/BuyerDashboard";
 
-const App = props => {
+const App = (props) => {
   //state management...
-  const resolved_RP = useSelector(state => state.auth.resolved);
-  const auth_RP = useSelector(state => state.auth.auth);
+  const resolved_RP = useSelector((state) => state.auth.resolved);
+  const auth_RP = useSelector((state) => state.auth.auth);
   const dispatch_RP = useDispatch();
 
   //use effect...
