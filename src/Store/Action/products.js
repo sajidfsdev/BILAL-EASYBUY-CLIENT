@@ -2,16 +2,16 @@ import * as Types from "./../Constants/products";
 import AppConsts from "./../../Constants/Strings";
 import axios from "axios";
 
-export const handleLoadAllCats = token => {
+export const handleLoadAllCats = (token) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      "x-auth-eptoken-vendor": token
-    }
+      "x-auth-eptoken-vendor": token,
+    },
   };
 
   //return starts....
-  return async dispatch => {
+  return async (dispatch) => {
     //try catch starts....
     try {
       const res = await axios.get(
@@ -26,8 +26,8 @@ export const handleLoadAllCats = token => {
           payload: {
             cat: [...res.data.cat],
             subCat: [...res.data.subCat],
-            subSubCat: [...res.data.subSubCat]
-          }
+            subSubCat: [...res.data.subSubCat],
+          },
         });
       } else {
         //window.alert("MY Network error");
@@ -35,8 +35,8 @@ export const handleLoadAllCats = token => {
         return dispatch({
           type: Types.ALL_CATS_LOADED_FAILED,
           payload: {
-            errorMessage: "My Network Error"
-          }
+            errorMessage: "My Network Error",
+          },
         });
       }
     } catch (err) {
@@ -46,8 +46,8 @@ export const handleLoadAllCats = token => {
         return dispatch({
           type: Types.ALL_CATS_LOADED_FAILED,
           payload: {
-            errorMessage: err.response.data.errorMessage
-          }
+            errorMessage: err.response.data.errorMessage,
+          },
         });
       } else {
         //window.alert("ERR: " + err.message);
@@ -55,8 +55,8 @@ export const handleLoadAllCats = token => {
         return dispatch({
           type: Types.ALL_CATS_LOADED_FAILED,
           payload: {
-            errorMessage: err.message
-          }
+            errorMessage: err.message,
+          },
         });
       }
     }
@@ -67,17 +67,17 @@ export const handleLoadAllCats = token => {
 
 export const handleAddProduct = (token, body) => {
   //return starts....
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch({
-      type: Types.START_BUFFERRING
+      type: Types.START_BUFFERRING,
     });
     //window.alert(token);
 
     const config = {
       headers: {
         "Content-Type": "application/json",
-        "x-auth-eptoken-vendor": token
-      }
+        "x-auth-eptoken-vendor": token,
+      },
     };
 
     //try catch starts.....
@@ -93,16 +93,16 @@ export const handleAddProduct = (token, body) => {
         return dispatch({
           type: Types.END_BUFFERRING_WITH_SUCCESS,
           payload: {
-            successMessage: "Product Has Been Added Successfully"
-          }
+            successMessage: "Product Has Been Added Successfully",
+          },
         });
       } else {
         //window.alert("Network error");
         return dispatch({
           type: Types.END_BUFFERRING_WITH_ERROR,
           payload: {
-            errorMessage: "Network Error Occurred"
-          }
+            errorMessage: "Network Error Occurred",
+          },
         });
       }
     } catch (err) {
@@ -112,8 +112,8 @@ export const handleAddProduct = (token, body) => {
         return dispatch({
           type: Types.END_BUFFERRING_WITH_ERROR,
           payload: {
-            errorMessage: err.response.data.errorMessage
-          }
+            errorMessage: err.response.data.errorMessage,
+          },
         });
       } else {
         //window.alert("err.");
@@ -121,8 +121,8 @@ export const handleAddProduct = (token, body) => {
         return dispatch({
           type: Types.END_BUFFERRING_WITH_ERROR,
           payload: {
-            errorMessage: err.message
-          }
+            errorMessage: err.message,
+          },
         });
       }
     }
@@ -130,3 +130,69 @@ export const handleAddProduct = (token, body) => {
   };
   //return ends......
 }; //..............................Handle Add Product
+
+export const handleEditProduct = (token, body) => {
+  //return starts....
+  return async (dispatch) => {
+    dispatch({
+      type: Types.START_BUFFERRING,
+    });
+    //window.alert(token);
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-eptoken-vendor": token,
+      },
+    };
+
+    //try catch starts.....
+    try {
+      const res = await axios.post(
+        AppConsts.server + "/vendor/products/edit",
+        body,
+        config
+      );
+
+      if (res) {
+        //window.alert("RES Has Come");
+        return dispatch({
+          type: Types.END_BUFFERRING_WITH_SUCCESS,
+          payload: {
+            successMessage: "Product Has Been Added Successfully",
+          },
+        });
+      } else {
+        //window.alert("Network error");
+        return dispatch({
+          type: Types.END_BUFFERRING_WITH_ERROR,
+          payload: {
+            errorMessage: "Network Error Occurred",
+          },
+        });
+      }
+    } catch (err) {
+      if (err.response) {
+        //window.alert("err.response");
+        //window.alert(err.response.data.errorMessage);
+        return dispatch({
+          type: Types.END_BUFFERRING_WITH_ERROR,
+          payload: {
+            errorMessage: err.response.data.errorMessage,
+          },
+        });
+      } else {
+        //window.alert("err.");
+        //window.alert(err.message);
+        return dispatch({
+          type: Types.END_BUFFERRING_WITH_ERROR,
+          payload: {
+            errorMessage: err.message,
+          },
+        });
+      }
+    }
+    //try catch ends.......
+  };
+  //return ends......
+}; //..............................Handle Edit Product

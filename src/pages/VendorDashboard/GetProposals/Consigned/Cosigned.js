@@ -44,6 +44,53 @@ const Consigned = (props) => {
     handleLoadData();
   }, []);
 
+  const filterData = (id) => {
+    setRequests([...requests.filter((req) => req._id != id)]);
+  };
+
+  const handleChangeStatus = async (status, req) => {
+    setScreen(LOADING_SCREEN);
+    const id = req._id;
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-eptoken-vendor": token_RP,
+      },
+    };
+
+    const body = JSON.stringify({
+      id: id,
+      status,
+      status,
+    });
+
+    try {
+      const res = await axios.post(
+        AppConsts.server + "/vendor/consigned/status",
+        body,
+        config
+      );
+
+      if (res) {
+        //window.alert("Res has changed");
+        filterData(id);
+        setScreen(DEFAULT_SCREEN);
+      } else {
+        setScreen(DEFAULT_SCREEN);
+        window.alert("Network Error Has Occurred");
+      }
+    } catch (err) {
+      if (err.response) {
+        setScreen(DEFAULT_SCREEN);
+        window.alert(err.response.data.errorMessage);
+      } else {
+        setScreen(DEFAULT_SCREEN);
+        window.alert(err.message);
+      }
+    }
+  }; //..................................
+
   const handleRowClick = (request) => {
     setCurrentRequest(request);
     setScreen(DETAILS_SCREEN);
@@ -126,7 +173,7 @@ const Consigned = (props) => {
             return (
               <TableRow
                 style={{ cursor: "pointer" }}
-                onClick={handleRowClick.bind(this, elem)}
+                // onClick={handleRowClick.bind(this, elem)}
                 key={index}
               >
                 <TableCell style={{ fontSize: "15px" }} align="center">
@@ -145,10 +192,20 @@ const Consigned = (props) => {
                   {elem.date}
                 </TableCell>
                 <TableCell style={{ fontSize: "15px" }} align="center">
-                  <CheckCircleIcon className={classes.tick} />
+                  <CheckCircleIcon
+                    onClick={() => {
+                      handleChangeStatus("APPROVED", elem);
+                    }}
+                    className={classes.tick}
+                  />
                 </TableCell>
                 <TableCell style={{ fontSize: "15px" }} align="center">
-                  <CancelIcon className={classes.cross} />
+                  <CancelIcon
+                    onClick={() => {
+                      handleChangeStatus("REJECTED", elem);
+                    }}
+                    className={classes.cross}
+                  />
                 </TableCell>
               </TableRow>
             );

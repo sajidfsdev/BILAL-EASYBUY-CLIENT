@@ -19,29 +19,28 @@ import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../Store/Action/Register";
 import * as ReduxTypes from "./../../Store/Constants/Register";
 
-const Register = props => {
+const Register = (props) => {
   //classes init...
   const classes = useStyles();
 
   //state management...
 
   //redux state...
-  const showRegister_RP = useSelector(state => state.register.showRegister);
-  const buffer_RP = useSelector(state => state.register.buffer);
-  const errorMessage_RP = useSelector(state => state.register.errorMessage);
-  const registered_RP = useSelector(state => state.register.registered);
+  const showRegister_RP = useSelector((state) => state.register.showRegister);
+  const buffer_RP = useSelector((state) => state.register.buffer);
+  const errorMessage_RP = useSelector((state) => state.register.errorMessage);
+  const registered_RP = useSelector((state) => state.register.registered);
   const dispatch_RP = useDispatch();
   const [state, dispatch] = React.useReducer(Reducer, InitialState);
 
-  //Method ....
   const handleClose = () => {
     dispatch_RP(Actions.handleHideRegister());
   };
 
-  const handleFormSubmission = event => {
+  const handleFormSubmission = (event) => {
     event.preventDefault();
     dispatch_RP({
-      type: ReduxTypes.START_BUFFERRING
+      type: ReduxTypes.START_BUFFERRING,
     });
     const vendor = {};
     vendor.name = state.name;
@@ -55,149 +54,149 @@ const Register = props => {
     dispatch_RP(Actions.handleRegistration(vendor));
   };
 
-  const handleNameChange = event => {
+  const handleNameChange = (event) => {
     const value = event.target.value;
     if (Validations.isEmpty(value)) {
       dispatch({
         type: Types.SET_NAMEERROR,
         payload: {
           name: value,
-          errorMessage: "Name Cannot Be Empty"
-        }
+          errorMessage: "Name Cannot Be Empty",
+        },
       });
     } else {
       dispatch({
         type: Types.SET_NAME,
         payload: {
-          name: value
-        }
+          name: value,
+        },
       });
     }
   }; //..............................Handle Name Change
 
-  const handleEmailChange = event => {
+  const handleEmailChange = (event) => {
     const value = event.target.value;
     if (Validations.isEmpty(value)) {
       dispatch({
         type: Types.SET_EMAILERROR,
         payload: {
           email: value,
-          errorMessage: "Please Enter Email"
-        }
+          errorMessage: "Please Enter Email",
+        },
       });
     } else if (Validations.isEmail(value)) {
       dispatch({
         type: Types.SET_EMAIL,
         payload: {
-          email: value
-        }
+          email: value,
+        },
       });
     } else {
       dispatch({
         type: Types.SET_EMAILERROR,
         payload: {
           email: value,
-          errorMessage: "Email Does Not Match With Pattern"
-        }
+          errorMessage: "Email Does Not Match With Pattern",
+        },
       });
     }
   }; //..............................Handle Email Change
 
-  const handleTitleChange = event => {
+  const handleTitleChange = (event) => {
     const value = event.target.value;
     if (Validations.isEmpty(value)) {
       dispatch({
         type: Types.SET_TITLEERROR,
         payload: {
           title: value,
-          errorMessage: "Please Enter Shop Title"
-        }
+          errorMessage: "Please Enter Shop Title",
+        },
       });
     } else {
       dispatch({
         type: Types.SET_TITLE,
         payload: {
-          title: value
-        }
+          title: value,
+        },
       });
     }
   }; //..............................Handle Name Change
 
-  const handleCityChange = value => {
+  const handleCityChange = (value) => {
     if (Validations.isEmpty(value) || value === null) {
       dispatch({
         type: Types.SET_CITYERROR,
         payload: {
           city: value,
-          errorMessage: "Please Choose City"
-        }
+          errorMessage: "Please Choose City",
+        },
       });
     } else {
       dispatch({
         type: Types.SET_CITY,
         payload: {
-          city: value
-        }
+          city: value,
+        },
       });
     }
   }; //..............................Handle Name Change
 
-  const handleAddressChange = event => {
+  const handleAddressChange = (event) => {
     const value = event.target.value;
     if (Validations.isEmpty(value)) {
       dispatch({
         type: Types.SET_ADDRESSERROR,
         payload: {
           address: value,
-          errorMessage: "Please Enter Shop Address"
-        }
+          errorMessage: "Please Enter Shop Address",
+        },
       });
     } else {
       dispatch({
         type: Types.SET_ADDRESS,
         payload: {
-          address: value
-        }
+          address: value,
+        },
       });
     }
   }; //..............................Handle Name Change
 
-  const handleContactChange = event => {
+  const handleContactChange = (event) => {
     const value = event.target.value;
     if (Validations.isEmpty(value)) {
       dispatch({
         type: Types.SET_CONTACTERROR,
         payload: {
           contact: value,
-          errorMessage: "Please Enter Contact Number"
-        }
+          errorMessage: "Please Enter Contact Number",
+        },
       });
     } else if (Validations.isMobile(value)) {
       dispatch({
         type: Types.SET_CONTACT,
         payload: {
-          contact: value
-        }
+          contact: value,
+        },
       });
     } else {
       dispatch({
         type: Types.SET_CONTACTERROR,
         payload: {
           contact: value,
-          errorMessage: "Mobile number not correspond to pattern"
-        }
+          errorMessage: "Mobile number not correspond to pattern",
+        },
       });
     }
   }; //..............................Handle Contact Change
 
-  const handlePasswordChange = event => {
+  const handlePasswordChange = (event) => {
     const value = event.target.value;
     if (Validations.isPassword(value)) {
       dispatch({
         type: Types.SET_PASSWORD,
         payload: {
-          password: value
-        }
+          password: value,
+        },
       });
     } else {
       dispatch({
@@ -205,36 +204,36 @@ const Register = props => {
         payload: {
           password: value,
           errorMessage:
-            "Password must contains atleast eight characters 1 letter 1 number 1 special case"
-        }
+            "Password must contains atleast eight characters 1 letter 1 number 1 special case",
+        },
       });
     }
   }; //..............................Handle Contact Change
 
-  const handleConfirmPasswordChange = event => {
+  const handleConfirmPasswordChange = (event) => {
     const value = event.target.value;
     if (value === "") {
       dispatch({
         type: Types.SET_CONFIRM_PASSWORDERROR,
         payload: {
           confirmPassword: value,
-          errorMessage: "Password cannot be empty"
-        }
+          errorMessage: "Password cannot be empty",
+        },
       });
     } else if (state.password === value) {
       dispatch({
         type: Types.SET_CONFIRM_PASSWORD,
         payload: {
-          confirmPassword: value
-        }
+          confirmPassword: value,
+        },
       });
     } else {
       dispatch({
         type: Types.SET_CONFIRM_PASSWORDERROR,
         payload: {
           confirmPassword: value,
-          errorMessage: "Password does not match"
-        }
+          errorMessage: "Password does not match",
+        },
       });
     }
   }; //..............................Handle Contact Change
@@ -301,13 +300,13 @@ const Register = props => {
               <Autocomplete
                 id="combo-box-demo"
                 options={[...Cities.cities]}
-                getOptionLabel={option => option}
+                getOptionLabel={(option) => option}
                 value={state.city}
                 onChange={(event, value) => {
                   handleCityChange(value);
                 }}
                 className={classes.input}
-                renderInput={params => (
+                renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Combo box"
@@ -375,7 +374,7 @@ const Register = props => {
           <Container subContainerClass={classes.btnRow}>
             <button
               style={{
-                cursor: buffer_RP ? "not-allowed" : "pointer"
+                cursor: buffer_RP ? "not-allowed" : "pointer",
               }}
               disabled={buffer_RP ? true : false}
               type="submit"
@@ -399,10 +398,10 @@ const Register = props => {
             <button
               onClick={() => {
                 dispatch_RP({
-                  type: ReduxTypes.HIDEREGISTER
+                  type: ReduxTypes.HIDEREGISTER,
                 });
                 dispatch_RP({
-                  type: ReduxTypes.SHOWSIGNIN
+                  type: ReduxTypes.SHOWSIGNIN,
                 });
               }}
               className={classes.successBtn}

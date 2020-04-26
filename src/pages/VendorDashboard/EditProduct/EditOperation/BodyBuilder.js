@@ -1,4 +1,5 @@
-const BodyBuilder = (state) => {
+const BodyBuilder = (state, id) => {
+  window.alert(id);
   const name = state.name;
   const price = parseInt(state.price);
   const cat = state.cat;
@@ -23,7 +24,7 @@ const BodyBuilder = (state) => {
   });
   return {
     name: name,
-
+    id: id,
     price: price,
     cat: cat,
     subCat: subCat,

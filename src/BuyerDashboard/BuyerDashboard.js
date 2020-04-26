@@ -9,10 +9,11 @@ import * as Types from "./../Store/Constants/Auth";
 import { Switch, Route } from "react-router-dom";
 import CollaboratorsPage from "./../pages/BuyerDashboard/Collaborators/Collaborators";
 import ConsignedPage from "./../pages/BuyerDashboard/Consigned/Consigned";
+import HistoryPage from "./../pages/BuyerDashboard/History/History";
 import HomeIcon from "@material-ui/icons/Home";
 import useStyles from "./BuyerDashboard.styles";
 
-const Dashboard = props => {
+const Dashboard = (props) => {
   //classes init...
   const classes = useStyles();
 
@@ -22,7 +23,7 @@ const Dashboard = props => {
   //Methods....
   const handleLogout = () => {
     return dispatch_RP({
-      type: Types.AUTH_FAIL
+      type: Types.AUTH_FAIL,
     });
   }; //........................
 
@@ -64,6 +65,7 @@ const Dashboard = props => {
                 component={CollaboratorsPage}
               />
               <Route exact path="/manage/consigned" component={ConsignedPage} />
+              <Route exact path="/manage/history" component={HistoryPage} />
             </Switch>
           </Row>
         </Row>

@@ -4,9 +4,10 @@ import Paper from "./../../../UI/Paper/Paper";
 import GroupIcon from "@material-ui/icons/Group";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import { NavLink } from "react-router-dom";
+import HistoryIcon from "@material-ui/icons/History";
 import useStyles from "./MenuList.styles";
 
-const MenuList = props => {
+const MenuList = (props) => {
   const classes = useStyles();
   return (
     <Row className={classes.container}>
@@ -19,17 +20,17 @@ const MenuList = props => {
             color: "white",
             display: "flex",
             flexDirection: "row",
-            textDecoration: "none"
+            textDecoration: "none",
           }}
           activeStyle={{
-            color: "gold"
+            color: "gold",
           }}
         >
           <GroupIcon className={classes.icon} />
           <Row className={classes.finalPadding}></Row>
           <Row
             style={{
-              marginTop: "5px"
+              marginTop: "5px",
             }}
           >
             COLLABORATORS
@@ -45,20 +46,46 @@ const MenuList = props => {
             color: "white",
             display: "flex",
             flexDirection: "row",
-            textDecoration: "none"
+            textDecoration: "none",
           }}
           activeStyle={{
-            color: "gold"
+            color: "gold",
           }}
         >
           <ListAltIcon className={classes.icon} />
           <Row className={classes.finalPadding}></Row>
           <Row
             style={{
-              marginTop: "5px"
+              marginTop: "5px",
             }}
           >
             CONSIGNED
+          </Row>
+        </NavLink>
+      </Paper>
+      <Paper className={classes.paper} elevation={8}>
+        <Row className={classes.initialPadding}></Row>
+        <NavLink
+          to="/manage/history"
+          exact
+          style={{
+            color: "white",
+            display: "flex",
+            flexDirection: "row",
+            textDecoration: "none",
+          }}
+          activeStyle={{
+            color: "gold",
+          }}
+        >
+          <HistoryIcon className={classes.icon} />
+          <Row className={classes.finalPadding}></Row>
+          <Row
+            style={{
+              marginTop: "5px",
+            }}
+          >
+            HISTORY
           </Row>
         </NavLink>
       </Paper>

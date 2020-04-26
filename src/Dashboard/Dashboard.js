@@ -14,6 +14,9 @@ import AddProducts from "./../pages/AddProducts/AddProducts";
 import useStyles from "./Dashboard.styles";
 import GetProposalScreen from "./../pages/VendorDashboard/GetProposals/GetProposals";
 import ConsignedPage from "./../pages/VendorDashboard/GetProposals/Consigned/Cosigned";
+import FinalPage from "./../pages/VendorDashboard/Final/Final";
+import HistoryPage from "./../pages/VendorDashboard/History/History";
+import EditPage from "./../pages/VendorDashboard/EditProduct/EditProduct";
 
 const Dashboard = (props) => {
   //classes init...
@@ -72,6 +75,9 @@ const Dashboard = (props) => {
                 path="/dashboard/requests"
                 component={ConsignedPage}
               />
+              <Route exact path="/dashboard/final" component={FinalPage} />
+              <Route exact path="/dashboard/history" component={HistoryPage} />
+              <Route exact path="/dashboard/products" component={EditPage} />
             </Switch>
           </Row>
         </Row>

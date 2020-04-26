@@ -130,6 +130,7 @@ const Consigned = (props) => {
                 APPROVED
               </Row>
             </Row>
+
             <Row className={classes.screen}>
               {subScreen == "PENDING" ? (
                 <PendingScreen data={pending} />
