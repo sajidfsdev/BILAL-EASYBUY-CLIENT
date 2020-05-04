@@ -4,21 +4,26 @@ import logo from "./../../../Assets/images/optimalLogo.png";
 import useStyles from "./Menubar.styles";
 import "./../../../index.css";
 import * as Actions from "./../../../Store/Action/Register";
+import * as Types from "./../../../Store/Constants/Auth";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Menubar = props => {
+const Menubar = (props) => {
   //classes init...
   const classes = useStyles();
 
   //state management...
   const dispatch = useDispatch();
-  const auth_RP = useSelector(state => state.auth.auth);
-  const type_RP = useSelector(state => state.auth.type);
+  const auth_RP = useSelector((state) => state.auth.auth);
+  const type_RP = useSelector((state) => state.auth.type);
 
   //Methods....
   const handleLoginClick = () => {
     dispatch(Actions.handleShowSignin());
+  };
+
+  const handleLogoutClick = () => {
+    dispatch({ type: Types.AUTH_FAIL });
   };
 
   //return starts....
@@ -38,9 +43,7 @@ const Menubar = props => {
             {/* <a href="#">PRODUCTS</a> */}
             <Link to="/products">PRODUCTS</Link>
           </li>
-          <li>
-            <a href="#">CATEGORIES</a>
-          </li>
+
           <li>
             {auth_RP ? (
               type_RP === "Vendor" ? (
@@ -55,7 +58,11 @@ const Menubar = props => {
             )}
           </li>
           <li>
-            <a href="#">CONTACT</a>
+            {auth_RP ? (
+              <a href="#" onClick={handleLogoutClick}>
+                LOGOUT
+              </a>
+            ) : null}
           </li>
         </ul>
       </Row>

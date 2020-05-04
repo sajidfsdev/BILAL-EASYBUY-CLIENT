@@ -8,9 +8,10 @@ import FeaturedProducts from "./../../Components/Home/FeaturedProducts/FeaturedP
 import HowItWorks from "./../../Components/Home/HowItWorks/HowItWorks";
 import Statistics from "./../../Components/Home/Statistics/Statistics";
 import ContactUs from "./../../Components/Home/Contactus/Contactus";
+import MissionStatement from "./../../Components/Home/Mission/Mission";
 import Footer from "./../../Components/Home/Footer/Footer";
 
-const Home = props => {
+const Home = (props) => {
   //styles starts....
   const classes = useStyles();
   //return starts...
@@ -27,6 +28,8 @@ const Home = props => {
       <HowItWorks />
 
       <Statistics />
+
+      <MissionStatement />
 
       <ContactUs />
 

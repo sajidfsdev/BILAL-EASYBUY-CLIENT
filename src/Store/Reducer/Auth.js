@@ -7,7 +7,7 @@ const initialState = {
   token: null,
   name: "",
   email: "",
-  type: ""
+  type: "",
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -24,7 +24,7 @@ const AuthReducer = (state = initialState, action) => {
         token: action.payload.token,
         name: action.payload.name,
         email: action.payload.email,
-        type: action.payload.type
+        type: action.payload.type,
       };
       break;
     case Types.AUTH_FAIL:
@@ -39,7 +39,7 @@ const AuthReducer = (state = initialState, action) => {
         token: null,
         name: "",
         email: "",
-        type: ""
+        type: "",
       };
       break;
     default:

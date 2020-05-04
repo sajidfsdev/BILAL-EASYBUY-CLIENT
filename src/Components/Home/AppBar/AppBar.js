@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -15,16 +15,18 @@ import useStyles from "./AppBar.styles";
 import source from "./../../../Assets/images/optimalLogo.png";
 import Avatar from "./../../../UI/Avatar/Avatar";
 import { Link } from "react-router-dom";
+import Drawer from "./../../../UI/Drawer/Drawer";
 
-const AppBarComp = props => {
+const AppBarComp = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = event => {
+  const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -37,7 +39,7 @@ const AppBarComp = props => {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = event => {
+  const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
@@ -99,66 +101,46 @@ const AppBarComp = props => {
   );
 
   return (
-    <div
-      className={classes.grow}
-      style={{
-        backgroundColor: "#3b7188"
-      }}
-    >
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
-          <div>{/* <Avatar src={source} size={5} /> */}</div>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Easy Buy
-          </Typography>
+    <React.Fragment>
+      <Drawer
+        open={openDrawer}
+        onClose={() => {
+          setOpenDrawer(false);
+        }}
+      />
 
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+      <div
+        className={classes.grow}
+        style={{
+          backgroundColor: "#3b7188",
+        }}
+      >
+        <AppBar position="static">
+          <Toolbar>
             <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              edge="start"
+              className={classes.menuButton}
               color="inherit"
+              aria-label="open drawer"
             >
-              <AccountCircle />
+              <MenuIcon
+                onClick={() => {
+                  setOpenDrawer(!openDrawer);
+                }}
+              />
             </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </div>
+            <div>{/* <Avatar src={source} size={5} /> */}</div>
+            <Typography className={classes.title} variant="h6" noWrap>
+              Easy Buy
+            </Typography>
+
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}></div>
+            <div className={classes.sectionMobile}></div>
+          </Toolbar>
+        </AppBar>
+      </div>
+    </React.Fragment>
   );
 };
 

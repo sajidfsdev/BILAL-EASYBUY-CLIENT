@@ -13,11 +13,13 @@ import ProductsPage from "./pages/HomeSubPages/Products/Products";
 import ProductDetailsPage from "./pages/HomeSubPages/ProductDetails/ProductDetails";
 import RegisterBuyerPage from "./pages/RegisterBuyer/RegisterBuyer";
 import BuyerDashboard from "./BuyerDashboard/BuyerDashboard";
+import { SnackbarProvider } from "notistack";
 
 const App = (props) => {
   //state management...
   const resolved_RP = useSelector((state) => state.auth.resolved);
   const auth_RP = useSelector((state) => state.auth.auth);
+  const type_RP = useSelector((state) => state.auth.type);
   const dispatch_RP = useDispatch();
 
   //use effect...
@@ -28,31 +30,37 @@ const App = (props) => {
   //return starts...
   return (
     <ThemeProvider theme={defaultTheme}>
-      {resolved_RP ? (
-        <React.Fragment>
-          <SignIn />
-          <Register />
-          <RegisterBuyerPage />
-          <BrowserRouter>
-            <Switch>
-              <Route exact path="/" component={HomePage} />
-              {auth_RP ? (
-                <Route path="/dashboard" component={Dashboard} />
-              ) : null}
+      <SnackbarProvider maxSnack={3}>
+        {resolved_RP ? (
+          <React.Fragment>
+            <SignIn />
+            <Register />
+            <RegisterBuyerPage />
+            <BrowserRouter>
+              <Switch>
+                <Route exact path="/" component={HomePage} />
+                {auth_RP === true && type_RP == "Vendor" ? (
+                  <Route path="/dashboard" component={Dashboard} />
+                ) : null}
 
-              <Route exact path="/products" component={ProductsPage} />
-              <Route exact path="/details/:id" component={ProductDetailsPage} />
-              {auth_RP ? (
-                <Route path="/manage" component={BuyerDashboard} />
-              ) : null}
+                <Route exact path="/products" component={ProductsPage} />
+                <Route
+                  exact
+                  path="/details/:id"
+                  component={ProductDetailsPage}
+                />
+                {auth_RP === true && type_RP == "Buyer" ? (
+                  <Route path="/manage" component={BuyerDashboard} />
+                ) : null}
 
-              <Route component={HomePage} />
-            </Switch>
-          </BrowserRouter>
-        </React.Fragment>
-      ) : (
-        <LoadingScreen />
-      )}
+                <Route component={HomePage} />
+              </Switch>
+            </BrowserRouter>
+          </React.Fragment>
+        ) : (
+          <LoadingScreen />
+        )}
+      </SnackbarProvider>
     </ThemeProvider>
   );
   //return ends.....

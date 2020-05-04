@@ -9,7 +9,7 @@ const initialState = {
   isSignInError: false,
   isError: false,
   errorMessage: "",
-  registered: false
+  registered: false,
 };
 
 const RegisterReducer = (state = initialState, action) => {
@@ -18,39 +18,55 @@ const RegisterReducer = (state = initialState, action) => {
       return {
         ...state,
         showSignIn: true,
-        showRegister: false
+        showRegister: false,
       };
       break;
     case types.SHOWREGISTER:
       return {
         ...state,
         showRegister: true,
-        showSignIn: false
+        showSignIn: false,
       };
       break;
     case types.HIDESIGNIN:
       return {
         ...state,
-        showSignIn: false
+        showSignIn: false,
+        showRegister: false,
+        buffer: false,
+        signInBuffer: false,
+        signInErrorMessage: "",
+        isSignInError: false,
+        isError: false,
+        errorMessage: "",
+        registered: false,
       };
       break;
     case types.HIDEREGISTER:
       return {
         ...state,
-        showRegister: false
+        showRegister: false,
+        showSignIn: false,
+        buffer: false,
+        signInBuffer: false,
+        signInErrorMessage: "",
+        isSignInError: false,
+        isError: false,
+        errorMessage: "",
+        registered: false,
       };
       break;
 
     case types.START_BUFFERRING:
       return {
         ...state,
-        buffer: true
+        buffer: true,
       };
       break;
     case types.END_BUFFERRING:
       return {
         ...state,
-        buffer: false
+        buffer: false,
       };
       break;
 
@@ -60,7 +76,7 @@ const RegisterReducer = (state = initialState, action) => {
         buffer: false,
         isError: false,
         errorMessage: "",
-        registered: true
+        registered: true,
       };
       break;
 
@@ -70,21 +86,21 @@ const RegisterReducer = (state = initialState, action) => {
         buffer: false,
         isError: true,
         errorMessage: action.payload.errorMessage,
-        registered: true
+        registered: true,
       };
       break;
 
     case types.START_SIGNIN_BUFFERRING:
       return {
         ...state,
-        signInBuffer: true
+        signInBuffer: true,
       };
       break;
 
     case types.END_SIGNIN_BUFFERRING:
       return {
         ...state,
-        signInBuffer: false
+        signInBuffer: false,
       };
       break;
 
@@ -94,7 +110,7 @@ const RegisterReducer = (state = initialState, action) => {
         showSignIn: true,
         signInBuffer: false,
         signInErrorMessage: action.payload.errorMessage,
-        isSignInError: true
+        isSignInError: true,
       };
       break;
     default:

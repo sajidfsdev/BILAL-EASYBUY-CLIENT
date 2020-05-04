@@ -7,28 +7,26 @@ import AppConsts from "./../../Constants/Strings";
 export const handleLogin = (username, password, type) => {
   const body = JSON.stringify({
     email: username,
-    password: password
+    password: password,
   });
 
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
 
   //return starts....
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       let res;
       if (type === "Vendor") {
-        window.alert("Inner Vendor detected");
         res = await axios.post(
           AppConsts.server + "/vendor/auth/login",
           body,
           config
         );
       } else {
-        window.alert("Inner Buyer detected");
         res = await axios.post(
           AppConsts.server + "/buyer/auth/login",
           body,
@@ -37,9 +35,8 @@ export const handleLogin = (username, password, type) => {
       }
 
       if (res) {
-        console.log(res.data);
         dispatch({
-          type: Regtypes.HIDESIGNIN
+          type: Regtypes.HIDESIGNIN,
         });
         return dispatch({
           type: Types.AUTH_PASS,
@@ -47,18 +44,18 @@ export const handleLogin = (username, password, type) => {
             token: res.data.token,
             name: res.data.name,
             email: res.data.email,
-            type: res.data.type
-          }
+            type: type,
+          },
         });
       } else {
         dispatch({
           type: SignInTypes.SIGNIN_FAILED,
           payload: {
-            errorMessage: "Network Error"
-          }
+            errorMessage: "Network Error",
+          },
         });
         return dispatch({
-          type: Types.AUTH_FAIL
+          type: Types.AUTH_FAIL,
         });
       }
     } catch (err) {
@@ -66,21 +63,21 @@ export const handleLogin = (username, password, type) => {
         dispatch({
           type: SignInTypes.SIGNIN_FAILED,
           payload: {
-            errorMessage: err.response.data.errorMessage
-          }
+            errorMessage: err.response.data.errorMessage,
+          },
         });
         return dispatch({
-          type: Types.AUTH_FAIL
+          type: Types.AUTH_FAIL,
         });
       } else {
         dispatch({
           type: SignInTypes.SIGNIN_FAILED,
           payload: {
-            errorMessage: err.message
-          }
+            errorMessage: err.message,
+          },
         });
         return dispatch({
-          type: Types.AUTH_FAIL
+          type: Types.AUTH_FAIL,
         });
       }
     }
@@ -89,7 +86,7 @@ export const handleLogin = (username, password, type) => {
 }; //............................................Handle Login
 
 export const handleAuthChecking = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     const token = sessionStorage.getItem(AppConsts.sessionStorage);
     const name = sessionStorage.getItem("name");
     const email = sessionStorage.getItem("email");
@@ -105,13 +102,13 @@ export const handleAuthChecking = () => {
           token: token,
           name: name,
           email: email,
-          type: type
-        }
+          type: type,
+        },
       });
     } else {
       //window.alert("App Auth Failed");
       return dispatch({
-        type: Types.AUTH_FAIL
+        type: Types.AUTH_FAIL,
       });
     }
   };

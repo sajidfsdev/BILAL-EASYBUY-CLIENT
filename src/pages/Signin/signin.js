@@ -15,16 +15,16 @@ import * as BuyerActions from "./../../Store/Action/RegisterBuyer";
 import * as SignInActions from "./../../Store/Action/Auth";
 import * as Types from "./../../Store/Constants/Register";
 
-const SignIn = props => {
+const SignIn = (props) => {
   //styles init...
   const classes = useStyles();
 
   //state management...
-  const showSignIn_RP = useSelector(state => state.register.showSignIn);
-  const buffer_RP = useSelector(state => state.register.signInBuffer);
-  const isError_RP = useSelector(state => state.register.isSignInError);
+  const showSignIn_RP = useSelector((state) => state.register.showSignIn);
+  const buffer_RP = useSelector((state) => state.register.signInBuffer);
+  const isError_RP = useSelector((state) => state.register.isSignInError);
   const errorMessage_RP = useSelector(
-    state => state.register.signInErrorMessage
+    (state) => state.register.signInErrorMessage
   );
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -33,24 +33,22 @@ const SignIn = props => {
 
   //Methods....
 
-  const handleFormSubmission = event => {
+  const handleFormSubmission = (event) => {
     event.preventDefault();
     if (typeState === "Vendor") {
-      window.alert("Vendor");
       dispatch_RP({ type: Types.START_SIGNIN_BUFFERRING });
       dispatch_RP(SignInActions.handleLogin(username, password, "Vendor"));
     } else {
-      window.alert("Buyer detected");
       dispatch_RP({ type: Types.START_SIGNIN_BUFFERRING });
       dispatch_RP(SignInActions.handleLogin(username, password, "Buyer"));
     }
   }; //..................................
 
-  const handleUsernameChange = event => {
+  const handleUsernameChange = (event) => {
     setUserName(event.target.value);
   }; //..................................
 
-  const handlePasswordChange = event => {
+  const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   }; //....................................
 
@@ -106,7 +104,7 @@ const SignIn = props => {
             id="demo-simple-select-outlined"
             className={classes.input}
             value={typeState}
-            onChange={event => {
+            onChange={(event) => {
               setTypesState(event.target.value);
             }}
             label="Type"
@@ -123,7 +121,7 @@ const SignIn = props => {
             type="submit"
             disabled={buffer_RP ? true : false}
             style={{
-              cursor: buffer_RP ? "not-allowed" : "pointer"
+              cursor: buffer_RP ? "not-allowed" : "pointer",
             }}
             color="primary"
             className={classes.btn}

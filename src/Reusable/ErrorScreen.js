@@ -1,51 +1,39 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Row from "../UI/Row/ELXRow";
-import { Button } from "@material-ui/core";
+import Row from "./../UI/Row/ELXRow";
+import useStyles from "./ErrorScreen.styles";
+import WarningIcon from "@material-ui/icons/Warning";
 import CachedIcon from "@material-ui/icons/Cached";
+import { Button } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    width: "100%",
-    height: "300px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  btn: {
-    marginTop: "15px",
-  },
-  error: {
-    color: "red",
-  },
-}));
-
-const EmptyScreen = (props) => {
+const ErrorScreen = (props) => {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <Row className={classes.container}>
-        <Row className={classes.error}>{props.errorMessage}</Row>
-        <Row className={classes.btn}>
+    <Row className={classes.container}>
+      <Row className={classes.iconRow}>
+        <WarningIcon className={classes.icon} />
+      </Row>
+      <Row className={classes.errorMessageRow}>{props.errorMessage}</Row>
+      {props.showReloadButton ? (
+        <Row className={classes.btnRow}>
           <Button
-            onClick={props.refresh}
-            variant="contained"
-            color="primary"
+            onClick={props.handleReload}
+            className={classes.btn}
             startIcon={<CachedIcon />}
+            color="primary"
+            variant="contained"
           >
-            Refresh
+            Reload
           </Button>
         </Row>
-      </Row>
-    </React.Fragment>
+      ) : null}
+    </Row>
   );
-}; //...........................
-
-EmptyScreen.defaultProps = {
-  errorMessage: "Sorry Failed To Load Resources Due To Network Error",
-  refresh: () => {},
+}; //.........................Error Screen
+ErrorScreen.defaultProps = {
+  errorMessage: "Failed To Load Resources Due To Network Error",
+  showReloadButton: true,
+  handleReload: () => {},
 };
 
-export default EmptyScreen;
+export default ErrorScreen;

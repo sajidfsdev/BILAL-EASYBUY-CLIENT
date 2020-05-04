@@ -8,20 +8,20 @@ import { AnimatedOnScroll } from "react-animated-css-onscroll";
 import AppConsts from "./../../Constants/Strings";
 import { withRouter } from "react-router-dom";
 
-const HorizonatalList = props => {
+const HorizonatalList = (props) => {
   const [checked, setChecked] = useState(false);
   const [hoverState, setHoverState] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
     const hoverArray = [];
-    props.products.forEach(elem => {
+    props.products.forEach((elem) => {
       hoverArray.push(false);
     });
     setHoverState(hoverArray);
   }, [props.products]);
 
-  const handleImageClick = id => {
+  const handleImageClick = (id) => {
     props.history.push(`/details/${id}`);
   }; //.........................
 
