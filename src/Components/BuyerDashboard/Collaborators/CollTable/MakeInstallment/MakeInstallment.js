@@ -15,6 +15,7 @@ import axios from "axios";
 import AppConsts from "./../../../../../Constants/Strings";
 import useStyles from "./MakeInstallments.styles";
 import CircularProgressBar from "./../../../../../UI/CircularProgressBar/CircularProgressBar";
+import { useSnackbar } from "notistack";
 
 const LOADING_SCREEN = "LOADINGSCREEN";
 const SUCCESS_MESSAGE_SCREEN = "SUCCESSMESSAGESCREEN";
@@ -24,6 +25,8 @@ const DEFAULT_SCREEN = "DEFAULTSCREEN";
 const StepThree = (props) => {
   //classes...
   const classes = useStyles();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   //selections....
   const token_RP = useSelector((state) => state.auth.token);
@@ -80,6 +83,10 @@ const StepThree = (props) => {
 
   //Methods...
 
+  const handleShowSnackBar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  };
+
   const handleFormSubmission = async () => {
     setScreen(LOADING_SCREEN);
     let installments = 0;
@@ -87,9 +94,17 @@ const StepThree = (props) => {
       installments = parseInt(installments) + parseInt(elem.installment);
     });
     if (props.state.installmentPlan.length === 0 || installments === 0) {
-      return window.alert("Please make at least one installments");
+      setScreen(DEFAULT_SCREEN);
+      return handleShowSnackBar(
+        "Please make at least one installments",
+        "error"
+      );
     } else if (props.state.remaining !== 0) {
-      return window.alert("You have remaining Amount. Please adjust it");
+      setScreen(DEFAULT_SCREEN);
+      return handleShowSnackBar(
+        "You have remaining Amount. Please adjust it",
+        "error"
+      );
     } else {
       const installmentPlan = {
         installmentPlan: props.state.installmentPlan,
@@ -119,16 +134,17 @@ const StepThree = (props) => {
         );
         if (res) {
           setScreen(DEFAULT_SCREEN);
+          props.goBack();
         } else {
-          window.alert(" No Res");
+          handleShowSnackBar("Network Error Has Occurred", "error");
           setScreen(DEFAULT_SCREEN);
         }
       } catch (err) {
         setScreen(DEFAULT_SCREEN);
         if (err.response) {
-          window.alert(err.response.data.errorMessage);
+          handleShowSnackBar(err.response.data.errorMessage, "error");
         } else {
-          window.alert(err.message);
+          handleShowSnackBar(err.message, "error");
         }
       }
       //try catch ends......

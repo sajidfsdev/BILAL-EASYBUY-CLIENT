@@ -11,6 +11,10 @@ import CollaboratorsPage from "./../pages/BuyerDashboard/Collaborators/Collabora
 import ConsignedPage from "./../pages/BuyerDashboard/Consigned/Consigned";
 import HistoryPage from "./../pages/BuyerDashboard/History/History";
 import HomeIcon from "@material-ui/icons/Home";
+import MessagePage from "./../pages/BuyerDashboard/Message/Message";
+import EmailIcon from "@material-ui/icons/Email";
+import BuyerProfilePage from "./../pages/BuyerDashboard/Profile/Profile";
+
 import useStyles from "./BuyerDashboard.styles";
 
 const Dashboard = (props) => {
@@ -66,6 +70,12 @@ const Dashboard = (props) => {
               />
               <Route exact path="/manage/consigned" component={ConsignedPage} />
               <Route exact path="/manage/history" component={HistoryPage} />
+              <Route exact path="/manage/message" component={MessagePage} />
+              <Route
+                exact
+                path="/manage/profile"
+                component={BuyerProfilePage}
+              />
             </Switch>
           </Row>
         </Row>

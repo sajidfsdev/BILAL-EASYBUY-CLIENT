@@ -16,6 +16,7 @@ const SuggestScreen = (props) => {
         dispatch={props.dispatch}
         setActiveState={props.setActiveState}
         data={props.data}
+        goBack={props.goBack}
       />
     </React.Fragment>
   );

@@ -71,6 +71,9 @@ const SubMenus = (props) => {
             dispatch={dispatch}
             data={props.data}
             setActiveState={() => {}}
+            goBack={() => {
+              handleChangeScreen(PROPOSED_SCREEN);
+            }}
           />
         ) : null}
       </React.Fragment>

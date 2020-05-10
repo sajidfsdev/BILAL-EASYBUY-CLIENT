@@ -37,6 +37,9 @@ const Contactus = (props) => {
       if (res) {
         setSpinner(false);
         handleShowSnackBar("Message has been sent to Admin", "success");
+        setName("");
+        setEmail("");
+        setMessage("");
       } else {
         setSpinner(false);
 

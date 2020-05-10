@@ -11,6 +11,7 @@ import { Paper } from "@material-ui/core";
 import SubMenus from "./../../../Components/Dashboard/GetProposals/SubMenu";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ProductDetailsTable from "./ProductTable";
+import ErrorScreen from "./../../../Reusable/ErrorScreen";
 
 const LOADING_SCREEN = "LOADINGSCREEN";
 const DEFAULT_SCREEN = "DEFAULTSCREEN";
@@ -40,7 +41,7 @@ const GetProposals = (props) => {
   }, []);
 
   const handleDeleteRecord = (id) => {
-    window.alert("Called");
+    // window.alert("Called");
     const filteredProposals = [...proposals.filter((elem) => elem._id != id)];
     setProposals([...filteredProposals]);
     filterClients([...filteredProposals]);
@@ -175,9 +176,13 @@ const GetProposals = (props) => {
       if (clients.length == 0) {
         return (
           <React.Fragment>
-            <Row className={classes.emptyMessage}>
+            <ErrorScreen
+              errorMessage={"There are no proposals to Retrieve"}
+              showReloadButton={false}
+            />
+            {/* <Row className={classes.emptyMessage}>
               There are no proposals to Retrieve
-            </Row>
+            </Row> */}
           </React.Fragment>
         );
       } else {
@@ -220,7 +225,11 @@ const GetProposals = (props) => {
   } else if (screen == ERROR_SCREEN) {
     mainGUI = (
       <React.Fragment>
-        <Row className={classes.errorMessage}>
+        <ErrorScreen
+          errorMessage={errorMessage}
+          handleReload={retrieveAllProposals}
+        />
+        {/* <Row className={classes.errorMessage}>
           <Row className={classes.error}>{errorMessage}</Row>
           <Row className={classes.refreshBtn}>
             <Button
@@ -231,15 +240,19 @@ const GetProposals = (props) => {
               Refresh
             </Button>
           </Row>
-        </Row>
+        </Row> */}
       </React.Fragment>
     );
   } else if (screen == EMPTY_SCREEN) {
     mainGUI = (
       <React.Fragment>
-        <Row className={classes.emptyMessage}>
+        <ErrorScreen
+          errorMessage={"There are no proposals to Retrieve"}
+          showReloadButton={false}
+        />
+        {/* <Row className={classes.emptyMessage}>
           There are no proposals to Retrieve
-        </Row>
+        </Row> */}
       </React.Fragment>
     );
   }

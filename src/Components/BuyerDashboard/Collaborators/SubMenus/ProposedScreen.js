@@ -13,6 +13,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import { compareAsc, format } from "date-fns";
+import ErrorScreen from "./../../../../Reusable/ErrorScreen";
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -408,27 +409,19 @@ const ProposedScreen = (props) => {
   } else if (screen == EMPTY_SCREEN) {
     mainGUI = (
       <React.Fragment>
-        <Row className={classes.emptyRow}>
-          You have made no suggestions to vendor
-        </Row>
+        <ErrorScreen
+          errorMessage="You have made no suggestions to vendor"
+          showReloadButton={false}
+        />
       </React.Fragment>
     );
   } else if (screen == ERROR_SCREEN) {
     mainGUI = (
       <React.Fragment>
-        <Row className={classes.errorContainer}>
-          <Row className={classes.errorMessage}>{errorMessage}</Row>
-          <Row className={classes.errorButton}>
-            <Button
-              startIcon={<CachedIcon />}
-              variant="contained"
-              color="primary"
-              onClick={handleRetrieveProposals}
-            >
-              Refresh
-            </Button>
-          </Row>
-        </Row>
+        <ErrorScreen
+          errorMessage="You have made no suggestions to vendor"
+          handleReload={handleRetrieveProposals}
+        />
       </React.Fragment>
     );
   } else if (screen == DEFAULT_SCREEN) {

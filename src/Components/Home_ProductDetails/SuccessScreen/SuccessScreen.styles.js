@@ -1,12 +1,12 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: "20px"
+    marginTop: "20px",
   },
 
   paper: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     height: "auto",
     display: "flex",
     flexDirection: "column",
-    overflow: "auto"
+    overflow: "auto",
   },
 
   title: {
@@ -25,12 +25,12 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     backgroundColor: theme.palette.primary.main,
     color: "white",
-    height: "30px"
+    height: "30px",
   },
 
   titleText: {
     fontSize: "15px",
-    color: "white"
+    color: "white",
   },
 
   gallery: {
@@ -42,12 +42,12 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "wrap",
     marginBottom: "20px",
     marginLeft: "auto",
-    marginRight: "auto"
+    marginRight: "auto",
   },
 
   imageBox: {
     width: "215px",
-    height: "215px"
+    height: "215px",
   },
 
   downContainer: {
@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: "20px",
     display: "flex",
     flexDirection: "row",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
 
   downLeft: {
@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     height: "50px",
     backgroundColor: theme.palette.primary.main,
-    color: "white"
+    color: "white",
   },
 
   downRight: {
@@ -75,7 +75,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: "50px"
+    height: "50px",
   },
 
   closeBtnRow: {
@@ -84,7 +84,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: "20px",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
 
   middleTitle: {
@@ -94,8 +94,20 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     marginTop: "20px",
     marginBottom: "20px",
-    color: theme.palette.primary.main
-  }
+    color: theme.palette.primary.main,
+  },
+
+  textArea: {
+    //minWidth: "200px",
+    width: "100%",
+    minHeight: "100px",
+  },
+  reportBtn: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
 }));
 
 export default useStyles;

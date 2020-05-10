@@ -8,6 +8,7 @@ import CachedIcon from "@material-ui/icons/Cached";
 import useStyles from "./Collaborators.styles";
 import { Button, Paper } from "@material-ui/core";
 import CollaboratorTable from "./../../../Components/BuyerDashboard/Collaborators/CollTable/collTable";
+import ErrorScreen from "./../../../Reusable/ErrorScreen";
 
 const Collaborators = (props) => {
   //styles init...
@@ -130,25 +131,17 @@ const Collaborators = (props) => {
       <Row className={classes.title}>Collaborators</Row>
       {loaded ? (
         isError ? (
-          <Row className={classes.error}>
-            <Row className={classes.row}> {errorMessage}</Row>
-            <Row className={classes.row}>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<CachedIcon />}
-                onClick={handleRefresh}
-              >
-                Refresh
-              </Button>
-            </Row>
-          </Row>
+          <ErrorScreen
+            errorMessage={errorMessage}
+            handleReload={handleRefresh}
+          />
         ) : (
           <Row>
             {collaborators.length === 0 ? (
-              <Row className={classes.error}>
-                No collaborator has been added yet!
-              </Row>
+              <ErrorScreen
+                showReloadButton={false}
+                errorMessage="No collaborator has been added yet!"
+              />
             ) : (
               <Row className={classes.container}>
                 <Paper elevation={0} className={classes.subContainer}>

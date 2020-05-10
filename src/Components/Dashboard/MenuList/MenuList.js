@@ -10,6 +10,10 @@ import useStyles from "./MenuList.styles";
 import HearingIcon from "@material-ui/icons/Hearing";
 import HistoryIcon from "@material-ui/icons/History";
 import RedeemIcon from "@material-ui/icons/Redeem";
+import EmailIcon from "@material-ui/icons/Email";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+
+//dashboard/message
 
 const MenuList = (props) => {
   const classes = useStyles();
@@ -195,6 +199,60 @@ const MenuList = (props) => {
             }}
           >
             HISTORY
+          </Row>
+        </NavLink>
+      </Paper>
+
+      <Paper className={classes.paper} elevation={8}>
+        <Row className={classes.initialPadding}></Row>
+        <NavLink
+          to="/dashboard/message"
+          exact
+          style={{
+            color: "white",
+            display: "flex",
+            flexDirection: "row",
+            textDecoration: "none",
+          }}
+          activeStyle={{
+            color: "gold",
+          }}
+        >
+          <EmailIcon className={classes.icon} />
+          <Row className={classes.finalPadding}></Row>
+          <Row
+            style={{
+              marginTop: "5px",
+            }}
+          >
+            MESSAGES
+          </Row>
+        </NavLink>
+      </Paper>
+
+      <Paper className={classes.paper} elevation={8}>
+        <Row className={classes.initialPadding}></Row>
+        <NavLink
+          to="/dashboard/profile"
+          exact
+          style={{
+            color: "white",
+            display: "flex",
+            flexDirection: "row",
+            textDecoration: "none",
+          }}
+          activeStyle={{
+            color: "gold",
+          }}
+        >
+          <AccountCircleIcon className={classes.icon} />
+          <Row className={classes.finalPadding}></Row>
+          <Row
+            style={{
+              marginTop: "5px",
+            }}
+          >
+            PROFILE
           </Row>
         </NavLink>
       </Paper>

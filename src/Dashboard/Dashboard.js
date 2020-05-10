@@ -17,6 +17,9 @@ import ConsignedPage from "./../pages/VendorDashboard/GetProposals/Consigned/Cos
 import FinalPage from "./../pages/VendorDashboard/Final/Final";
 import HistoryPage from "./../pages/VendorDashboard/History/History";
 import EditPage from "./../pages/VendorDashboard/EditProduct/EditProduct";
+import MessagePage from "./../pages/VendorDashboard/Message/Message";
+import HomeIcon from "@material-ui/icons/Home";
+import ProfilePage from "./../pages/VendorDashboard/Profile/Profile";
 
 const Dashboard = (props) => {
   //classes init...
@@ -45,6 +48,12 @@ const Dashboard = (props) => {
         <Row className={classes.rightArea}>
           <Row className={classes.appBar}>
             <Row className={classes.iconRow}>
+              <Tooltip title="Home">
+                <HomeIcon
+                  onClick={() => props.history.push("/")}
+                  className={classes.icon}
+                />
+              </Tooltip>
               <Tooltip title="Logout">
                 <ExitToAppIcon
                   onClick={handleLogout}
@@ -78,6 +87,8 @@ const Dashboard = (props) => {
               <Route exact path="/dashboard/final" component={FinalPage} />
               <Route exact path="/dashboard/history" component={HistoryPage} />
               <Route exact path="/dashboard/products" component={EditPage} />
+              <Route exact path="/dashboard/message" component={MessagePage} />
+              <Route exact path="/dashboard/profile" component={ProfilePage} />
             </Switch>
           </Row>
         </Row>

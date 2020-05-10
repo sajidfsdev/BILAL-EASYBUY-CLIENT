@@ -1,11 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     height: "100vh",
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
 
   leftArea: {
@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
 
     [theme.breakpoints.down("sm")]: {
-      display: "none"
-    }
+      display: "none",
+    },
   },
 
   rightArea: {
@@ -26,8 +26,8 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   logoContainer: {
@@ -36,16 +36,16 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: "20px"
+    marginTop: "20px",
   },
 
   logo: {
     width: "90px",
-    height: "90px"
+    height: "90px",
   },
   title: {
     fontSize: "22px",
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
   },
 
   appBar: {
@@ -55,22 +55,26 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
-    alignItems: "center"
+    alignItems: "center",
   },
   icon: {
-    color: "white"
+    color: "white",
   },
   iconRow: {
-    marginRight: "30px"
+    marginRight: "30px",
+    width: "80px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   icon: {
     cursor: "pointer",
-    color: "white"
+    color: "white",
   },
 
   displayArea: {
     width: "100%",
-    height: "calc(100% - 60px)"
-  }
+    height: "calc(100% - 60px)",
+  },
 }));
 export default useStyles;

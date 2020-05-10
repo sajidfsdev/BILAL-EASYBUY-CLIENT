@@ -15,6 +15,8 @@ import AuthReducer from "./Store/Reducer/Auth";
 import ProductsReducer from "./Store/Reducer/products";
 import BulkReducer from "./Store/Reducer/bulk";
 import RegisterBuyerReducer from "./Store/Reducer/RegisterBuyer";
+import BuyerProfileReducer from "./Store/Reducer/buyerProfile";
+import VendorProfileReducer from "./Store/Reducer/vendorProfile";
 // import AppReducer from "./Store/Reducer/App";
 // import CatReducer from "./Store/Reducer/cat";
 //Redux imports ends here........
@@ -25,7 +27,9 @@ const rootReducer = combineReducers({
   registerBuyer: RegisterBuyerReducer,
   auth: AuthReducer,
   products: ProductsReducer,
-  bulk: BulkReducer
+  bulk: BulkReducer,
+  buyerProfile: BuyerProfileReducer,
+  vendorProfile: VendorProfileReducer,
 });
 
 const store = createStore(rootReducer, compose(applyMiddleware(thunk)));
