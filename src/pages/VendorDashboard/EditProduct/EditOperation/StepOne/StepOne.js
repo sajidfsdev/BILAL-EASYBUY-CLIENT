@@ -9,10 +9,12 @@ import { useSelector } from "react-redux";
 import Table from "./../../../../../UI/Table/Table";
 import useStyles from "./StepOne.styles";
 import { Button } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 const StepOne = (props) => {
   //classes...
 
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   //state mnagement....
   const cat_RP = useSelector((state) => state.products.cat);
@@ -30,6 +32,10 @@ const StepOne = (props) => {
   );
 
   //Methods......
+
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //.................handle show snack bar
 
   const handleDeleteAtt = (index) => {
     const copiedArr = [];
@@ -55,7 +61,7 @@ const StepOne = (props) => {
       props.state.subSubCat === "" ||
       props.state.att.length === 0
     ) {
-      return window.alert("Please fill The Requisite Fields");
+      return handleShowSnackbar("Please fill The Requisite Fields", "error");
     }
 
     if (
@@ -65,7 +71,10 @@ const StepOne = (props) => {
       props.state.isSubCatError ||
       props.state.isSubSubCatError
     ) {
-      return window.alert("Please correct above error inOrder to proceed");
+      return handleShowSnackbar(
+        "Please correct above error inOrder to proceed",
+        "error"
+      );
     }
 
     props.setActiveState(1);

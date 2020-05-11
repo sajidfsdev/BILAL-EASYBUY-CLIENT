@@ -17,6 +17,9 @@ import Gallery from "./../../../Reusable/Gallery";
 import DownPayment from "./../../../Reusable/DownPayment";
 import InstallmentPlan from "./../../../Reusable/InstallmentPlan";
 import EditOperations from "./EditOperation/EditOperation";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import Spinner from "./../../../UI/CircularProgressBar/CircularProgressBar";
+import { useSnackbar } from "notistack";
 
 //screen consts...
 const LOADING_SCREEN = "LOADINGSCREEN";
@@ -28,6 +31,7 @@ const EDIT_SCREEN = "EDITSCREEN";
 
 const Consigned = (props) => {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const [errorMessage, setErrorMessage] = useState("Pending");
   const [products, setProducts] = useState([]);
   const [copiedProducts, setCopiedProducts] = useState([]);
@@ -37,11 +41,54 @@ const Consigned = (props) => {
   const [searchType, setSearchType] = useState("ALL CATEGORIES");
   const [searchValue, setSearchValue] = useState("");
   const [currentProduct, setCurrentProduct] = useState();
+  const [deleteBufferring, setDeleteBufferring] = useState([]);
 
   useEffect(() => {
     handleLoadData();
     handleLoadAllCats();
   }, []);
+
+  const handleDeleteProduct = async (productId, index) => {
+    setDeleteBufferring([
+      ...deleteBufferring.map((elem, ind) => (ind === index ? true : false)),
+    ]);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-eptoken-vendor": token_RP,
+      },
+    };
+
+    const body = JSON.stringify({ productId });
+
+    try {
+      const res = await axios.post(
+        AppConsts.server + "/vendor/products/delete",
+        body,
+        config
+      );
+
+      if (res) {
+        setDeleteBufferring([...deleteBufferring.map((elem) => false)]);
+        handleLoadData();
+        handleShowSnackbar("Product Deleted Successfully", "success");
+      } else {
+        setDeleteBufferring([...deleteBufferring.map((elem) => false)]);
+        handleShowSnackbar("Network Error Has Occurred", "error");
+      }
+    } catch (err) {
+      setDeleteBufferring([...deleteBufferring.map((elem) => false)]);
+      if (err.response) {
+        handleShowSnackbar(err.response.data.errorMessage, "error");
+      } else {
+        handleShowSnackbar(err.message, "error");
+      }
+    }
+  }; //......................handle delete product called
+
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //................handle show snack bar
 
   const handleChangeSearchValue = (event) => {
     const value = event.target.value;
@@ -111,22 +158,24 @@ const Consigned = (props) => {
         setCat([...cat, ...allCats]);
       } else {
         setScreen(DEFAULT_SCREEN);
-        window.alert("Failed To Load Resources Due To Network Error");
+        handleShowSnackbar(
+          "Failed To Load Resources Due To Network Error",
+          "error"
+        );
       }
     } catch (err) {
       setScreen(DEFAULT_SCREEN);
 
       if (err.response) {
-        window.alert(err.response.data.errorMessage);
+        handleShowSnackbar(err.response.data.errorMessage, "error");
       } else {
-        window.alert(err.message);
+        handleShowSnackbar(err.message, "error");
       }
     }
   }; //............................Load All Cats
 
   //................
   const handleLoadData = async () => {
-    window.alert("Handle load data called");
     setScreen(LOADING_SCREEN);
 
     const config = {
@@ -153,6 +202,7 @@ const Consigned = (props) => {
           setProducts([...res.data.data]);
           setCopiedProducts([...res.data.data]);
           setScreen(DEFAULT_SCREEN);
+          setDeleteBufferring([...res.data.data.map((elem) => false)]);
         }
       } else {
         setScreen(ERROR_SCREEN);
@@ -220,6 +270,7 @@ const Consigned = (props) => {
               "Desciption",
               "Details",
               "Edit",
+              "Delete",
             ]}
           >
             {copiedProducts.map((elem, index) => (
@@ -246,6 +297,16 @@ const Consigned = (props) => {
                     }}
                     className={classes.iconPri}
                   />
+                </TableCell>
+                <TableCell align="center">
+                  {deleteBufferring[index] ? (
+                    <Spinner color="secondary" size={25} />
+                  ) : (
+                    <DeleteForeverIcon
+                      onClick={handleDeleteProduct.bind(this, elem._id, index)}
+                      className={classes.deleteIcon}
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             ))}

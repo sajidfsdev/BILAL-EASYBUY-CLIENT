@@ -8,19 +8,26 @@ import { useSelector } from "react-redux";
 import AppConsts from "./../../../Constants/Strings";
 import * as Types from "./../../../pages/AddProducts/types";
 import useStyles from "./StepTwo.styles";
+import { useSnackbar } from "notistack";
 
-const StepTwo = props => {
+const StepTwo = (props) => {
   //classes...
   const classes = useStyles();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   //state management....
-  const token_RP = useSelector(state => state.auth.token);
+  const token_RP = useSelector((state) => state.auth.token);
 
   //Methods starts...
 
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //.....................handle show snackbar
+
   const handleMoveNext = () => {
     let validate = false;
-    props.state.images.forEach(elem => {
+    props.state.images.forEach((elem) => {
       if (
         elem.serverfilename !== null &&
         elem.progress === 100 &&
@@ -32,11 +39,11 @@ const StepTwo = props => {
     if (validate === true) {
       props.setActiveState(2);
     } else {
-      window.alert("Please Upload Atleast One Image");
+      handleShowSnackbar("Please upload Atleast one Image", "error");
     }
   }; //........................
 
-  const handleFileUploadOne = async event => {
+  const handleFileUploadOne = async (event) => {
     const file = event.target.files[0];
     const filename = event.target.files[0].name;
     const copiedArr = [...props.state.images];
@@ -46,8 +53,8 @@ const StepTwo = props => {
     props.dispatch({
       type: Types.SET_IMAGES_SUCCESS,
       payload: {
-        images: [...copiedArr]
-      }
+        images: [...copiedArr],
+      },
     });
 
     var bodyFormData = new FormData();
@@ -60,15 +67,15 @@ const StepTwo = props => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "x-auth-eptoken-vendor": token_RP
+            "x-auth-eptoken-vendor": token_RP,
           },
-          onUploadProgress: ProgressEvent => {
+          onUploadProgress: (ProgressEvent) => {
             handleProgressFileOne(
               parseInt(
                 Math.round(ProgressEvent.loaded * 100) / ProgressEvent.total
               )
             );
-          }
+          },
         }
       );
       if (res) {
@@ -80,8 +87,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       }
     } catch (err) {
@@ -93,8 +100,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       } else {
         const copiedArr = [...props.state.images];
@@ -104,8 +111,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       }
     }
@@ -115,7 +122,7 @@ const StepTwo = props => {
   //
   //
   //
-  const handleFileUploadTwo = async event => {
+  const handleFileUploadTwo = async (event) => {
     const file = event.target.files[0];
     const filename = event.target.files[0].name;
     const copiedArr = [...props.state.images];
@@ -125,8 +132,8 @@ const StepTwo = props => {
     props.dispatch({
       type: Types.SET_IMAGES_SUCCESS,
       payload: {
-        images: [...copiedArr]
-      }
+        images: [...copiedArr],
+      },
     });
 
     var bodyFormData = new FormData();
@@ -139,15 +146,15 @@ const StepTwo = props => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "x-auth-eptoken-vendor": token_RP
+            "x-auth-eptoken-vendor": token_RP,
           },
-          onUploadProgress: ProgressEvent => {
+          onUploadProgress: (ProgressEvent) => {
             handleProgressFileTwo(
               parseInt(
                 Math.round(ProgressEvent.loaded * 100) / ProgressEvent.total
               )
             );
-          }
+          },
         }
       );
       if (res) {
@@ -159,8 +166,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       }
     } catch (err) {
@@ -172,8 +179,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       } else {
         const copiedArr = [...props.state.images];
@@ -183,8 +190,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       }
     }
@@ -194,7 +201,7 @@ const StepTwo = props => {
   //
   //
   //
-  const handleFileUploadThree = async event => {
+  const handleFileUploadThree = async (event) => {
     const file = event.target.files[0];
     const filename = event.target.files[0].name;
     const copiedArr = [...props.state.images];
@@ -204,8 +211,8 @@ const StepTwo = props => {
     props.dispatch({
       type: Types.SET_IMAGES_SUCCESS,
       payload: {
-        images: [...copiedArr]
-      }
+        images: [...copiedArr],
+      },
     });
 
     var bodyFormData = new FormData();
@@ -218,15 +225,15 @@ const StepTwo = props => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "x-auth-eptoken-vendor": token_RP
+            "x-auth-eptoken-vendor": token_RP,
           },
-          onUploadProgress: ProgressEvent => {
+          onUploadProgress: (ProgressEvent) => {
             handleProgressFileThree(
               parseInt(
                 Math.round(ProgressEvent.loaded * 100) / ProgressEvent.total
               )
             );
-          }
+          },
         }
       );
       if (res) {
@@ -238,8 +245,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       }
     } catch (err) {
@@ -251,8 +258,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       } else {
         const copiedArr = [...props.state.images];
@@ -262,8 +269,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       }
     }
@@ -271,7 +278,7 @@ const StepTwo = props => {
     //try catch ends......
   }; //.......................Handle FileUpload Three Ends...
 
-  const handleFileUploadFour = async event => {
+  const handleFileUploadFour = async (event) => {
     const file = event.target.files[0];
     const filename = event.target.files[0].name;
     const copiedArr = [...props.state.images];
@@ -281,8 +288,8 @@ const StepTwo = props => {
     props.dispatch({
       type: Types.SET_IMAGES_SUCCESS,
       payload: {
-        images: [...copiedArr]
-      }
+        images: [...copiedArr],
+      },
     });
 
     var bodyFormData = new FormData();
@@ -295,15 +302,15 @@ const StepTwo = props => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "x-auth-eptoken-vendor": token_RP
+            "x-auth-eptoken-vendor": token_RP,
           },
-          onUploadProgress: ProgressEvent => {
+          onUploadProgress: (ProgressEvent) => {
             handleProgressFileFour(
               parseInt(
                 Math.round(ProgressEvent.loaded * 100) / ProgressEvent.total
               )
             );
-          }
+          },
         }
       );
       if (res) {
@@ -315,8 +322,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       }
     } catch (err) {
@@ -328,8 +335,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       } else {
         const copiedArr = [...props.state.images];
@@ -339,8 +346,8 @@ const StepTwo = props => {
         props.dispatch({
           type: Types.SET_IMAGES_SUCCESS,
           payload: {
-            images: [...copiedArr]
-          }
+            images: [...copiedArr],
+          },
         });
       }
     }
@@ -348,47 +355,47 @@ const StepTwo = props => {
     //try catch ends......
   }; //.......................Handle FileUpload Four Ends...
 
-  const handleProgressFileOne = progress => {
+  const handleProgressFileOne = (progress) => {
     const copiedArr = [...props.state.images];
     copiedArr[0].progress = progress;
     props.dispatch({
       type: Types.SET_IMAGES_SUCCESS,
       payload: {
-        images: [...copiedArr]
-      }
+        images: [...copiedArr],
+      },
     });
   }; //..........................Handle Progress One
 
-  const handleProgressFileTwo = progress => {
+  const handleProgressFileTwo = (progress) => {
     const copiedArr = [...props.state.images];
     copiedArr[1].progress = progress;
     props.dispatch({
       type: Types.SET_IMAGES_SUCCESS,
       payload: {
-        images: [...copiedArr]
-      }
+        images: [...copiedArr],
+      },
     });
   }; //..........................Handle Progress Two
 
-  const handleProgressFileThree = progress => {
+  const handleProgressFileThree = (progress) => {
     const copiedArr = [...props.state.images];
     copiedArr[2].progress = progress;
     props.dispatch({
       type: Types.SET_IMAGES_SUCCESS,
       payload: {
-        images: [...copiedArr]
-      }
+        images: [...copiedArr],
+      },
     });
   }; //..........................Handle Progress Three
 
-  const handleProgressFileFour = progress => {
+  const handleProgressFileFour = (progress) => {
     const copiedArr = [...props.state.images];
     copiedArr[3].progress = progress;
     props.dispatch({
       type: Types.SET_IMAGES_SUCCESS,
       payload: {
-        images: [...copiedArr]
-      }
+        images: [...copiedArr],
+      },
     });
   }; //..........................Handle Progress Four
 
@@ -412,7 +419,7 @@ const StepTwo = props => {
             onChange={handleFileUploadOne}
             type="file"
             style={{
-              display: "none"
+              display: "none",
             }}
           />
           <label htmlFor="contained-button-fileOne">
@@ -441,7 +448,7 @@ const StepTwo = props => {
               <img
                 style={{
                   width: "215px",
-                  height: "auto"
+                  height: "auto",
                 }}
                 src={`${AppConsts.server}/${props.state.images[0].serverfilename}`}
               />
@@ -459,7 +466,7 @@ const StepTwo = props => {
             type="file"
             onChange={handleFileUploadTwo}
             style={{
-              display: "none"
+              display: "none",
             }}
           />
           <label htmlFor="contained-button-fileTwo">
@@ -488,7 +495,7 @@ const StepTwo = props => {
               <img
                 style={{
                   width: "215px",
-                  height: "auto"
+                  height: "auto",
                 }}
                 src={`${AppConsts.server}/${props.state.images[1].serverfilename}`}
               />
@@ -506,7 +513,7 @@ const StepTwo = props => {
             type="file"
             onChange={handleFileUploadThree}
             style={{
-              display: "none"
+              display: "none",
             }}
           />
           <label htmlFor="contained-button-fileThree">
@@ -535,7 +542,7 @@ const StepTwo = props => {
               <img
                 style={{
                   width: "215px",
-                  height: "auto"
+                  height: "auto",
                 }}
                 src={`${AppConsts.server}/${props.state.images[2].serverfilename}`}
               />
@@ -553,7 +560,7 @@ const StepTwo = props => {
             type="file"
             onChange={handleFileUploadFour}
             style={{
-              display: "none"
+              display: "none",
             }}
           />
           <label htmlFor="contained-button-fileFour">
@@ -582,7 +589,7 @@ const StepTwo = props => {
               <img
                 style={{
                   width: "215px",
-                  height: "auto"
+                  height: "auto",
                 }}
                 src={`${AppConsts.server}/${props.state.images[3].serverfilename}`}
               />

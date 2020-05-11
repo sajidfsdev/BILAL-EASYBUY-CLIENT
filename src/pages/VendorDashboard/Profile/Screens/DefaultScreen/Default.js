@@ -19,7 +19,13 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Validators from "./../../../../../Utils/Methods/validation";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useSnackbar } from "notistack";
+import Tooltip from "@material-ui/core/Tooltip";
+import { CircularProgress } from "@material-ui/core";
+import axios from "axios";
+import AppConst from "./../../../../../Constants/Strings";
 
 //Variables...
 let currentField = "";
@@ -41,6 +47,8 @@ const Default = (props) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [hibernateDialogue, setHibernateDialogue] = useState(false);
+  const [hibernateBufferring, setHibernateBufferring] = useState(false);
   //Redux...
   const editBufferring_RP = useSelector(
     (state) => state.vendorProfile.editBufferring
@@ -62,6 +70,48 @@ const Default = (props) => {
   };
 
   //Methods......
+  const setHibernateStatus = async (status) => {
+    setHibernateBufferring(true);
+    setHibernateDialogue(false);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-eptoken-vendor": token_RP,
+      },
+    };
+
+    const body = JSON.stringify({ hibernate: status });
+
+    try {
+      const res = await axios.post(
+        AppConst.server + "/vendor/auth/hibernate",
+        body,
+        config
+      );
+
+      if (res) {
+        handleShowSnackBar("Account status changed successfully", "success");
+        setHibernateDialogue(false);
+        setHibernateBufferring(false);
+        props.refresh();
+      } else {
+        handleShowSnackBar("Network Error Has Occurred", "error");
+        setHibernateDialogue(false);
+        setHibernateBufferring(false);
+      }
+    } catch (err) {
+      if (err.response) {
+        handleShowSnackBar(err.response.data.errorMessage, "error");
+        setHibernateDialogue(false);
+        setHibernateBufferring(false);
+      } else {
+        handleShowSnackBar(err.message, "error");
+        setHibernateDialogue(false);
+        setHibernateBufferring(false);
+      }
+    }
+  }; //.................set Hibernate status
+
   const handleEditing = () => {
     if (currentField == constants.EDIT_NAME) {
       if (firstinputValue === "") return;
@@ -283,6 +333,27 @@ const Default = (props) => {
 
   return (
     <React.Fragment>
+      <Row className={classes.margin}>
+        <Row className={classes.hibernateRow}>
+          {hibernateBufferring ? (
+            <CircularProgress size={30} color="secondary" />
+          ) : props.data.hibernate ? (
+            <Tooltip placement={"top"} title="Activate Account">
+              <AddCircleIcon
+                onClick={() => setHibernateDialogue(true)}
+                className={classes.hibernateIcon}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip placement={"top"} title="Hibernate Account">
+              <RemoveCircleIcon
+                onClick={() => setHibernateDialogue(true)}
+                className={classes.hibernateIcon}
+              />
+            </Tooltip>
+          )}
+        </Row>
+      </Row>
       <Table headings={["Title", "Current Value", "Edit"]}>
         <TableRow>
           <TableCell align="center">Name</TableCell>
@@ -474,6 +545,39 @@ const Default = (props) => {
         </React.Fragment>
       </DraggableDialogue>
       {/* Dialogue Box Ends..... */}
+
+      {/* Hibernate dialogue starts.... */}
+      <DraggableDialogue
+        open={hibernateDialogue}
+        title={
+          props.data.hibernate
+            ? "Are you sure you want to activate your account"
+            : "Are you sure you want to Hibernate your account"
+        }
+        handleClose={() => setHibernateDialogue(false)}
+      >
+        <Row className={classes.hbBtnRow}>
+          <Button
+            onClick={() => setHibernateDialogue(false)}
+            color="primary"
+            variant="contained"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={
+              props.data.hibernate
+                ? setHibernateStatus.bind(this, false)
+                : setHibernateStatus.bind(this, true)
+            }
+            color="primary"
+            variant="contained"
+          >
+            OK
+          </Button>
+        </Row>
+      </DraggableDialogue>
+      {/* Hibernate dialogue ends...... */}
     </React.Fragment>
   );
 }; //.......................Deafult Screen

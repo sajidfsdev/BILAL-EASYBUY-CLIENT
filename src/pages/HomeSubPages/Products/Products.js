@@ -26,29 +26,33 @@ import Cities from "./cities";
 import sort from "fast-sort";
 import * as LocalTypes from "./types";
 import { withRouter } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
-const Products = props => {
+const Products = (props) => {
   //classes init...
   const classes = useStyles();
 
   const [state, dispatch] = useReducer(Reducer, InitialState);
+  const { enqueueSnackbar } = useSnackbar();
 
   //state management...
-  const bulk = useSelector(state => state.bulk.bulk);
-  const loaded_RP = useSelector(state => state.bulk.loaded);
-  const isError = useSelector(state => state.bulk.isError);
-  const errorMessage = useSelector(state => state.bulk.errorMessage);
+  const bulk = useSelector((state) => state.bulk.bulk);
+  const loaded_RP = useSelector((state) => state.bulk.loaded);
+  const isError = useSelector((state) => state.bulk.isError);
+  const errorMessage = useSelector((state) => state.bulk.errorMessage);
   //
   //
-  const cat_loaded_RP = useSelector(state => state.products.loaded);
-  const cat_isError_RP = useSelector(state => state.products.isError);
-  const cat_errorMessage_RP = useSelector(state => state.products.errorMessage);
-  const token_RP = useSelector(state => state.auth.token);
+  const cat_loaded_RP = useSelector((state) => state.products.loaded);
+  const cat_isError_RP = useSelector((state) => state.products.isError);
+  const cat_errorMessage_RP = useSelector(
+    (state) => state.products.errorMessage
+  );
+  const token_RP = useSelector((state) => state.auth.token);
   //
   //
-  const cat_RP = useSelector(state => state.products.cat);
-  const subCat_RP = useSelector(state => state.products.subCat);
-  const subSubCat_RP = useSelector(state => state.products.subSubCat);
+  const cat_RP = useSelector((state) => state.products.cat);
+  const subCat_RP = useSelector((state) => state.products.subCat);
+  const subSubCat_RP = useSelector((state) => state.products.subSubCat);
   //
   const [subCatCopy, setSubCatCopy] = useState([...subCat_RP]);
   const [subSubCatCopy, setSubSubCatCopy] = useState([...subSubCat_RP]);
@@ -76,9 +80,13 @@ const Products = props => {
   }, []);
 
   //Methods starts...
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //.......................handle show snackbar
+
   const handleFiltration = () => {
     if (state.isCatError || state.isSubCatError || state.isSubSubCatError) {
-      return window.alert("Please choose category correctly");
+      return handleShowSnackbar("Please choose category correctly", "error");
     }
     let catFiltered = [...handleCatFiltration()];
     if (catFiltered.length === 0) {
@@ -97,36 +105,36 @@ const Products = props => {
     setBulkCopy([...cityFiltered]);
   }; //........................Handle filtration called:
 
-  const handleCityFilter = priceFiltered => {
+  const handleCityFilter = (priceFiltered) => {
     if (state.city == "" || state.city == "All Cities") {
       return priceFiltered;
     } else {
       let cityFiltered = priceFiltered.filter(
-        elem => elem.vendorId.city.toUpperCase() == state.city.toUpperCase()
+        (elem) => elem.vendorId.city.toUpperCase() == state.city.toUpperCase()
       );
 
       return cityFiltered;
     }
   }; //........................Handle city filter
 
-  const handlePriceFiltration = nameFiltered => {
+  const handlePriceFiltration = (nameFiltered) => {
     let priceFiltered = [];
     if (state.price == "All Prices") {
       return nameFiltered;
     } else if (state.price == "Lowest To Highest") {
-      return sort(nameFiltered).asc(u => u.price);
+      return sort(nameFiltered).asc((u) => u.price);
     } else {
-      return sort(nameFiltered).desc(u => u.price);
+      return sort(nameFiltered).desc((u) => u.price);
     }
   }; //.............................HandlePrice Filtration
 
-  const handleNameFiltration = catFiltered => {
+  const handleNameFiltration = (catFiltered) => {
     //window.alert("Name filter called");
     if (state.name === "") {
       //window.alert("name === empty");
       return [...catFiltered];
     } else {
-      let nameFiltered = catFiltered.filter(elem => {
+      let nameFiltered = catFiltered.filter((elem) => {
         //window.alert(elem.name);
         //window.alert(state.name.toUpperCase());
         // keywordSearch(elem.name, state.name.toUpperCase(), 1)
@@ -148,21 +156,21 @@ const Products = props => {
       return [...bulk];
     }
     if (state.subCat == "" && state.subSubCat === "") {
-      catFiltered = [...bulk.filter(elem => elem.cat == state.cat)];
+      catFiltered = [...bulk.filter((elem) => elem.cat == state.cat)];
     } else if (state.subSubCat == "") {
       catFiltered = [
         ...bulk.filter(
-          elem => elem.cat == state.cat && elem.subCat == state.subCat
-        )
+          (elem) => elem.cat == state.cat && elem.subCat == state.subCat
+        ),
       ];
     } else {
       catFiltered = [
         ...bulk.filter(
-          elem =>
+          (elem) =>
             elem.cat == state.cat &&
             elem.subCat == state.subCat &&
             elem.subSubCat == state.subSubCat
-        )
+        ),
       ];
     }
     return catFiltered;
@@ -174,17 +182,17 @@ const Products = props => {
     dispatch_RP(ProdActions.handleLoadAllCats(token_RP));
   }; //.....................Handle Refresh
 
-  const handleSearchChange = event => {
+  const handleSearchChange = (event) => {
     const value = event.target.value;
     dispatch({
       type: LocalTypes.SET_NAME_SUCCESS,
       payload: {
-        name: value
-      }
+        name: value,
+      },
     });
   };
 
-  const handleCatChange = value => {
+  const handleCatChange = (value) => {
     let val = "";
     if (value === null) {
       val = "";
@@ -196,8 +204,8 @@ const Products = props => {
         type: LocalTypes.SET_CAT_FAIL,
         payload: {
           errorMessage: "Please select category",
-          cat: val
-        }
+          cat: val,
+        },
       });
     } else {
       //checking if pre-selected subCat and subSubCat exists starts....
@@ -206,8 +214,8 @@ const Products = props => {
           type: LocalTypes.SET_SUBCAT_FAIL,
           payload: {
             subCat: "",
-            errorMessage: "Please select subCat accordingly"
-          }
+            errorMessage: "Please select subCat accordingly",
+          },
         });
       }
       if (state.subSubCat != "") {
@@ -215,8 +223,8 @@ const Products = props => {
           type: LocalTypes.SET_SUBSUBCAT_FAIL,
           payload: {
             subSubCat: "",
-            errorMessage: "Please select sub-sub-Cat accordingly"
-          }
+            errorMessage: "Please select sub-sub-Cat accordingly",
+          },
         });
       }
 
@@ -224,19 +232,19 @@ const Products = props => {
       //Altering subCat and subSubCat accordingly.....
       const copiedSubCat = [];
       const copiedSubSubCat = [];
-      subCat_RP.forEach(elem => {
+      subCat_RP.forEach((elem) => {
         if (elem.cat === val) {
           copiedSubCat.push(elem);
         }
       });
-      subSubCat_RP.forEach(elem => {
+      subSubCat_RP.forEach((elem) => {
         if (elem.cat === val) {
           copiedSubSubCat.push(elem);
         }
       });
       if (copiedSubSubCat.length === 0) {
         copiedSubSubCat.push({
-          subSubCat: "Not Available"
+          subSubCat: "Not Available",
         });
         setSubSubCatCopy([...copiedSubSubCat]);
       } else {
@@ -244,10 +252,10 @@ const Products = props => {
       }
       if (copiedSubCat.length === 0) {
         copiedSubCat.push({
-          subCat: "Not Available"
+          subCat: "Not Available",
         });
         copiedSubSubCat.push({
-          subSubCat: "Not Available"
+          subSubCat: "Not Available",
         });
         setSubCatCopy([...copiedSubCat]);
         setSubSubCatCopy([...copiedSubSubCat]);
@@ -258,13 +266,13 @@ const Products = props => {
       dispatch({
         type: LocalTypes.SET_CAT_SUCCESS,
         payload: {
-          cat: val
-        }
+          cat: val,
+        },
       });
     }
   }; //..................................Handle Cat change
 
-  const handleSubCatChange = value => {
+  const handleSubCatChange = (value) => {
     let val = "";
     if (value === null) {
       val = "";
@@ -276,8 +284,8 @@ const Products = props => {
         type: LocalTypes.SET_SUBCAT_FAIL,
         payload: {
           errorMessage: "Please select sub-category",
-          subCat: val
-        }
+          subCat: val,
+        },
       });
     } else {
       //seeing if sub sub cat is pre-selected starts....
@@ -286,14 +294,14 @@ const Products = props => {
           type: LocalTypes.SET_SUBSUBCAT_FAIL,
           payload: {
             subSubCat: "",
-            errorMessage: "Please select sub-sub-Cat accordingly"
-          }
+            errorMessage: "Please select sub-sub-Cat accordingly",
+          },
         });
       }
       //seeing if sub sub cat is preselected ends.......
       //Setting sub sub cat accordingly starts....
       const copiedSubSubCat = [];
-      subSubCat_RP.forEach(elem => {
+      subSubCat_RP.forEach((elem) => {
         if (elem.cat === state.cat && elem.subCat === val) {
           copiedSubSubCat.push(elem);
         }
@@ -301,8 +309,8 @@ const Products = props => {
       if (copiedSubSubCat.length === 0) {
         setSubSubCatCopy([
           {
-            subSubCat: "Not Available"
-          }
+            subSubCat: "Not Available",
+          },
         ]);
       } else {
         setSubSubCatCopy([...copiedSubSubCat]);
@@ -311,13 +319,13 @@ const Products = props => {
       dispatch({
         type: LocalTypes.SET_SUBCAT_SUCCESS,
         payload: {
-          subCat: val
-        }
+          subCat: val,
+        },
       });
     }
   }; //...................................Handle Sub Cat Change
 
-  const handleSubSubCatChange = value => {
+  const handleSubSubCatChange = (value) => {
     let val = "";
     if (value === null) {
       val = "";
@@ -329,20 +337,20 @@ const Products = props => {
         type: LocalTypes.SET_SUBSUBCAT_FAIL,
         payload: {
           errorMessage: "Please select sub-sub-category",
-          subSubCat: val
-        }
+          subSubCat: val,
+        },
       });
     } else {
       dispatch({
         type: LocalTypes.SET_SUBSUBCAT_SUCCESS,
         payload: {
-          subSubCat: val
-        }
+          subSubCat: val,
+        },
       });
     }
   }; //.....................................Handle Sub Sub Cat....
 
-  const handleCityChange = city => {
+  const handleCityChange = (city) => {
     let val = "";
     if (city == null) {
       val = "";
@@ -352,8 +360,8 @@ const Products = props => {
     dispatch({
       type: LocalTypes.SET_CITY_SUCCESS,
       payload: {
-        city: val
-      }
+        city: val,
+      },
     });
   }; //...............................
 
@@ -380,12 +388,12 @@ const Products = props => {
                 <Autocomplete
                   id="combo-box-cat"
                   options={[...cat_RP]}
-                  getOptionLabel={option => option.cat}
+                  getOptionLabel={(option) => option.cat}
                   onChange={(event, value) => {
                     handleCatChange(value);
                   }}
                   className={classes.input}
-                  renderInput={params => (
+                  renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Category"
@@ -401,12 +409,12 @@ const Products = props => {
                 <Autocomplete
                   id="combo-box-cat"
                   options={[...subCatCopy]}
-                  getOptionLabel={option => option.subCat}
+                  getOptionLabel={(option) => option.subCat}
                   onChange={(event, value) => {
                     handleSubCatChange(value);
                   }}
                   className={classes.input}
-                  renderInput={params => (
+                  renderInput={(params) => (
                     <TextField
                       {...params}
                       label="sub-category"
@@ -423,12 +431,12 @@ const Products = props => {
                 <Autocomplete
                   id="combo-box-cat"
                   options={[...subSubCatCopy]}
-                  getOptionLabel={option => option.subSubCat}
+                  getOptionLabel={(option) => option.subSubCat}
                   onChange={(event, value) => {
                     handleSubSubCatChange(value);
                   }}
                   className={classes.input}
-                  renderInput={params => (
+                  renderInput={(params) => (
                     <TextField
                       {...params}
                       label="sub-sub-category"
@@ -462,12 +470,12 @@ const Products = props => {
                   label="Price Filter"
                   error={state.isPriceError}
                   helperText={state.priceErrorMessage}
-                  onChange={event => {
+                  onChange={(event) => {
                     dispatch({
                       type: LocalTypes.SET_PRICE_SUCCESS,
                       payload: {
-                        price: event.target.value
-                      }
+                        price: event.target.value,
+                      },
                     });
                   }}
                   label="Price Filter"
@@ -486,12 +494,12 @@ const Products = props => {
                 <Autocomplete
                   id="combo-box-cat"
                   options={[...Cities.cities]}
-                  getOptionLabel={option => option}
+                  getOptionLabel={(option) => option}
                   onChange={(event, value) => {
                     handleCityChange(value);
                   }}
                   className={classes.input}
-                  renderInput={params => (
+                  renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Cities"

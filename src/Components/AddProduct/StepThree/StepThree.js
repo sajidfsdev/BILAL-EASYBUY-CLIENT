@@ -13,14 +13,16 @@ import BodyBuilder from "./../../../pages/AddProducts/BodyBuilder";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../../Store/Action/products";
 import useStyles from "./StepThree.styles";
+import { useSnackbar } from "notistack";
 
-const StepThree = props => {
+const StepThree = (props) => {
   //classes...
   const classes = useStyles();
 
   //state management...
-  const token_RP = useSelector(state => state.auth.token);
+  const token_RP = useSelector((state) => state.auth.token);
   const dispatch_RP = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   //Use effect....
   useEffect(() => {
@@ -30,15 +32,15 @@ const StepThree = props => {
     props.dispatch({
       type: Types.SET_DOWNPAYMENT_SUCCESS,
       payload: {
-        downPayment: props.state.price
-      }
+        downPayment: props.state.price,
+      },
     });
   }, []);
 
   useEffect(() => {
     //Price-(DownPayment-InstallmentPlan)
     let installments = 0;
-    props.state.installmentPlan.forEach(elem => {
+    props.state.installmentPlan.forEach((elem) => {
       installments = parseInt(installments) + parseInt(elem.installment);
     });
     //window.alert("Installments: " + installments);
@@ -56,30 +58,40 @@ const StepThree = props => {
         type: Types.SET_REMAINING_FAIL,
         payload: {
           remaining: remaining,
-          errorMessage: "Installment Plan Is Incorrect"
-        }
+          errorMessage: "Installment Plan Is Incorrect",
+        },
       });
     } else {
       props.dispatch({
         type: Types.SET_REMAINING_SUCCESS,
         payload: {
-          remaining: remaining
-        }
+          remaining: remaining,
+        },
       });
     }
   }, [props.state.price, props.state.downPayment, props.state.installmentPlan]);
 
   //Methods...
 
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  };
+
   const handleFormSubmission = () => {
     let installments = 0;
-    props.state.installmentPlan.forEach(elem => {
+    props.state.installmentPlan.forEach((elem) => {
       installments = parseInt(installments) + parseInt(elem.installment);
     });
     if (props.state.installmentPlan.length === 0 || installments === 0) {
-      return window.alert("Please make at least one installments");
+      return handleShowSnackbar(
+        "Please make at least one installments",
+        "error"
+      );
     } else if (props.state.remaining !== 0) {
-      return window.alert("You have remaining Amount. Please adjust it");
+      return handleShowSnackbar(
+        "You have remaining Amount. Please adjust it",
+        "error"
+      );
     } else {
       //window.alert("Ready to submit");
       const body = JSON.stringify(BodyBuilder(props.state));
@@ -112,7 +124,7 @@ const StepThree = props => {
             duration: e.duration,
             installment: value,
             isError: true,
-            errorMessage: "Installment value increased"
+            errorMessage: "Installment value increased",
           });
         } else {
           copiedArr.push(e);
@@ -121,8 +133,8 @@ const StepThree = props => {
       props.dispatch({
         type: Types.SET_INSTALLMENTPLAN_SUCCESS,
         payload: {
-          installmentPlan: [...copiedArr]
-        }
+          installmentPlan: [...copiedArr],
+        },
       });
       //setting back ends.....
     } else if (value < 1) {
@@ -136,7 +148,7 @@ const StepThree = props => {
             duration: e.duration,
             installment: value,
             isError: true,
-            errorMessage: "Installment cannot be less than 1"
+            errorMessage: "Installment cannot be less than 1",
           });
         } else {
           copiedArr.push(e);
@@ -145,8 +157,8 @@ const StepThree = props => {
       props.dispatch({
         type: Types.SET_INSTALLMENTPLAN_SUCCESS,
         payload: {
-          installmentPlan: [...copiedArr]
-        }
+          installmentPlan: [...copiedArr],
+        },
       });
       //setting back ends.....
     } else {
@@ -160,7 +172,7 @@ const StepThree = props => {
             duration: e.duration,
             installment: value,
             isError: false,
-            errorMessage: ""
+            errorMessage: "",
           });
         } else {
           copiedArr.push(e);
@@ -169,18 +181,18 @@ const StepThree = props => {
       props.dispatch({
         type: Types.SET_INSTALLMENTPLAN_SUCCESS,
         payload: {
-          installmentPlan: [...copiedArr]
-        }
+          installmentPlan: [...copiedArr],
+        },
       });
       //setting back ends.....
     }
   }; //..................................Handle Installment Input Chnage
 
-  const handleChangeDownPayment = event => {
+  const handleChangeDownPayment = (event) => {
     const value = event.target.value;
     //Down Payment < price + installemts && >0
     let installments = 0;
-    props.state.installmentPlan.forEach(elem => {
+    props.state.installmentPlan.forEach((elem) => {
       installments = parseInt(installments) + parseInt(elem.installment);
     });
     //window.alert("Installments; " + installments);
@@ -191,28 +203,28 @@ const StepThree = props => {
         type: Types.SET_DOWNPAYMENT_FAIL,
         payload: {
           downPayment: value,
-          errorMessage: "Down Payment has increased total amount    "
-        }
+          errorMessage: "Down Payment has increased total amount    ",
+        },
       });
     } else if (value < 1) {
       props.dispatch({
         type: Types.SET_DOWNPAYMENT_FAIL,
         payload: {
           downPayment: value,
-          errorMessage: "Down Payment cannot be less than 1"
-        }
+          errorMessage: "Down Payment cannot be less than 1",
+        },
       });
     } else {
       props.dispatch({
         type: Types.SET_DOWNPAYMENT_SUCCESS,
         payload: {
-          downPayment: value
-        }
+          downPayment: value,
+        },
       });
     }
   }; //................................Handle Down Payment
 
-  const handleDeleteRow = index => {
+  const handleDeleteRow = (index) => {
     const copiedArray = [];
     props.state.installmentPlan.forEach((elem, ind) => {
       if (ind != index) {
@@ -222,8 +234,8 @@ const StepThree = props => {
     props.dispatch({
       type: Types.SET_INSTALLMENTPLAN_SUCCESS,
       payload: {
-        installmentPlan: [...copiedArray]
-      }
+        installmentPlan: [...copiedArray],
+      },
     });
   }; //.............................Handle delete row
 
@@ -233,73 +245,73 @@ const StepThree = props => {
       duration: props.state.duration,
       installment: 0,
       isError: true,
-      errorMessage: "Installment Cannot Be less than 1"
+      errorMessage: "Installment Cannot Be less than 1",
     });
     props.dispatch({
       type: Types.SET_INSTALLMENTPLAN_SUCCESS,
       payload: {
-        installmentPlan: [...copiedArray]
-      }
+        installmentPlan: [...copiedArray],
+      },
     });
   }; //...............................copied Array
 
-  const handleChangeDuration = event => {
+  const handleChangeDuration = (event) => {
     const value = event.target.value;
     props.dispatch({
       type: Types.SET_DURATION_SUCCESS,
       payload: {
-        duration: value
-      }
+        duration: value,
+      },
     });
     const copiedArray = [];
-    props.state.installmentPlan.forEach(elem => {
+    props.state.installmentPlan.forEach((elem) => {
       copiedArray.push({
         duration: value,
         installment: elem.installment,
         isError: elem.isError,
-        errorMessage: elem.errorMessage
+        errorMessage: elem.errorMessage,
       });
     });
     props.dispatch({
       type: Types.SET_INSTALLMENTPLAN_SUCCESS,
       payload: {
-        installmentPlan: [...copiedArray]
-      }
+        installmentPlan: [...copiedArray],
+      },
     });
   }; //..................................Hand;e Change Duraion
 
-  const handlePriceChange = event => {
+  const handlePriceChange = (event) => {
     const value = event.target.value;
     if (Validators.isEmpty(value)) {
       props.dispatch({
         type: Types.SET_PRICE_FAIL,
         payload: {
           errorMessage: "Product Price cannot be empty",
-          price: value
-        }
+          price: value,
+        },
       });
     } else if (Validators.isNumeric(value) === false) {
       props.dispatch({
         type: Types.SET_PRICE_FAIL,
         payload: {
           errorMessage: "Price Must Be Numeric Value",
-          price: value
-        }
+          price: value,
+        },
       });
     } else if (value < 1) {
       props.dispatch({
         type: Types.SET_PRICE_FAIL,
         payload: {
           errorMessage: "Price must be greater than 0",
-          price: value
-        }
+          price: value,
+        },
       });
     } else {
       props.dispatch({
         type: Types.SET_PRICE_SUCCESS,
         payload: {
-          price: value
-        }
+          price: value,
+        },
       });
     }
   }; //..................................Handle Price Change

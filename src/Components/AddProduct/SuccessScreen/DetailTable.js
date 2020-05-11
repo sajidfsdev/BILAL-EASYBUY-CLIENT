@@ -9,31 +9,31 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import BackspaceIcon from "@material-ui/icons/Backspace";
 
-const StyledTableCell = withStyles(theme => ({
+const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 }))(TableCell);
 
-const StyledTableRow = withStyles(theme => ({
+const StyledTableRow = withStyles((theme) => ({
   root: {
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.background.default
-    }
-  }
+      backgroundColor: theme.palette.background.default,
+    },
+  },
 }))(TableRow);
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 700
-  }
+    minWidth: 700,
+  },
 });
 
-const CustomizedTables = props => {
+const CustomizedTables = (props) => {
   const classes = useStyles();
 
   return (
@@ -43,7 +43,7 @@ const CustomizedTables = props => {
           <TableRow>
             <StyledTableCell
               style={{
-                padding: "5px"
+                padding: "5px",
               }}
               align="center"
             >
@@ -51,7 +51,7 @@ const CustomizedTables = props => {
             </StyledTableCell>
             <StyledTableCell
               style={{
-                padding: "5px"
+                padding: "5px",
               }}
               align="center"
             >
@@ -59,7 +59,7 @@ const CustomizedTables = props => {
             </StyledTableCell>
             <StyledTableCell
               style={{
-                padding: "5px"
+                padding: "5px",
               }}
               align="center"
             >
@@ -67,7 +67,7 @@ const CustomizedTables = props => {
             </StyledTableCell>
             <StyledTableCell
               style={{
-                padding: "5px"
+                padding: "5px",
               }}
               align="center"
             >
@@ -75,7 +75,7 @@ const CustomizedTables = props => {
             </StyledTableCell>
             <StyledTableCell
               style={{
-                padding: "5px"
+                padding: "5px",
               }}
               align="center"
             >
@@ -84,11 +84,20 @@ const CustomizedTables = props => {
 
             <StyledTableCell
               style={{
-                padding: "5px"
+                padding: "5px",
               }}
               align="center"
             >
               Description
+            </StyledTableCell>
+
+            <StyledTableCell
+              style={{
+                padding: "5px",
+              }}
+              align="center"
+            >
+              Attributes
             </StyledTableCell>
           </TableRow>
         </TableHead>
@@ -112,6 +121,15 @@ const CustomizedTables = props => {
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
               {props.state.desc}
             </StyledTableCell>
+            <StyledTableCell style={{ fontSize: "15px" }} align="center">
+              {
+                <ul>
+                  {props.state.att.map((elem, index) => (
+                    <li key={index}>{elem.attribute + " : " + elem.value}</li>
+                  ))}
+                </ul>
+              }
+            </StyledTableCell>
           </StyledTableRow>
         </TableBody>
       </Table>
@@ -126,8 +144,8 @@ CustomizedTables.defaultProps = {
     cat: "Laptop",
     subCat: "HP",
     subSubCat: "Not Available",
-    desc: "Some description"
-  }
+    desc: "Some description",
+  },
 };
 
 export default CustomizedTables;

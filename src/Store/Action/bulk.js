@@ -4,17 +4,17 @@ import AppConsts from "./../../Constants/Strings";
 
 export const handleGetAllProducts = () => {
   const body = JSON.stringify({
-    action: "get all products"
+    action: "get all products",
   });
 
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
 
   //return starts...
-  return async dispatch => {
+  return async (dispatch) => {
     //try catch starts..
     try {
       const res = await axios.post(
@@ -27,15 +27,19 @@ export const handleGetAllProducts = () => {
         return dispatch({
           type: Types.BULK_LOADED_SUCCESS,
           payload: {
-            bulk: [...res.data.data]
-          }
+            bulk: [
+              ...res.data.data.filter(
+                (elem) => elem.vendorId.hibernate === false
+              ),
+            ],
+          },
         });
       } else {
         return dispatch({
           type: Types.BULK_LOADED_FAIL,
           payload: {
-            errorMessage: "Unable To Load Products. Please try again"
-          }
+            errorMessage: "Unable To Load Products. Please try again",
+          },
         });
       }
     } catch (err) {
@@ -43,15 +47,15 @@ export const handleGetAllProducts = () => {
         return dispatch({
           type: Types.BULK_LOADED_FAIL,
           payload: {
-            errorMessage: err.response.data.errorMessage
-          }
+            errorMessage: err.response.data.errorMessage,
+          },
         });
       } else {
         return dispatch({
           type: Types.BULK_LOADED_FAIL,
           payload: {
-            errorMessage: err.message
-          }
+            errorMessage: err.message,
+          },
         });
       }
     }

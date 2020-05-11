@@ -71,4 +71,9 @@ export default makeStyles((theme) => ({
   margin: {
     marginTop: "5px",
   },
+  deleteIcon: {
+    fontSize: "25px",
+    color: "red",
+    cursor: "pointer",
+  },
 }));

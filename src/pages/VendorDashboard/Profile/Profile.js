@@ -63,7 +63,7 @@ const Profile = (props) => {
       />
     );
   } else {
-    MainGUI = <DefaultScreen data={profile_RP} />;
+    MainGUI = <DefaultScreen data={profile_RP} refresh={loadProfileData} />;
   }
 
   return (

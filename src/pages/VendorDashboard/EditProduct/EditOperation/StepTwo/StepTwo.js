@@ -8,15 +8,22 @@ import { useSelector } from "react-redux";
 import AppConsts from "./../../../../../Constants/Strings";
 import * as Types from "./../types";
 import useStyles from "./StepTwo.styles";
+import { useSnackbar } from "notistack";
 
 const StepTwo = (props) => {
   //classes...
   const classes = useStyles();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   //state management....
   const token_RP = useSelector((state) => state.auth.token);
 
   //Methods starts...
+
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //.....................handle show snackbar
 
   const handleMoveNext = () => {
     let validate = false;
@@ -32,7 +39,7 @@ const StepTwo = (props) => {
     if (validate === true) {
       props.setActiveState(2);
     } else {
-      window.alert("Please Upload Atleast One Image");
+      handleShowSnackbar("Please upload atleast one image", "error");
     }
   }; //........................
 

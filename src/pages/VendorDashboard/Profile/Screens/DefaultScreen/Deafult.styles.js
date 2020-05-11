@@ -30,4 +30,25 @@ export default makeStyles((theme) => ({
     color: "red",
     fontSize: "15px",
   },
+  margin: {
+    marginTop: "5px",
+    marginBottom: "5px",
+  },
+  hibernateRow: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  hibernateIcon: {
+    fontSize: "30px",
+    cursor: "pointer",
+    color: theme.palette.primary.main,
+  },
+  hbBtnRow: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
 }));

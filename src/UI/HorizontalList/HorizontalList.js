@@ -74,7 +74,7 @@ const HorizonatalList = (props) => {
                       </Row>
                       <Row className={classes.furtherDetails}>
                         {"Installment Plan: " +
-                          (elem.installmentPlan.installmentPlan.length + 1) +
+                          elem.installmentPlan.installmentPlan.length +
                           " " +
                           elem.installmentPlan.duration}
                       </Row>

@@ -6,8 +6,9 @@ import DetailsTable from "./DetailTable";
 import InstallmentTable from "./InstallmentTable";
 import { Paper, Button } from "@material-ui/core";
 import AppConsts from "./../../../Constants/Strings";
+import * as Types from "./../../../pages/AddProducts/types";
 
-const SuccessScreen = props => {
+const SuccessScreen = (props) => {
   //classes init...
   const classes = useStyles();
 
@@ -21,7 +22,7 @@ const SuccessScreen = props => {
             <Row className={classes.titleIcon}>
               <ThumbUpIcon
                 style={{
-                  fontSize: "30px"
+                  fontSize: "30px",
                 }}
               />
             </Row>
@@ -37,7 +38,7 @@ const SuccessScreen = props => {
                   <img
                     style={{
                       width: "215px",
-                      height: "auto"
+                      height: "auto",
                     }}
                     src={`${AppConsts.server}/${elem.serverfilename}`}
                   />
@@ -50,7 +51,7 @@ const SuccessScreen = props => {
           {/* Details table starts */}
           <Row
             style={{
-              marginTop: "20px"
+              marginTop: "20px",
             }}
           >
             <DetailsTable state={props.state} />
@@ -69,7 +70,7 @@ const SuccessScreen = props => {
           {/* Installment Plan table starts */}
           <Row
             style={{
-              marginTop: "20px"
+              marginTop: "20px",
             }}
           >
             <InstallmentTable installmentPlan={props.state.installmentPlan} />

@@ -13,10 +13,12 @@ import BodyBuilder from "./../BodyBuilder";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../../../../Store/Action/products";
 import useStyles from "./StepThree.styles";
+import { useSnackbar } from "notistack";
 
 const StepThree = (props) => {
   //classes...
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   //state management...
   const token_RP = useSelector((state) => state.auth.token);
@@ -62,15 +64,25 @@ const StepThree = (props) => {
 
   //Methods...
 
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //.....................handle show snackbar
+
   const handleFormSubmission = () => {
     let installments = 0;
     props.state.installmentPlan.forEach((elem) => {
       installments = parseInt(installments) + parseInt(elem.installment);
     });
     if (props.state.installmentPlan.length === 0 || installments === 0) {
-      return window.alert("Please make at least one installments");
+      return handleShowSnackbar(
+        "Please make at least one installments",
+        "error"
+      );
     } else if (props.state.remaining !== 0) {
-      return window.alert("You have remaining Amount. Please adjust it");
+      return handleShowSnackbar(
+        "You have remaining Amount. Please adjust it",
+        "error"
+      );
     } else {
       //window.alert("Ready to submit");
       const body = JSON.stringify(BodyBuilder(props.state, props.id));

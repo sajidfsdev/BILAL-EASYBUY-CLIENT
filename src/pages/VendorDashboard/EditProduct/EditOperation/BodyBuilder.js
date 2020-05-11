@@ -1,5 +1,5 @@
 const BodyBuilder = (state, id) => {
-  window.alert(id);
+  //window.alert(id);
   const name = state.name;
   const price = parseInt(state.price);
   const cat = state.cat;

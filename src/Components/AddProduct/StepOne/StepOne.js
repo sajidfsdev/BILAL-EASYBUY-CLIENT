@@ -9,15 +9,17 @@ import { useSelector } from "react-redux";
 import Table from "./../../../UI/Table/Table";
 import useStyles from "./StepOne.styles";
 import { Button } from "@material-ui/core";
-const StepOne = props => {
+import { useSnackbar } from "notistack";
+const StepOne = (props) => {
   //classes...
 
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   //state mnagement....
-  const cat_RP = useSelector(state => state.products.cat);
-  const subCat_RP = useSelector(state => state.products.subCat);
-  const subSubCat_RP = useSelector(state => state.products.subSubCat);
+  const cat_RP = useSelector((state) => state.products.cat);
+  const subCat_RP = useSelector((state) => state.products.subCat);
+  const subSubCat_RP = useSelector((state) => state.products.subSubCat);
 
   const [subCatCopy, setSubCatCopy] = useState([...subCat_RP]);
   const [subSubCatCopy, setSubSubCatCopy] = useState([...subSubCat_RP]);
@@ -26,7 +28,11 @@ const StepOne = props => {
 
   //Methods......
 
-  const handleDeleteAtt = index => {
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //....................handle show snackbar
+
+  const handleDeleteAtt = (index) => {
     const copiedArr = [];
     props.state.att.forEach((elem, ind) => {
       if (index != ind) {
@@ -36,8 +42,8 @@ const StepOne = props => {
     props.dispatch({
       type: Types.SET_ATT_SUCCESS,
       payload: {
-        att: [...copiedArr]
-      }
+        att: [...copiedArr],
+      },
     });
   };
 
@@ -50,7 +56,7 @@ const StepOne = props => {
       props.state.subSubCat === "" ||
       props.state.att.length === 0
     ) {
-      return window.alert("Please fill The Requisite Fields");
+      return handleShowSnackbar("Please fill The Requisite Fields", "error");
     }
 
     if (
@@ -60,79 +66,82 @@ const StepOne = props => {
       props.state.isSubCatError ||
       props.state.isSubSubCatError
     ) {
-      return window.alert("Please correct above error inOrder to proceed");
+      return handleShowSnackbar(
+        "Please correct above error inOrder to proceed",
+        "error"
+      );
     }
 
     props.setActiveState(1);
   }; //...........................Handle Next
 
-  const handleAttChange = event => {
+  const handleAttChange = (event) => {
     const value = event.target.value;
     setAtt(value);
   }; //.........................Handle Att Change
 
-  const handleAttValChange = event => {
+  const handleAttValChange = (event) => {
     const value = event.target.value;
     setAttVal(value);
   }; //.........................Handle AttVal change
 
-  const handleNameChange = event => {
+  const handleNameChange = (event) => {
     const value = event.target.value;
     if (Validators.isEmpty(value)) {
       props.dispatch({
         type: Types.SET_NAME_FAIL,
         payload: {
           errorMessage: "Product Name cannot be empty",
-          name: value
-        }
+          name: value,
+        },
       });
     } else {
       props.dispatch({
         type: Types.SET_NAME_SUCCESS,
         payload: {
-          name: value
-        }
+          name: value,
+        },
       });
     }
   }; //..................................Handle Name Change
 
-  const handlePriceChange = event => {
+  const handlePriceChange = (event) => {
     const value = event.target.value;
     if (Validators.isEmpty(value)) {
       props.dispatch({
         type: Types.SET_PRICE_FAIL,
         payload: {
           errorMessage: "Product Price cannot be empty",
-          price: value
-        }
+          price: value,
+        },
       });
     } else if (Validators.isNumeric(value) === false) {
       props.dispatch({
         type: Types.SET_PRICE_FAIL,
         payload: {
           errorMessage: "Price Must Be Numeric Value",
-          price: value
-        }
+          price: value,
+        },
       });
     } else if (value < 1) {
       props.dispatch({
         type: Types.SET_PRICE_FAIL,
         payload: {
           errorMessage: "Price must be greater than 0",
-          price: value
-        }
+          price: value,
+        },
       });
     } else {
       props.dispatch({
         type: Types.SET_PRICE_SUCCESS,
         payload: {
-          price: value
-        }
+          price: value,
+        },
       });
     }
   }; //..................................Handle Price Change
 
-  const handleCatChange = value => {
+  const handleCatChange = (value) => {
     let val = "";
     if (value === null) {
       val = "";
@@ -144,8 +153,8 @@ const StepOne = props => {
         type: Types.SET_CAT_FAIL,
         payload: {
           errorMessage: "Please select category",
-          cat: val
-        }
+          cat: val,
+        },
       });
     } else {
       //checking if pre-selected subCat and subSubCat exists starts....
@@ -154,8 +163,8 @@ const StepOne = props => {
           type: Types.SET_SUBCAT_FAIL,
           payload: {
             subCat: "",
-            errorMessage: "Please select subCat accordingly"
-          }
+            errorMessage: "Please select subCat accordingly",
+          },
         });
       }
       if (props.state.subSubCat != "") {
@@ -163,27 +172,27 @@ const StepOne = props => {
           type: Types.SET_SUBSUBCAT_FAIL,
           payload: {
             subSubCat: "",
-            errorMessage: "Please select sub-sub-Cat accordingly"
-          }
+            errorMessage: "Please select sub-sub-Cat accordingly",
+          },
         });
       }
       //checking pre-selected subScat and SubSubCat ends...............
       //Altering subCat and subSubCat accordingly.....
       const copiedSubCat = [];
       const copiedSubSubCat = [];
-      subCat_RP.forEach(elem => {
+      subCat_RP.forEach((elem) => {
         if (elem.cat === val) {
           copiedSubCat.push(elem);
         }
       });
-      subSubCat_RP.forEach(elem => {
+      subSubCat_RP.forEach((elem) => {
         if (elem.cat === val) {
           copiedSubSubCat.push(elem);
         }
       });
       if (copiedSubSubCat.length === 0) {
         copiedSubSubCat.push({
-          subSubCat: "Not Available"
+          subSubCat: "Not Available",
         });
         setSubSubCatCopy([...copiedSubSubCat]);
       } else {
@@ -191,10 +200,10 @@ const StepOne = props => {
       }
       if (copiedSubCat.length === 0) {
         copiedSubCat.push({
-          subCat: "Not Available"
+          subCat: "Not Available",
         });
         copiedSubSubCat.push({
-          subSubCat: "Not Available"
+          subSubCat: "Not Available",
         });
 
         setSubCatCopy([...copiedSubCat]);
@@ -222,13 +231,13 @@ const StepOne = props => {
       props.dispatch({
         type: Types.SET_CAT_SUCCESS,
         payload: {
-          cat: val
-        }
+          cat: val,
+        },
       });
     }
   }; //..................................Handle Cat change
 
-  const handleSubCatChange = value => {
+  const handleSubCatChange = (value) => {
     let val = "";
     if (value === null) {
       val = "";
@@ -240,8 +249,8 @@ const StepOne = props => {
         type: Types.SET_SUBCAT_FAIL,
         payload: {
           errorMessage: "Please select sub-category",
-          subCat: val
-        }
+          subCat: val,
+        },
       });
     } else {
       //seeing if sub sub cat is pre-selected starts....
@@ -250,14 +259,14 @@ const StepOne = props => {
           type: Types.SET_SUBSUBCAT_FAIL,
           payload: {
             subSubCat: "",
-            errorMessage: "Please select sub-sub-Cat accordingly"
-          }
+            errorMessage: "Please select sub-sub-Cat accordingly",
+          },
         });
       }
       //seeing if sub sub cat is preselected ends.......
       //Setting sub sub cat accordingly starts....
       const copiedSubSubCat = [];
-      subSubCat_RP.forEach(elem => {
+      subSubCat_RP.forEach((elem) => {
         if (elem.cat === props.state.cat && elem.subCat === val) {
           copiedSubSubCat.push(elem);
         }
@@ -265,8 +274,8 @@ const StepOne = props => {
       if (copiedSubSubCat.length === 0) {
         setSubSubCatCopy([
           {
-            subSubCat: "Not Available"
-          }
+            subSubCat: "Not Available",
+          },
         ]);
       } else {
         setSubSubCatCopy([...copiedSubSubCat]);
@@ -275,13 +284,13 @@ const StepOne = props => {
       props.dispatch({
         type: Types.SET_SUBCAT_SUCCESS,
         payload: {
-          subCat: val
-        }
+          subCat: val,
+        },
       });
     }
   }; //...................................Handle Sub Cat Change
 
-  const handleSubSubCatChange = value => {
+  const handleSubSubCatChange = (value) => {
     let val = "";
     if (value === null) {
       val = "";
@@ -293,42 +302,42 @@ const StepOne = props => {
         type: Types.SET_SUBSUBCAT_FAIL,
         payload: {
           errorMessage: "Please select sub-sub-category",
-          subSubCat: val
-        }
+          subSubCat: val,
+        },
       });
     } else {
       props.dispatch({
         type: Types.SET_SUBSUBCAT_SUCCESS,
         payload: {
-          subSubCat: val
-        }
+          subSubCat: val,
+        },
       });
     }
   }; //.....................................Handle Sub Sub Cat....
 
-  const handleDescChange = event => {
+  const handleDescChange = (event) => {
     const value = event.target.value;
     props.dispatch({
       type: Types.SET_DESC_SUCCESS,
       payload: {
-        desc: value
-      }
+        desc: value,
+      },
     });
   }; //......................................Handle Desc Error
 
   // Handle Att Form Submission.....
-  const handleAttFormSubmission = event => {
+  const handleAttFormSubmission = (event) => {
     event.preventDefault();
     const copyArr = [...props.state.att];
     copyArr.push({
       attribute: att,
-      value: attVal
+      value: attVal,
     });
     props.dispatch({
       type: Types.SET_ATT_SUCCESS,
       payload: {
-        att: [...copyArr]
-      }
+        att: [...copyArr],
+      },
     });
     setAttVal("");
     setAtt("");
@@ -372,12 +381,12 @@ const StepOne = props => {
           <Autocomplete
             id="combo-box-cat"
             options={[...cat_RP]}
-            getOptionLabel={option => option.cat}
+            getOptionLabel={(option) => option.cat}
             onChange={(event, value) => {
               handleCatChange(value);
             }}
             className={classes.input}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
                 {...params}
                 label="Category"
@@ -393,12 +402,12 @@ const StepOne = props => {
           <Autocomplete
             id="combo-box-cat"
             options={[...subCatCopy]}
-            getOptionLabel={option => option.subCat}
+            getOptionLabel={(option) => option.subCat}
             onChange={(event, value) => {
               handleSubCatChange(value);
             }}
             className={classes.input}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
                 {...params}
                 label="sub-category"
@@ -420,12 +429,12 @@ const StepOne = props => {
           <Autocomplete
             id="combo-box-cat"
             options={[...subSubCatCopy]}
-            getOptionLabel={option => option.subSubCat}
+            getOptionLabel={(option) => option.subSubCat}
             onChange={(event, value) => {
               handleSubSubCatChange(value);
             }}
             className={classes.input}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
                 {...params}
                 label="sub-sub-category"
