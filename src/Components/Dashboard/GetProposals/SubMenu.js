@@ -56,7 +56,7 @@ const SubMenu = (props) => {
             >
               SUGGESTIONS
             </Row>
-            <Row
+            {/* <Row
               className={
                 activeScreen == SUGGEST_SCREEN
                   ? classes.active
@@ -67,7 +67,7 @@ const SubMenu = (props) => {
               }}
             >
               SUGGEST
-            </Row>
+            </Row> */}
           </Row>
         </Paper>
 

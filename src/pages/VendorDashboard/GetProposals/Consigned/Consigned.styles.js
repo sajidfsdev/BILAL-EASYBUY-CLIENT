@@ -78,6 +78,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "20px",
     cursor: "pointer",
   },
+  dialogueBtnRow: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  textArea: {
+    minWidth: "200px",
+    minHeight: "50px",
+    marginBottom: "10px",
+  },
 }));
 
 export default useStyles;

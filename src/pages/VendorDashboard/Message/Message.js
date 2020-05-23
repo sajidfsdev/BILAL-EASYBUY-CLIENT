@@ -350,17 +350,29 @@ const Messages = (props) => {
 
         <Row className={classes.margin}>
           {type === "UNREPLIED" ? (
-            <Table headings={["SR", "Title", "Message", "Date", "Status"]}>
-              {unrepliedMessages.map((elem, index) => (
-                <TableRow key={index}>
-                  <TableCell align="center">{index + 1}</TableCell>
-                  <TableCell align="center">{elem.title}</TableCell>
-                  <TableCell align="center">{elem.message}</TableCell>
-                  <TableCell align="center">{elem.date}</TableCell>
-                  <TableCell align="center">{"Pending"}</TableCell>
-                </TableRow>
-              ))}
-            </Table>
+            unrepliedMessages.length === 0 ? (
+              <ErrorScreen
+                errorMessage="No unreplied message exists"
+                showReloadButton={false}
+              />
+            ) : (
+              <Table headings={["SR", "Title", "Message", "Date", "Status"]}>
+                {unrepliedMessages.map((elem, index) => (
+                  <TableRow key={index}>
+                    <TableCell align="center">{index + 1}</TableCell>
+                    <TableCell align="center">{elem.title}</TableCell>
+                    <TableCell align="center">{elem.message}</TableCell>
+                    <TableCell align="center">{elem.date}</TableCell>
+                    <TableCell align="center">{"Pending"}</TableCell>
+                  </TableRow>
+                ))}
+              </Table>
+            )
+          ) : repliedMessages.length === 0 ? (
+            <ErrorScreen
+              errorMessage="No replied message exists"
+              showReloadButton={false}
+            />
           ) : (
             <Table
               headings={[

@@ -12,11 +12,12 @@ import Gallery from "./../../../Reusable/Gallery";
 import DownPayment from "./../../../Reusable/DownPayment";
 import InstallmentPlan from "./../../../Reusable/InstallmentPlan";
 import Checkbox from "@material-ui/core/Checkbox";
+import ErrorScreen from "./../../../Reusable/ErrorScreen";
 
 const useStyles = makeStyles((theme) => ({
-  table: {
-    marginTop: "30px",
-  },
+  // table: {
+  //   marginTop: "30px",
+  // },
   bar: {
     width: "100%",
     marginTop: "10px",
@@ -52,6 +53,23 @@ const useStyles = makeStyles((theme) => ({
   marginRow: {
     marginTop: "5px",
   },
+  searchInputBar: {
+    marginRight: "20px",
+  },
+  searchInput: {
+    width: "200px",
+    height: "25px",
+    fontSize: "15px",
+  },
+  searchBar: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    height: "30px",
+    backgroundColor: theme.palette.primary.main,
+  },
 }));
 
 const LOADING_SCREEN = "loading screen";
@@ -60,11 +78,18 @@ const EMPTY_SCREEN = "empty screen";
 const DETAILS_SCREEN = "DETAILS SCREEN";
 const INSTALLMENT_SCREEN = "INSTALLMENT SCREENS";
 
+const SEARCH_BY_VENDOR_NAME = "Vendor";
+const SEARCH_BY_VENDOR_CONTACT = "Contact";
+const SEARCH_BY_PRODUCT = "Product";
+
 const Approved = (props) => {
   //styles init....
   const classes = useStyles();
   const [screen, setScreen] = useState(LOADING_SCREEN);
   const [currentData, setCurrentData] = useState();
+  const [searchKeywords, setSearchKeywords] = useState("");
+  const [searchType, setSearchType] = useState(SEARCH_BY_PRODUCT);
+  const [records, setRecords] = useState(props.data);
 
   useEffect(() => {
     if (props.data.length === 0) {
@@ -72,7 +97,40 @@ const Approved = (props) => {
     } else {
       setScreen(DEFAULT_SCREEN);
     }
-  }, []);
+  }, [props.data]);
+
+  const handleSearchRecord = (event) => {
+    const value = event.target.value;
+    if (value === "") {
+      setRecords([...props.data]);
+    } else if (searchType === SEARCH_BY_PRODUCT) {
+      setRecords([
+        ...props.data.filter(
+          (elem) =>
+            elem.product.name.toUpperCase().search(value.toUpperCase()) >= 0
+        ),
+      ]);
+    } else if (searchType === SEARCH_BY_VENDOR_CONTACT) {
+      setRecords([
+        ...props.data.filter(
+          (elem) =>
+            elem.vendorId.contact.toUpperCase().search(value.toUpperCase()) >= 0
+        ),
+      ]);
+    } else if (searchType === SEARCH_BY_VENDOR_NAME) {
+      setRecords([
+        ...props.data.filter(
+          (elem) =>
+            elem.vendorId.name.toUpperCase().search(value.toUpperCase()) >= 0
+        ),
+      ]);
+    }
+    setSearchKeywords(value);
+  }; //.............handle earch record
+
+  React.useEffect(() => {
+    setRecords(props.data);
+  }, [props.data]);
 
   //Main GUI....
   let mainGUI = null;
@@ -86,12 +144,39 @@ const Approved = (props) => {
   } else if (screen == EMPTY_SCREEN) {
     mainGUI = (
       <React.Fragment>
-        <EmptyScreen message="There Are No Approved Reuquests" />
+        <ErrorScreen
+          showReloadButton={false}
+          errorMessage="There Are No Approved Reuquests"
+        />
       </React.Fragment>
     );
   } else if (screen == DEFAULT_SCREEN) {
     mainGUI = (
       <React.Fragment>
+        <Row className={classes.searchBar}>
+          <Row className={classes.searchInputBar}>
+            <select
+              style={{
+                height: "30px",
+              }}
+              className={classes.searchInput}
+              value={searchType}
+              onChange={(event) => setSearchType(event.target.value)}
+            >
+              <option>{SEARCH_BY_VENDOR_NAME}</option>
+              <option>{SEARCH_BY_VENDOR_CONTACT}</option>
+              <option>{SEARCH_BY_PRODUCT}</option>
+            </select>
+          </Row>
+          <Row className={classes.searchInputBar}>
+            <input
+              value={searchKeywords}
+              onChange={handleSearchRecord}
+              type="text"
+              className={classes.searchInput}
+            />
+          </Row>
+        </Row>
         <Row className={classes.table}>
           <Table
             headings={[
@@ -104,7 +189,7 @@ const Approved = (props) => {
               "Installments",
             ]}
           >
-            {props.data.map((elem, index) => (
+            {records.map((elem, index) => (
               <TableRow key={index}>
                 <TableCell style={{ fontSize: "15px" }} align="center">
                   {index + 1}

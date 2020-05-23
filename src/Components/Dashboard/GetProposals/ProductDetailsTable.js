@@ -89,6 +89,15 @@ const CustomizedTables = (props) => {
             >
               Description
             </StyledTableCell>
+
+            <StyledTableCell
+              style={{
+                padding: "5px",
+              }}
+              align="center"
+            >
+              Attributes
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -110,6 +119,13 @@ const CustomizedTables = (props) => {
             </StyledTableCell>
             <StyledTableCell style={{ fontSize: "15px" }} align="center">
               {props.state.desc}
+            </StyledTableCell>
+            <StyledTableCell style={{ fontSize: "15px" }} align="center">
+              <ul>
+                {props.state.att.map((e, i) => (
+                  <li key={i}>{e[0].attribute + " : " + e[0].value}</li>
+                ))}
+              </ul>
             </StyledTableCell>
           </StyledTableRow>
         </TableBody>

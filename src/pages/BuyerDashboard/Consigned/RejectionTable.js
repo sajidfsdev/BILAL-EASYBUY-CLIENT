@@ -7,8 +7,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import BackspaceIcon from "@material-ui/icons/Backspace";
 import { Tooltip } from "@material-ui/core";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -36,9 +36,14 @@ const useStyles = makeStyles({
   table: {
     minWidth: 700,
   },
+  deleteIcon: {
+    fontSize: "20px",
+    color: "red",
+    cursor: "pointer",
+  },
 });
 
-const CustomizedTables = (props) => {
+const RejectionTable = (props) => {
   const classes = useStyles();
 
   //state manageemt starts....
@@ -107,6 +112,23 @@ const CustomizedTables = (props) => {
               >
                 Contact
               </StyledTableCell>
+              <StyledTableCell
+                style={{
+                  padding: "5px",
+                }}
+                align="center"
+              >
+                Rejection Reason
+              </StyledTableCell>
+
+              <StyledTableCell
+                style={{
+                  padding: "5px",
+                }}
+                align="center"
+              >
+                Delete
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -133,6 +155,18 @@ const CustomizedTables = (props) => {
                 <StyledTableCell style={{ fontSize: "15px" }} align="center">
                   {row.vendorId.contact}
                 </StyledTableCell>
+                <StyledTableCell style={{ fontSize: "15px" }} align="center">
+                  {row.reason}
+                </StyledTableCell>
+                <StyledTableCell style={{ fontSize: "15px" }} align="center">
+                  <DeleteForeverIcon
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      props.delete(row._id);
+                    }}
+                    className={classes.deleteIcon}
+                  />
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
@@ -147,8 +181,8 @@ const CustomizedTables = (props) => {
   return <React.Fragment>{mainGUI}</React.Fragment>;
 };
 
-CustomizedTables.defaultProps = {
+RejectionTable.defaultProps = {
   data: [],
 };
 
-export default CustomizedTables;
+export default RejectionTable;

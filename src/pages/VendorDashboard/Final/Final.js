@@ -26,20 +26,89 @@ const CUSTOMER_PRODUCTS_SCREEN = "CUSTOMERPRODUCTSCREEN";
 const REGISTER = "REGISTER";
 const DETAILS_SCREEN = "DETAILS SCREEN";
 
+const SEARCH_BY_NAME = "SEARCH_BY_NAME";
+const SEARCH_BY_CONTACT = "SEARCH_BY_CONTACT";
+const SEARCH_BY_EMAIL = "SEARCH_BY_EMAIL";
+const SEARCH_BY_CITY = "SEARCH_BY_CITY";
+
 const Consigned = (props) => {
   const classes = useStyles();
   const [errorMessage, setErrorMessage] = useState("Pending");
   const [requests, setRequests] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [filteredReuests, setFilteresRequests] = useState([]);
+  const [filteredRequestCopy, setFilteredRequestCopy] = useState([]);
   const token_RP = useSelector((state) => state.auth.token);
   const [screen, setScreen] = useState(LOADING_SCREEN);
   const [currentRegister, setCurrentRegister] = useState();
   const [currentData, setCurrentData] = useState();
+  const [customersCopy, setCustomersCopy] = useState([]);
+  const [searchKeywords, setSearchKeywords] = useState("");
+  const [searchType, setSearchType] = useState(SEARCH_BY_NAME);
+  const [productSearchKeywords, setProductSearchKeywords] = useState("");
 
   useEffect(() => {
     handleLoadData();
   }, []);
+
+  const handleFilterProducts = (event) => {
+    const value = event.target.value;
+    setProductSearchKeywords(value);
+    if (value === "") {
+      setFilteredRequestCopy([...filteredReuests]);
+    } else {
+      setFilteredRequestCopy([
+        ...filteredReuests.filter(
+          (elem) =>
+            elem.product.name.toUpperCase().search(value.toUpperCase()) >= 0
+        ),
+      ]);
+    }
+  };
+
+  const handleFilterCustomers = (event) => {
+    const value = event.target.value;
+    setSearchKeywords(value);
+
+    if (value === "") {
+      return setCustomersCopy([...customers]);
+    }
+
+    switch (searchType) {
+      case SEARCH_BY_NAME:
+        setCustomersCopy([
+          ...customers.filter(
+            (elem) => elem.name.toUpperCase().search(value.toUpperCase()) >= 0
+          ),
+        ]);
+        break;
+
+      case SEARCH_BY_EMAIL:
+        setCustomersCopy([
+          ...customers.filter(
+            (elem) => elem.email.toUpperCase().search(value.toUpperCase()) >= 0
+          ),
+        ]);
+        break;
+
+      case SEARCH_BY_CONTACT:
+        setCustomersCopy([
+          ...customers.filter(
+            (elem) =>
+              elem.contact.toUpperCase().search(value.toUpperCase()) >= 0
+          ),
+        ]);
+        break;
+
+      case SEARCH_BY_CITY:
+        setCustomersCopy([
+          ...customers.filter(
+            (elem) => elem.city.toUpperCase().search(value.toUpperCase()) >= 0
+          ),
+        ]);
+        break;
+    } //swicth ending...
+  }; //......................handle filter customers
 
   const handleShowDetails = (elem) => {
     setCurrentData(elem);
@@ -61,17 +130,21 @@ const Consigned = (props) => {
     setFilteresRequests([
       ...requests.filter((req) => req.buyerId._id == buyerId._id),
     ]);
+    setFilteredRequestCopy([
+      ...requests.filter((req) => req.buyerId._id == buyerId._id),
+    ]);
     setScreen(CUSTOMER_PRODUCTS_SCREEN);
   }; //.....................................
 
   const handleLoadCustomers = (requests) => {
     let allCustomers = [];
+
     requests.forEach((req) => {
       console.log("First Re");
       console.log(req);
       let isPresent = false;
       allCustomers.forEach((customer) => {
-        if (customer._id == req.buyer._id) {
+        if (customer._id == req.buyerId._id) {
           isPresent = true;
         }
       });
@@ -80,6 +153,7 @@ const Consigned = (props) => {
       }
     });
     setCustomers([...allCustomers]);
+    setCustomersCopy([...allCustomers]);
   }; //....................................
 
   //................
@@ -110,8 +184,6 @@ const Consigned = (props) => {
           setRequests([...res.data.data]);
           setScreen(DEFAULT_SCREEN);
           handleLoadCustomers([...res.data.data]);
-          console.log("Approved requests");
-          console.log(res.data.data);
         }
       } else {
         setScreen(ERROR_SCREEN);
@@ -138,7 +210,10 @@ const Consigned = (props) => {
   } else if (screen == ERROR_SCREEN) {
     mainGUI = (
       <React.Fragment>
-        <ErrorScreen errorMessage={errorMessage} />
+        <ErrorScreen
+          handleReload={handleLoadData}
+          errorMessage={errorMessage}
+        />
       </React.Fragment>
     );
   } else if (screen == EMPTYSCREEN) {
@@ -152,12 +227,28 @@ const Consigned = (props) => {
       <React.Fragment>
         <Row className={classes.defaultTitle}>Consigned Customers</Row>
         <Row className={classes.searchBar}>
-          <input type="text" className={classes.input} />
-          <input type="text" className={classes.input} />
+          <select
+            onChange={(event) => {
+              setSearchType(event.target.value);
+            }}
+            value={searchType}
+            className={classes.input}
+          >
+            <option value={SEARCH_BY_NAME}>Name</option>
+            <option value={SEARCH_BY_EMAIL}>Email</option>
+            <option value={SEARCH_BY_CONTACT}>Contact</option>
+            <option value={SEARCH_BY_CITY}>City</option>
+          </select>
+          <input
+            value={searchKeywords}
+            onChange={handleFilterCustomers}
+            type="text"
+            className={classes.input}
+          />
         </Row>
         <Row className={classes.table}>
           <Table headings={["SR", "Name", "Email", "Contact", "City"]}>
-            {customers.map((elem, index) => (
+            {customersCopy.map((elem, index) => (
               <TableRow
                 style={{
                   cursor: "pointer",
@@ -204,8 +295,13 @@ const Consigned = (props) => {
           <Row></Row>
         </Row>
         <Row className={classes.searchBar}>
-          <input type="text" className={classes.input} />
-          <input type="text" className={classes.input} />
+          <input
+            onChange={handleFilterProducts}
+            value={productSearchKeywords}
+            type="text"
+            className={classes.input}
+            placeholder="Search Product"
+          />
         </Row>
         <Row className={classes.table}>
           <Table
@@ -218,7 +314,7 @@ const Consigned = (props) => {
               "Installments",
             ]}
           >
-            {filteredReuests.map((elem, index) => (
+            {filteredRequestCopy.map((elem, index) => (
               <TableRow
                 style={{
                   cursor: "pointer",

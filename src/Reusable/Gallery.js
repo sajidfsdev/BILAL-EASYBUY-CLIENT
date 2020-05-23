@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   imageBox: {
     width: "215px",
     height: "215px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 

@@ -13,6 +13,7 @@ import CircularProgressBar from "./../../../UI/CircularProgressBar/CircularProgr
 import DraggableDialog from "./../../../UI/DraggableDialogue/DraggableDialogue";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import ConstructPlan from "./ConstructPlan";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   capsule: {
@@ -163,6 +164,7 @@ const SuggestionsScreen = (props) => {
   const token_RP = useSelector((state) => state.auth.token);
   const [openDialogue, setOpenDialogue] = useState(false);
   const [comment, setComment] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     const data = [];
@@ -176,6 +178,10 @@ const SuggestionsScreen = (props) => {
   }, []);
 
   //Handle refresh proposals starts...
+
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //........................handle show snack bar ends
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -224,14 +230,15 @@ const SuggestionsScreen = (props) => {
         handleRefreshProposals(id);
       } else {
         setScreen(DEFAULT_SCREEN);
-        window.alert("Network error has occurred");
+
+        handleShowSnackbar("Network error has occurred", "error");
       }
     } catch (err) {
       setScreen(DEFAULT_SCREEN);
       if (err.response) {
-        window.alert(err.response.data.errorMessage);
+        handleShowSnackbar(err.response.data.errorMessage, "error");
       } else {
-        window.alert(err.message);
+        handleShowSnackbar(err.message, "error");
       }
     }
   }; //...................................

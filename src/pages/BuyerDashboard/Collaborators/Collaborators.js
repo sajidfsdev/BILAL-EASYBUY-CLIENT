@@ -9,6 +9,7 @@ import useStyles from "./Collaborators.styles";
 import { Button, Paper } from "@material-ui/core";
 import CollaboratorTable from "./../../../Components/BuyerDashboard/Collaborators/CollTable/collTable";
 import ErrorScreen from "./../../../Reusable/ErrorScreen";
+import { useSnackbar } from "notistack";
 
 const Collaborators = (props) => {
   //styles init...
@@ -20,6 +21,7 @@ const Collaborators = (props) => {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const token_RP = useSelector((state) => state.auth.token);
+  const { enqueueSnackbar } = useSnackbar();
 
   //Methods starts....
   useEffect(() => {
@@ -27,13 +29,16 @@ const Collaborators = (props) => {
     handleFetchAllCollaborators();
   }, []);
 
+  const handleShowSnackBar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //..................handle show snack bar ends.
+
   const handleRefresh = () => {
     setLoaded(false);
     handleFetchAllCollaborators();
   }; //....................Handle refresh
 
   const handleDeleteRow = async (index) => {
-    window.alert(collaborators[index].productId._id);
     // /deleteCollaborators
     setLoaded(false);
 
@@ -63,19 +68,21 @@ const Collaborators = (props) => {
           ...collaborators.filter((elem, ind) => ind != index),
         ]);
 
+        handleShowSnackBar("Deleted Successfully", "success");
+
         //deleting manually ends.....
       } else {
         setLoaded(true);
 
-        window.alert("Network Error Ocurred");
+        handleShowSnackBar("Unable to delete due to network error", "error");
       }
     } catch (err) {
       setLoaded(true);
 
       if (err.response) {
-        window.alert(err.response.data.errorMessage);
+        handleShowSnackBar(err.response.data.errorMessage, "error");
       } else {
-        window.alert(err.message);
+        handleShowSnackBar(err.message);
       }
     }
     //try catch ends here....

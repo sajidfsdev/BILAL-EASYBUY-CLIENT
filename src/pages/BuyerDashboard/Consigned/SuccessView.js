@@ -55,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
   imageBox: {
     width: "215px",
     height: "215px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   downContainer: {
@@ -98,27 +101,25 @@ const useStyles = makeStyles((theme) => ({
 const SuccessScreen = (props) => {
   const classes = useStyles();
 
-  useEffect(() => {
-    console.log("Please see the data ooooooo");
-    console.log(props.data);
-  }, []);
-
   //return starts...
   return (
     <React.Fragment>
       <Row className={classes.container}>
         <Paper className={classes.paper} elevation={10}>
           {/* title starts..... */}
-          <Row className={classes.title}>
-            <Row className={classes.titleIcon}>
-              <ThumbUpIcon
-                style={{
-                  fontSize: "30px",
-                }}
-              />
+          {props.showThumbUp ? (
+            <Row className={classes.title}>
+              <Row className={classes.titleIcon}>
+                <ThumbUpIcon
+                  style={{
+                    fontSize: "30px",
+                  }}
+                />
+              </Row>
+              <Row className={classes.titleText}>Request Has Been Made ...</Row>
             </Row>
-            <Row className={classes.titleText}>Request Has Been Made ...</Row>
-          </Row>
+          ) : null}
+
           {/* title ends.......... */}
 
           {/* Gallery starts...... */}

@@ -114,13 +114,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     backgroundColor: theme.palette.primary.main,
     color: "#fff",
-    marginTop: "15px",
-    marginBottom: "15px",
+    marginTop: "5px",
+    marginBottom: "5px",
     borderRadius: "20px",
     height: "25px",
     paddingLeft: "20px",
     paddingRight: "20px",
     cursor: "pointer",
+    fontSize: "14px",
   },
 
   circle: {

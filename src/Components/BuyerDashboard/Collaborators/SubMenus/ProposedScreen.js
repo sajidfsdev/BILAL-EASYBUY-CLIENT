@@ -14,6 +14,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import { compareAsc, format } from "date-fns";
 import ErrorScreen from "./../../../../Reusable/ErrorScreen";
+import { useSnackbar } from "notistack";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -279,13 +281,19 @@ const ProposedScreen = (props) => {
     "Some error occurred due to network erro"
   );
   const [suggestedScreen, setSuggestedScreen] = useState("ME"); //Me and Vendor
+  const { enqueueSnackbar } = useSnackbar();
 
   //use effect starts....
   useEffect(() => {
     handleRetrieveProposals();
   }, []);
 
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //...............handle show snackbar
+
   const handleRequestConsignment = async () => {
+    setScreen(LOADING_SCREEN);
     let installmentPlan = null;
     if (currentData.status == "SUGGESTED") {
       installmentPlan = currentData.suggestedPlan.installmentPlan;
@@ -325,17 +333,21 @@ const ProposedScreen = (props) => {
         config
       );
       if (res) {
-        window.alert("RESPONSE HAS COME");
+        handleShowSnackbar("Request has been made to vendor", "success");
+        props.history.push("/manage/consigned");
       } else {
-        window.alert("NO RESPONSE");
+        handleShowSnackbar(
+          "Failed to make request due to network error",
+          "error"
+        );
       }
     } catch (err) {
+      setScreen(DETAILS_SCREEN);
+
       if (err.response) {
-        window.alert("err.response");
-        window.alert(err.response.data.errorMessage);
+        handleShowSnackbar(err.response.data.errorMessage, "error");
       } else {
-        window.alert("err.message");
-        window.alert(err.message);
+        handleShowSnackbar(err.message, "error");
       }
     }
     //try catch ends......
@@ -616,4 +628,4 @@ const ProposedScreen = (props) => {
   return <React.Fragment>{mainGUI}</React.Fragment>;
 }; //............................
 
-export default ProposedScreen;
+export default withRouter(ProposedScreen);

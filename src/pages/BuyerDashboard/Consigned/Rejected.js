@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Row from "./../../../UI/Row/ELXRow";
 import CircularProgressBar from "./../../../UI/CircularProgressBar/CircularProgressBar";
-import PendingTable from "./PendingTable";
+import PendingTable from "./RejectionTable";
 import BackspaceIcon from "@material-ui/icons/Backspace";
 import SuccessView from "./SuccessView";
+import axios from "axios";
+import AppConsts from "./../../../Constants/Strings";
+import { useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
 import ErrorScreen from "./../../../Reusable/ErrorScreen";
 
 const useStyles = makeStyles((theme) => ({
@@ -77,7 +81,7 @@ const SEARCH_BY_VENDOR_NAME = "Vendor";
 const SEARCH_BY_VENDOR_CONTACT = "Contact";
 const SEARCH_BY_PRODUCT = "Product";
 
-const Pending = (props) => {
+const Rejected = (props) => {
   //styles init....
   const classes = useStyles();
 
@@ -86,6 +90,8 @@ const Pending = (props) => {
   const [searchKeywords, setSearchKeywords] = useState("");
   const [searchType, setSearchType] = useState(SEARCH_BY_PRODUCT);
   const [records, setRecords] = useState(props.data);
+  const token_RP = useSelector((state) => state.auth.token);
+  const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
     setRecords(props.data);
@@ -131,6 +137,46 @@ const Pending = (props) => {
     }
   };
 
+  const handleShowSnackBar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //.......................handle show snackbar
+
+  const handleDeleteReuest = async (id) => {
+    setScreen(LOADING_SCREEN);
+    const body = JSON.stringify({ id });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-eptoken-buyer": token_RP,
+      },
+    };
+
+    try {
+      const res = await axios.post(
+        AppConsts.server + "/buyer/consigned/delete",
+        body,
+        config
+      );
+
+      if (res) {
+        handleShowSnackBar("Record Deleted Successfully", "success");
+        setRecords([...records.filter((elem) => elem._id != id)]);
+        props.reloadData();
+        setScreen(DEFAULT_SCREEN);
+      } else {
+        setScreen(DEFAULT_SCREEN);
+        handleShowSnackBar("Network Error", "error");
+      }
+    } catch (err) {
+      setScreen(DEFAULT_SCREEN);
+      if (err.response) {
+        handleShowSnackBar(err.response.data.errorMessage, "error");
+      } else {
+        handleShowSnackBar(err.response, "error");
+      }
+    }
+  }; //.........................Handle delete request
+
   //main GUI starts....
   let mainGUI = null;
 
@@ -148,8 +194,8 @@ const Pending = (props) => {
         {props.data.length == 0 ? (
           <React.Fragment>
             <ErrorScreen
+              errorMessage="There are no rejected requests"
               showReloadButton={false}
-              errorMessage="There Are No Pending Requests"
             />
           </React.Fragment>
         ) : (
@@ -179,7 +225,11 @@ const Pending = (props) => {
               </Row>
             </Row>
 
-            <PendingTable changeScreen={handleChangeScreen} data={records} />
+            <PendingTable
+              delete={handleDeleteReuest}
+              changeScreen={handleChangeScreen}
+              data={records}
+            />
           </React.Fragment>
         )}
       </React.Fragment>
@@ -195,7 +245,7 @@ const Pending = (props) => {
           <Row className={classes.blackBarTitle}>Details</Row>
           <Row></Row>
         </Row>
-        <SuccessView data={current} />
+        <SuccessView showThumbUp={false} data={current} />
       </React.Fragment>
     );
   }
@@ -203,4 +253,4 @@ const Pending = (props) => {
   return <React.Fragment>{mainGUI}</React.Fragment>;
 }; //.....................
 
-export default Pending;
+export default Rejected;

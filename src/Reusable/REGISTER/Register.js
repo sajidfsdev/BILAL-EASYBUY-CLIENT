@@ -13,6 +13,8 @@ import AppConsts from "./../../Constants/Strings";
 import { useSelector } from "react-redux";
 import { Button } from "@material-ui/core";
 import { compareAsc, format } from "date-fns";
+import { withRouter } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const DEFAULT_SCREEN = "DEFAULT_SCREEN";
 const LOADING_SCREEN = "LOADING_SCREEN";
@@ -30,10 +32,15 @@ const Register = (props) => {
   ]);
   const [screen, setScreen] = useState(DEFAULT_SCREEN);
   const id_RP = useSelector((state) => state.auth.token);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     checkIsCompleted();
   }, []);
+
+  const handleShowSnackbar = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  }; //........................handle show snackbar
 
   const checkIsCompleted = () => {
     if (downCheck === false) {
@@ -84,8 +91,12 @@ const Register = (props) => {
     setScreen(LOADING_SCREEN);
     let remaining = false;
     if (downCheck === false) {
-      return window.alert(
-        "You Cannot Complete Installments Plan Untill All Payments Complete"
+      // return window.alert(
+      //   "You Cannot Complete Installments Plan Untill All Payments Complete"
+      // );
+      return handleShowSnackbar(
+        "You Cannot Complete Installments Plan Untill All Payments Complete",
+        "error"
       );
     }
 
@@ -96,8 +107,12 @@ const Register = (props) => {
     });
 
     if (remaining === true) {
-      return window.alert(
-        "You Cannot Complete Installments Plan Untill All Payments Complete"
+      // return window.alert(
+      //   "You Cannot Complete Installments Plan Untill All Payments Complete"
+      // );
+      return handleShowSnackbar(
+        "You Cannot Complete Installments Plan Untill All Payments Complete",
+        "error"
       );
     }
     ///////Ready to Complete........
@@ -131,18 +146,23 @@ const Register = (props) => {
       if (res) {
         setScreen(DEFAULT_SCREEN);
 
-        window.alert("Record Updated Successfully");
+        //window.alert("Record Updated Successfully");
+        props.history.push("/dashboard/history");
+        handleShowSnackbar("Installments Completed Successfully", "success");
       } else {
         setScreen(DEFAULT_SCREEN);
 
-        window.alert("Network Error");
+        //window.alert("Network Error");
+        handleShowSnackbar("Network error", "error");
       }
     } catch (err) {
       setScreen(DEFAULT_SCREEN);
       if (err.response) {
-        window.alert(err.response.data.errorMessage);
+        //window.alert(err.response.data.errorMessage);
+        handleShowSnackbar(err.response.data.errorMessage, "error");
       } else {
-        window.alert(err.message);
+        //window.alert(err.message);
+        handleShowSnackbar(err.response, "error");
       }
     }
     //try catch ends.......
@@ -302,4 +322,4 @@ const Register = (props) => {
   return <React.Fragment>{mainGUI}</React.Fragment>;
 }; //......................
 
-export default Register;
+export default withRouter(Register);

@@ -19,6 +19,8 @@ const ERROR_SCREEN = "ERRORSCREEN";
 const EMPTY_SCREEN = "EMPTYSCREEN";
 const SUBMENU_SCREEN = "SUBMENUSCREEN";
 const CUSTOMER_PRODUCTS_SCREEN = "CUSTOMERPRODUCTSSCREENs";
+const CUSTOMER_NAME = "NAME";
+const CUSTOMER_NUMBER = "CONTACT";
 
 const GetProposals = (props) => {
   //classes init....
@@ -35,10 +37,52 @@ const GetProposals = (props) => {
   const [currentProposals, setCurrentProposals] = useState([]);
   const [productId, setProductId] = useState(null);
   const [clients, setClients] = useState([]);
+  const [clientsCopy, setClientsCopy] = useState([]);
+  const [searchType, setSearchType] = useState(CUSTOMER_NAME);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchCurrentProposals, setSearchCurrentProposals] = useState("");
+  const [currentProposalCopy, setCurrentProposalCopy] = useState([]);
 
   useEffect(() => {
     retrieveAllProposals();
   }, []);
+
+  const handleSearchCurrentProposals = (event) => {
+    console.log("************Current Proposals");
+    console.log(currentProposals);
+    const value = event.target.value;
+    if (value === "") {
+      setCurrentProposalCopy([...currentProposals]);
+    } else {
+      setCurrentProposalCopy([
+        ...currentProposals.filter(
+          (elem) =>
+            elem.productId.name.toUpperCase().search(value.toUpperCase()) >= 0
+        ),
+      ]);
+    }
+    setSearchCurrentProposals(value);
+  }; //............
+
+  const handleSearch = (event) => {
+    const value = event.target.value;
+    if (value === "") {
+      setClientsCopy([...clients]);
+    } else if (searchType === CUSTOMER_NAME) {
+      setClientsCopy([
+        ...clients.filter(
+          (elem) => elem.name.toUpperCase().search(value.toUpperCase()) >= 0
+        ),
+      ]);
+    } else {
+      setClientsCopy([
+        ...clients.filter(
+          (elem) => elem.contact.toUpperCase().search(value.toUpperCase()) >= 0
+        ),
+      ]);
+    }
+    setSearchKeyword(value);
+  }; //................handle search
 
   const handleDeleteRecord = (id) => {
     // window.alert("Called");
@@ -49,6 +93,7 @@ const GetProposals = (props) => {
       ...currentProposals.filter((elem) => elem._id != id),
     ];
     setCurrentProposals([...filteredcurrentProposals]);
+    setCurrentProposalCopy([...filteredcurrentProposals]);
   }; //.............................
 
   const handleMoveNext = (productId) => {
@@ -65,6 +110,9 @@ const GetProposals = (props) => {
 
   const handleSelectCustomer = (customerId) => {
     setCurrentProposals([
+      ...proposals.filter((elem) => elem.buyerId._id == customerId),
+    ]);
+    setCurrentProposalCopy([
       ...proposals.filter((elem) => elem.buyerId._id == customerId),
     ]);
     handleChangeScreen(CUSTOMER_PRODUCTS_SCREEN);
@@ -84,6 +132,7 @@ const GetProposals = (props) => {
       }
     });
     setClients([...clients]);
+    setClientsCopy([...clients]);
     console.log("??????????????????");
     console.log(clients);
     console.log("??????????????????");
@@ -162,12 +211,17 @@ const GetProposals = (props) => {
           <input
             placeholder="Product Name"
             type="text"
+            value={searchCurrentProposals}
+            onChange={handleSearchCurrentProposals}
             className={classes.input}
           />
         </Row>
 
         <Paper elevation={3} className={classes.bottomPopoulation}>
-          <ProductDetailsTable data={currentProposals} next={handleMoveNext} />
+          <ProductDetailsTable
+            data={currentProposalCopy}
+            next={handleMoveNext}
+          />
         </Paper>
       </React.Fragment>
     );
@@ -180,28 +234,30 @@ const GetProposals = (props) => {
               errorMessage={"There are no proposals to Retrieve"}
               showReloadButton={false}
             />
-            {/* <Row className={classes.emptyMessage}>
-              There are no proposals to Retrieve
-            </Row> */}
           </React.Fragment>
         );
       } else {
         return (
           <React.Fragment>
             <Row className={classes.searchBar}>
-              <input
-                placeholder="Contact Number"
-                type="text"
+              <select
+                value={searchType}
+                onChange={(event) => setSearchType(event.target.value)}
                 className={classes.input}
-              />
+              >
+                <option>{CUSTOMER_NUMBER}</option>
+                <option>{CUSTOMER_NAME}</option>
+              </select>
               <input
-                placeholder="Client Name"
+                value={searchKeyword}
+                onChange={handleSearch}
+                placeholder="Search"
                 type="text"
                 className={classes.input}
               />
             </Row>
             <Paper elevation={1} className={classes.defaultcontainer}>
-              {clients.map((elem, index) => {
+              {clientsCopy.map((elem, index) => {
                 return (
                   <Row
                     className={classes.defaultBar}
@@ -229,18 +285,6 @@ const GetProposals = (props) => {
           errorMessage={errorMessage}
           handleReload={retrieveAllProposals}
         />
-        {/* <Row className={classes.errorMessage}>
-          <Row className={classes.error}>{errorMessage}</Row>
-          <Row className={classes.refreshBtn}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<CachedIcon />}
-            >
-              Refresh
-            </Button>
-          </Row>
-        </Row> */}
       </React.Fragment>
     );
   } else if (screen == EMPTY_SCREEN) {
@@ -250,9 +294,6 @@ const GetProposals = (props) => {
           errorMessage={"There are no proposals to Retrieve"}
           showReloadButton={false}
         />
-        {/* <Row className={classes.emptyMessage}>
-          There are no proposals to Retrieve
-        </Row> */}
       </React.Fragment>
     );
   }

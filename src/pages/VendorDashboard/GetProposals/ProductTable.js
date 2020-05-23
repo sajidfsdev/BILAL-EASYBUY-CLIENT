@@ -60,7 +60,7 @@ const CustomizedTables = (props) => {
       }
     });
     setProducts([...array]);
-  }, []);
+  }, [props.data]);
 
   return (
     <React.Fragment>
