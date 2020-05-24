@@ -122,12 +122,11 @@ const AppBarComp = (props) => {
               className={classes.menuButton}
               color="inherit"
               aria-label="open drawer"
+              onClick={() => {
+                setOpenDrawer(!openDrawer);
+              }}
             >
-              <MenuIcon
-                onClick={() => {
-                  setOpenDrawer(!openDrawer);
-                }}
-              />
+              <MenuIcon />
             </IconButton>
             <div>{/* <Avatar src={source} size={5} /> */}</div>
             <Typography className={classes.title} variant="h6" noWrap>

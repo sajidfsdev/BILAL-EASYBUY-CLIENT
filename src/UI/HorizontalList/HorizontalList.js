@@ -38,6 +38,7 @@ const HorizonatalList = (props) => {
             animationInDelay={2}
             animationIn="fadeIn"
             animationOut="fadeOut"
+            key={index}
           >
             <Paper
               key={index}
@@ -79,14 +80,14 @@ const HorizonatalList = (props) => {
                           elem.installmentPlan.duration}
                       </Row>
                       <Row className={classes.btnRow}>
-                        <buton
+                        <button
                           onClick={() => {
                             handleImageClick(elem._id);
                           }}
                           className={classes.btn}
                         >
                           See Details
-                        </buton>
+                        </button>
                       </Row>
                     </Row>
                     <svg className={classes.svg}>

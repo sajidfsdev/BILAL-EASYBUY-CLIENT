@@ -7,6 +7,7 @@ import ErrorScreen from "./../../../Reusable/ErrorScreen";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../../Store/Action/bulk";
 import * as Types from "./../../../Store/Constants/bulk";
+import randomInt from "random-int";
 
 const FeaturedProducts = (props) => {
   //styles init...
@@ -27,12 +28,42 @@ const FeaturedProducts = (props) => {
 
   useEffect(() => {
     let prods = [];
-    bulk.forEach((elem, index) => {
-      if (index < 5) {
-        prods.push(elem);
-      }
-    });
-    setProducts([...prods]);
+    // bulk.forEach((elem, index) => {
+    //   if (index < 5) {
+    //     prods.push(elem);
+    //   }
+    // });
+    if (bulk.length <= 5) {
+      return setProducts([...bulk]);
+    } else {
+      const bulkLength = bulk.length;
+      //window.alert(bulkLength);
+      const randomIndexes = [];
+      for (let i = 1; i <= 5; i++) {
+        let alreadyExist = true;
+        while (alreadyExist) {
+          let randomIndex = randomInt(0, bulkLength - 1);
+          //window.alert(randomIndex);
+          if (randomIndexes.findIndex((elem) => elem == randomIndex) >= 0) {
+            alreadyExist = true;
+            //window.alert("already exists");
+          } else {
+            //window.alert("pushed");
+            randomIndexes.push(randomIndex);
+            alreadyExist = false;
+          }
+        }
+      } //for ending
+
+      console.log("Please Plaese Plaese see random Indexes");
+      console.log(randomIndexes);
+
+      randomIndexes.forEach((elem) => {
+        prods.push(bulk[elem]);
+      });
+      setProducts([...prods]);
+    }
+    //setProducts([...prods]);
   }, [bulk]);
 
   const handleLoadProducts = () => {
