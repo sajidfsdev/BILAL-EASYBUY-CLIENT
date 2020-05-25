@@ -20,6 +20,8 @@ import EditOperations from "./EditOperation/EditOperation";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Spinner from "./../../../UI/CircularProgressBar/CircularProgressBar";
 import { useSnackbar } from "notistack";
+import * as consts from "./../../../Store/Constants/products";
+import { useDispatch } from "react-redux";
 
 //screen consts...
 const LOADING_SCREEN = "LOADINGSCREEN";
@@ -42,6 +44,7 @@ const Consigned = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const [currentProduct, setCurrentProduct] = useState();
   const [deleteBufferring, setDeleteBufferring] = useState([]);
+  const dispatch_RP = useDispatch();
 
   useEffect(() => {
     handleLoadData();
@@ -321,6 +324,10 @@ const Consigned = (props) => {
           <BackspaceIcon
             onClick={() => {
               setScreen(DEFAULT_SCREEN);
+              dispatch_RP({
+                type: consts.REFRESH,
+              });
+              //props.setActiveState(0);
             }}
             className={classes.backIcon}
           />
