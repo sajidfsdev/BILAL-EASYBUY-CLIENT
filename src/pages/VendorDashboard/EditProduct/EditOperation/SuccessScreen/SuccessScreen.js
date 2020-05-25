@@ -6,10 +6,13 @@ import DetailsTable from "./DetailTable";
 import InstallmentTable from "./InstallmentTable";
 import { Paper, Button } from "@material-ui/core";
 import AppConsts from "./../../../../../Constants/Strings";
+import * as consts from "./../../../../../Store/Constants/products";
+import { useDispatch } from "react-redux";
 
 const SuccessScreen = (props) => {
   //classes init...
   const classes = useStyles();
+  const dispatch_RP = useDispatch();
 
   //return starts...
   return (
@@ -80,6 +83,9 @@ const SuccessScreen = (props) => {
           <Row className={classes.closeBtnRow}>
             <Button
               onClick={() => {
+                dispatch_RP({
+                  type: consts.REFRESH,
+                });
                 props.setActiveState(0);
                 props.refresh();
               }}
