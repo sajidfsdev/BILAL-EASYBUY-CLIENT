@@ -392,6 +392,7 @@ const Consigned = (props) => {
           <Row className={classes.backTitle}>{currentProduct.name}</Row>
           <Row></Row>
         </Row>
+
         <EditOperations
           refresh={() => {
             handleLoadData();

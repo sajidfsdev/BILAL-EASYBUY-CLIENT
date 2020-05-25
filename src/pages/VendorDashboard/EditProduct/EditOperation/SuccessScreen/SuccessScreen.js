@@ -79,7 +79,10 @@ const SuccessScreen = (props) => {
           {/* Close Btn Starts.... */}
           <Row className={classes.closeBtnRow}>
             <Button
-              onClick={props.refresh}
+              onClick={() => {
+                props.setActiveState(0);
+                props.refresh();
+              }}
               variant={"contained"}
               color="primary"
             >

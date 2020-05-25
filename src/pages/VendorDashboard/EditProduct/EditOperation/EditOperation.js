@@ -161,6 +161,7 @@ const AddProducts = (props) => {
             state={state}
             refresh={handleRefresh}
             dispatch={dispatch}
+            setActiveState={setActiveState}
           />
         ) : (
           <Row>
