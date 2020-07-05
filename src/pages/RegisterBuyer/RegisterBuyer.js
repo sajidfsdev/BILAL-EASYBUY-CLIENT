@@ -69,7 +69,16 @@ const Register = props => {
           errorMessage: "Name Cannot Be Empty"
         }
       });
-    } else {
+    } else if (!Validations.isAlphabets(value)) {
+      dispatch({
+        type: Types.SET_NAMEERROR,
+        payload: {
+          name: value,
+          errorMessage: "Name can only contains alphabets"
+        }
+      });
+    }
+    else {
       dispatch({
         type: Types.SET_NAME,
         payload: {
@@ -318,7 +327,7 @@ const Register = props => {
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label="Combo box"
+                    label="City"
                     error={state.isCityError}
                     helperText={state.cityErrorMessage}
                     defaultValue={state.city}
@@ -372,32 +381,32 @@ const Register = props => {
       ) : isError_RP ? (
         <Row>{errorMessage_RP}</Row>
       ) : (
-        <Row className={classes.successContainer}>
-          <Row className={classes.rowOne}>
-            <Row className={classes.successIconDiv}>
-              <CheckCircleIcon className={classes.successIcon} />
+            <Row className={classes.successContainer}>
+              <Row className={classes.rowOne}>
+                <Row className={classes.successIconDiv}>
+                  <CheckCircleIcon className={classes.successIcon} />
+                </Row>
+                <Row className={classes.message}>
+                  You have been registered successfully
             </Row>
-            <Row className={classes.message}>
-              You have been registered successfully
-            </Row>
-          </Row>
-          <Row className={classes.rowTwo}>
-            <button
-              onClick={() => {
-                dispatch_RP({
-                  type: ReduxTypes.HIDEREGISTER
-                });
-                dispatch_RP({
-                  type: ReduxTypes.SHOWSIGNIN
-                });
-              }}
-              className={classes.successBtn}
-            >
-              Lets Login
+              </Row>
+              <Row className={classes.rowTwo}>
+                <button
+                  onClick={() => {
+                    dispatch_RP({
+                      type: ReduxTypes.HIDEREGISTER
+                    });
+                    dispatch_RP({
+                      type: ReduxTypes.SHOWSIGNIN
+                    });
+                  }}
+                  className={classes.successBtn}
+                >
+                  Lets Login
             </button>
-          </Row>
-        </Row>
-      )}
+              </Row>
+            </Row>
+          )}
     </FullScreenDialogue>
   );
 }; //.......................

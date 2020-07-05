@@ -28,5 +28,10 @@ export default {
     // var patt = new RegExp(/^[0-9]*$/);
     var patt = new RegExp(/^-?[0-9]\d*(\.\d+)?$/);
     return patt.test(value);
+  },
+
+  isAlphabets: value => {
+    var patt = new RegExp(/^[a-zA-Z ]*$/);
+    return patt.test(value);
   }
 };

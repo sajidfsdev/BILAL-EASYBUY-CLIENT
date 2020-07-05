@@ -62,7 +62,7 @@ const Register = (props) => {
   const handleAddDownDate = () => {
     let d = new Date();
     const date = format(
-      new Date(d.getFullYear(), d.getMonth() + 1, d.getDate()),
+      new Date(d.getFullYear(), d.getMonth(), d.getDate()),
       "yyyy-MM-dd"
     );
     setDownDate(date);
@@ -74,7 +74,7 @@ const Register = (props) => {
   const handleAddInstallmentsDates = (index) => {
     let d = new Date();
     const date = format(
-      new Date(d.getFullYear(), d.getMonth() + 1, d.getDate()),
+      new Date(d.getFullYear(), d.getMonth(), d.getDate()),
       "yyyy-MM-dd"
     );
     const copiedData = [...installmentsDates];
