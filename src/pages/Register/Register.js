@@ -69,7 +69,7 @@ const Register = (props) => {
         type: Types.SET_NAMEERROR,
         payload: {
           name: value,
-          errorMessage: "Name can only contains alphabets New"
+          errorMessage: "Name can only contains alphabets"
         }
       });
     }
