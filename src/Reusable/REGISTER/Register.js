@@ -124,7 +124,7 @@ const Register = (props) => {
     };
     let d = new Date();
     const date = format(
-      new Date(d.getFullYear(), d.getMonth() + 1, d.getDate()),
+      new Date(d.getFullYear(), d.getMonth(), d.getDate()),
       "yyyy-MM-dd"
     );
 
